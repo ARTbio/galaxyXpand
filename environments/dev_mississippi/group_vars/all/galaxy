@@ -1,0 +1,59 @@
+---
+# Galaxy
+galaxy_additional_venv_packages: drmaa
+galaxy_create_user: true
+galaxy_separate_privileges: true
+# galaxy_manage_paths: true
+galaxy_privsep_user: "{{ galaxy_user }}"
+galaxy_layout: legacy
+galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
+galaxy_root: /home/galaxy
+galaxy_user: {name: galaxy, shell: /bin/bash}
+galaxy_commit_id: release_22.05
+galaxy_force_checkout: true
+# galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/database/tool_dependencies"
+miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
+miniconda_version: 4.7.12
+miniconda_manage_dependencies: false
+galaxy_config:
+  galaxy:
+    brand: "🧬🔬🚀"
+    admin_users: admin@example.org
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
+    file_path: files
+    check_migrate_tools: false
+    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+  gravity:
+    galaxy_root: "{{ galaxy_server_dir }}"
+    app_server: gunicorn
+    gunicorn:
+      # listening options
+      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      # performance options
+      workers: 2
+      # Other options that will be passed to gunicorn
+      extra_args: '--forwarded-allow-ips="*"'
+      preload: true
+    celery:
+      concurrency: 2
+      loglevel: DEBUG
+    handlers:
+      handler:
+        processes: 3
+        pools:
+          - job-handler
+          - workflow-scheduler
+
+# deploy galaxy configuration files
+galaxy_config_templates:
+  - src: environments/dev_gce/templates/galaxy/config/job_conf.xml.j2
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+
+
+# systemd
+galaxy_manage_systemd: true

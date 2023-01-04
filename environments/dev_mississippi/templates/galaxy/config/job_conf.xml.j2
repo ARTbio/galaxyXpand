@@ -1,0 +1,55 @@
+<job_conf>
+    <plugins>
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner" workers="4">
+            <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
+        </plugin>
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
+    </plugins>
+    <destinations default="local">
+        <destination id="local" runner="local"/>
+        <destination id="gce_multicore" runner="local">
+            <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+        </destination>
+        <destination id="bowtie" runner="local">
+             <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+        </destination>
+        <destination id="cluster_4" runner="slurm">
+             <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+             <param id="type">python</param>
+             <param id="nativeSpecification">--partition=debug --ntasks=4</param>
+             <param id="docker_sudo">false</param>
+             <param id="docker_volumes_from">galaxy</param>
+        </destination>
+    </destinations>
+
+    <limits>
+        <limit type="anonymous_user_concurrent_jobs">1</limit>
+        <limit type="registered_user_concurrent_jobs">3</limit>
+        <limit type="destination_user_concurrent_jobs" id="bowtie">1</limit>
+    </limits>
+
+   <tools>
+        <tool id="sam_to_bam" destination="gce_multicore"/>
+        <tool id="sambamba_sample_or_filter" destination="gce_multicore"/>
+        <tool id="bowtie" destination="bowtie"/>
+        <tool id="bowtie_wrapper" destination="bowtie"/>
+        <tool id="bowtie2" destination="bowtie"/>
+        <tool id="bowtieForSmallRNA" destination="bowtie"/>
+        <tool id="bowtie_wrapper" destination="gce_multicore"/>
+        <tool id="mircounts" destination="gce_multicore"/>
+        <tool id="picard_SamToFastq" destination="gce_multicore" />
+        <tool id="rna_star" destination="gce_multicore"/>
+        <tool id="rna_starsolo" destination="gce_multicore"/>
+        <tool id="samtools_cram_to_bam" destination="gce_multicore"/>
+        <tool id="samtools_slice_bam" destination="gce_multicore"/>
+        <tool id="samtools_view" destination="gce_multicore"/>
+        <tool id="samtools_rmdup" destination="gce_multicore"/>
+        <tool id="samtools_fastx" destination="gce_multicore"/>
+        <tool id="samtool_filter2" destination="gce_multicore"/>
+        <tool id="small_rna_maps" destination="gce_multicore"/>
+        <tool id="sr_bowtie_dataset_annotation" destination="bowtie"/>
+        <tool id="bowtie_index_builder_data_manager" destination="gce_multicore"/>
+        <tool id="retrieve_fasta_from_NCBI" destination="cluster_4"/>
+   </tools>
+
+</job_conf>

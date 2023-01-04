@@ -1,0 +1,4 @@
+--
+[dev_mississippi]
+
+localhost  ansible_connection=local ansible_user=ubuntu
