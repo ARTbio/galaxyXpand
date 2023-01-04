@@ -48,9 +48,3 @@
         name: nginx
         state: reloaded
       when: not nginx_supervisor
-
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
-      when: not nginx_supervisor
