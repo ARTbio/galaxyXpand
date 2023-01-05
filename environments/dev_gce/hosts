@@ -1,4 +1,3 @@
---
 [dev_gce]
 
 localhost  ansible_connection=local ansible_user=ubuntu

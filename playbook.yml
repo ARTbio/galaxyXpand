@@ -26,7 +26,7 @@
           - python-psutil
   roles:
     - role: clean_galaxykickstart
-      when: galaxykickstart_to_gravity == 'yes'
+      # when: galaxykickstart_to_gravity == 'yes'
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
