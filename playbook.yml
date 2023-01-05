@@ -44,7 +44,7 @@
 
     - name: copy logo image of the instance to static/images
       copy:
-        src: files/images/biotechno_M2_logo.png
+        src: environments/dev_mississippi/files/images/biotechno_M2_logo.png
         dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2_logo.png"
         mode: "0644"
 
