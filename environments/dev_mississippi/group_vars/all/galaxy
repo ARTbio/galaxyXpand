@@ -72,8 +72,6 @@ galaxy_config_templates:
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/dev_mississippi/templates/html/welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
-  - src: environments/dev_missississippi/templates/html/biotechno_M2_logo.png.j2
-    dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2_logo.png"
 
 # systemd
 galaxy_manage_systemd: true
