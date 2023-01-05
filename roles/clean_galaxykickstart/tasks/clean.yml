@@ -1,0 +1,51 @@
+- name: Stop all supervisorctl processes
+  supervisorctl:
+    name: all
+    state: absent
+
+- name: Stop and deregister supervisorctl
+  ansible.builtin.systemd:
+    name: supervisor.service
+    state: stopped
+    enabled: false
+
+- name: Stop and deregister slurmctld
+  ansible.builtin.systemd:
+    name: slurmctld.service
+    state: stopped
+    enabled: false
+
+- name: Stop and deregister slurmd
+  ansible.builtin.systemd:
+    name: slurmd.service
+    state: stopped
+    enabled: false
+
+- name: Remove and purge nginx
+  ansible.builtin.apt:
+    name: nginx-common
+    state: absent
+    purge: true
+
+#- name: remove ppa:natefoo/slurm-drmaa (will be reinstalled)
+#  ansible.builtin.apt_repository:
+#    repo: ppa:natefoo/slurm-drmaa
+#    state: absent
+#
+#- name: Remove slurm-drmaa (will be reinstalled)
+#  ansible.builtin.apt:
+#    name: slurm-drmaa
+#    state: absent
+#    purge: true
+
+- name: change owner and group of /etc/munge/munge.key
+  ansible.builtin.file:
+    path: /etc/munge/munge.key
+    owner: munge
+    group: munge
+
+- name: change owner and group of /run/munge
+  ansible.builtin.file:
+    path: /run/munge
+    owner: munge
+    group: munge

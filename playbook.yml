@@ -25,8 +25,7 @@
           - slurm-drmaa-dev
           - python-psutil
   roles:
-    - role: clean_galaxykickstart
-      # when: galaxykickstart_to_gravity == 'yes'
+    - clean_galaxykickstart
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true

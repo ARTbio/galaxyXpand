@@ -3,9 +3,6 @@
 pip_virtualenv_command: /usr/bin/python3 -m virtualenv
 pip_package: python3-pip
 
-# overwrite properly the previous uwgi-based galaxykickstart
-galaxykickstart_to_gravity: no
-
 # PostgreSQL
 postgresql_objects_users:
   - name: galaxy
