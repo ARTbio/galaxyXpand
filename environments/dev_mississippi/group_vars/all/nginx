@@ -28,6 +28,7 @@ nginx_conf_http:
       image/png
       image/svg+xml
       image/x-icon
+nginx_ssl_src_dir: environments/dev_mississippi/files/ssl
 nginx_conf_ssl_certificate: mississippi_snv_jussieu_fr.crt
 nginx_conf_ssl_certificate_key: mississippi_snv_jussieu_fr.key
 sslkeys:
