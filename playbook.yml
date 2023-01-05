@@ -3,9 +3,6 @@
   become: true
   become_user: root
 
-  vars_files:
-    - group_vars/all/secret.yml
-
   pre_tasks:
 
     - name: Add custom slurm PPA (used for Slurm DRMAA package)
