@@ -4,7 +4,7 @@
   become_user: root
 
   vars_files:
-    - group_vars/secret.yml
+    - group_vars/all/secret.yml
 
   pre_tasks:
 
