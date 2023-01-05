@@ -1,5 +1,5 @@
 ---
-- hosts: dev_gce
+- hosts: all
   become: true
   become_user: root
 
