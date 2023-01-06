@@ -68,11 +68,13 @@ galaxy_config:
           - workflow-scheduler
 
 # deploy galaxy configuration files
-galaxy_config_templates:
-  - src: environments/dev_mississippi/templates/galaxy/config/job_conf.xml.j2
+galaxy_config_files:
+  - src: environments/dev_mississippi/files/galaxy/config/job_conf.xml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
-  - src: environments/dev_mississippi/templates/html/welcome.html.j2
+  - src: environments/dev_mississippi/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
+  - src: environments/dev_mississippi/files/galaxy/html/biotechno_M2.logo.png
+    dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2.logo.png
 
 # systemd
 galaxy_manage_systemd: true
