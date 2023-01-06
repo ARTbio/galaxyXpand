@@ -4,7 +4,6 @@
   become_user: root
 
   pre_tasks:
-
     - name: Add custom slurm PPA (used for Slurm DRMAA package)
       apt_repository: 
         repo: ppa:natefoo/slurm-drmaa
@@ -40,13 +39,6 @@
       become: true
 
   post_tasks:
-
-    - name: copy logo image of the instance to static/images
-      copy:
-        src: environments/dev_mississippi/files/images/biotechno_M2_logo.png
-        dest: "{{ galaxy_server_dir }}/static/images/biotechno_M2_logo.png"
-        mode: "0644"
-
     - name: reload nginx at end
       service:
         name: nginx
