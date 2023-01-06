@@ -60,6 +60,7 @@ galaxy_config:
           64636264363039656631363038396566353938323935393137643830623561623636386234636230
           3461303132613661380a363236326164366635333735356263343133343435373837633838636666
           32656566326365383238393064393864666162656135643634303933363336343061
+    smtp_server: 'smtp.gmail.com:587'
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     file_path: datasets
     object_store_store_by: id
@@ -75,6 +76,14 @@ galaxy_config:
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
     allow_user_impersonation: true
+    allow_user_dataset_purge: true
+    enable_quotas: true
+    allow_user_deletion: true
+    allow_library_path_paste: true
+    watch_tool_data_dir: true
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    expose_potentially_sensitive_job_metrics: true
+    require_login: true
   gravity:
     galaxy_root: "{{ galaxy_server_dir }}"
     app_server: gunicorn
