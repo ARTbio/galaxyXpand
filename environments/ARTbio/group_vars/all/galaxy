@@ -140,8 +140,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
   - src: environments/ARTbio/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
-  - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.jpg
-    dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.jpg"
+  - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.png
+    dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.png"
 
 # systemd
 galaxy_manage_systemd: true
