@@ -93,9 +93,3 @@ server {
          proxy_pass http://127.0.0.1:8788/;
 	}        
 }
-
-server {
-    listen 80 default_server;
-    server_name  artbio.snv.jussieu.fr;
-    return 301 https://$server_name$request_uri;
-}
