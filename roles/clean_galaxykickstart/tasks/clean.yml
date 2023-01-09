@@ -21,11 +21,18 @@
     state: stopped
     enabled: false
 
+- name: Remove and purge munge
+  ansible.builtin.apt:
+    name: munge
+    state: absent
+    purge: true
+
 - name: Remove and purge nginx
   ansible.builtin.apt:
     name: nginx-common
     state: absent
     purge: true
+
 
 #- name: remove ppa:natefoo/slurm-drmaa (will be reinstalled)
 #  ansible.builtin.apt_repository:
@@ -38,14 +45,14 @@
 #    state: absent
 #    purge: true
 
-- name: change owner and group of /etc/munge/munge.key
-  ansible.builtin.file:
-    path: /etc/munge/munge.key
-    owner: munge
-    group: munge
-
-- name: change owner and group of /run/munge
-  ansible.builtin.file:
-    path: /run/munge
-    owner: munge
-    group: munge
+#- name: change owner and group of /etc/munge/munge.key
+#  ansible.builtin.file:
+#    path: /etc/munge/munge.key
+#    owner: munge
+#    group: munge
+#
+#- name: change owner and group of /run/munge
+#  ansible.builtin.file:
+#    path: /run/munge
+#    owner: munge
+#    group: munge
