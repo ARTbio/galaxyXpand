@@ -1,6 +1,6 @@
 ---
 # overwrite properly the previous uwgi-based galaxykickstart (default: no)
-galaxykickstart_to_gravity: yes
+# galaxykickstart_to_gravity: yes
 
 # Galaxy
 galaxy_additional_venv_packages: drmaa
