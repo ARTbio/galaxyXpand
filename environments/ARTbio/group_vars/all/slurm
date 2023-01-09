@@ -1,0 +1,13 @@
+---
+# ansible-slurm
+slurm_roles: ['controller', 'exec']
+slurm_user: galaxy
+slurm_config:
+  SlurmUser: galaxy
+  SlurmctldLogFile: /home/galaxy/slurmctld.log
+  SlurmdLogFile: /home/galaxy/slurmd.log
+  SlurmdSpoolDir: /tmp/slurmd
+  StateSaveLocation: /tmp/slurm
+  SelectType: select/cons_res
+  SelectTypeParameters: CR_Core_Memory
+

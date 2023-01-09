@@ -1,0 +1,152 @@
+---
+# overwrite properly the previous uwgi-based galaxykickstart (default: no)
+galaxykickstart_to_gravity: yes
+
+# Galaxy
+galaxy_additional_venv_packages: drmaa
+galaxy_create_user: true
+galaxy_separate_privileges: true
+galaxy_privsep_user: "{{ galaxy_user }}"
+galaxy_layout: legacy
+galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
+galaxy_root: /home/galaxy
+galaxy_user: {name: galaxy, shell: /bin/bash}
+galaxy_commit_id: release_22.05
+galaxy_force_checkout: true
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
+miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
+miniconda_version: 4.7.12
+miniconda_manage_dependencies: false
+galaxy_config:
+  galaxy:
+    admin_users: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66646635666564653662306436393231646231613062623864363336653436343037613430383731
+          3338656135356637613864613531303731636137373333640a323730323930303739336134373263
+          34393737373734363461383131626565373439653464616161643461303332336334613838623037
+          3633386633663131310a386330666463336265313734386661353064376238353336613061643163
+          61386438623862346534366235383230633961346533313361656163646163616636643164623338
+          39623835333062623464366237336666376564323934623863656565393962346432616365383134
+          663633653163316536633865663735366636
+    allow_library_path_paste: true
+    allow_user_dataset_purge: true
+    allow_user_deletion: true
+    allow_user_impersonation: true
+    brand: "🧬 CONECT-AML"
+    check_migrate_tools: false
+    container_resolvers_config_file: ''
+    data_dir: /home/galaxy/galaxy/database
+    data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
+    datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
+    datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
+    dependency_resolvers_config_file: /home/galaxy/galaxy/config/dependency_resolvers_conf.xml
+    email_from: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32353333616334313863356663386539653965653938316431613836636663373631646563356638
+          3737376464376539653361386464613666313761613535350a623364613262306233623634303930
+          34386439373763363139383033633233323065363235383138616133333163663935636665383635
+          3639353162643966340a333632323262643961616537393665353334323061383762363365623830
+          37393165393531343530376461623564393164376432333430333164393762343136
+    enable_quotas: true
+    error_email_to: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          61313639613032383335326435633237323162663132303531333066343963373461303733366130
+          3563343731363166653964353465383232613732653932350a643736316163636634646534336437
+          34363262396431653962616135666333303332633733316665363139303436396230616435656665
+          3230336531353130350a663963346161313462336139663630386334323663373463666632363730
+          61303862623266383563326261393066336436653864613964376331343764333138
+    expose_potentially_sensitive_job_metrics: true
+    external_service_type_config_file: /home/galaxy/galaxy/config/external_service_types_conf.xml.sample
+    file_path: datasets
+    ftp_upload_dir: /home/galaxy/galaxy/database/ftp
+    ftp_upload_site: ftp://134.157.183.195
+    id_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36653663383138333461313134343739656536623933336263663261653963333736653335653632
+          6438306135323565643464353236323038306332663466620a646461616262346638373335396335
+          64363338383935396338346637323638316630623964636334393834383334646239353266633765
+          6430383861643836300a333439383837653466613735393662623637323265383035663732356163
+          62333430633636663632373639663865626263633237656339353830343334336534663061623061
+          6636366361643132663339333535343462653261636436663531
+    integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+    job_metrics_config_file: /home/galaxy/galaxy/config/job_metrics_conf.xml
+    job_working_directory: /home/galaxy/galaxy/database/jobs
+    len_file_path: /home/galaxy/galaxy/config/len
+    migrated_tools_config: /home/galaxy/galaxy/config/migrated_tools_conf.xml
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    object_store_store_by: id
+    openid_config_file: /home/galaxy/galaxy/config/openid_conf.xml.sample
+    require_login: true
+    shed_data_manager_config_file: /home/galaxy/galaxy/config/shed_data_manager_conf.xml
+    shed_tool_config_file: /home/galaxy/galaxy/config/shed_tool_conf.xml
+    shed_tool_data_table_config: /home/galaxy/galaxy/config/shed_tool_data_table_conf.xml
+    smtp_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66613031386130396336353334633034653037653336633937386363386233656162396135343663
+          6330363437613665383432626539303330333734633636370a363634353439643030383035636364
+          39393036316235653239633839333032306537356535633334613931343036346461656165616434
+          6330646264373937310a306164643834633230333739643932643961666163313066373162346535
+          35303831363863616134636639306136303934376566383436353833333930383732
+    smtp_server: 'smtp.gmail.com:587'
+    smtp_username: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37616437306334383436313638346266303234646532313263393764393233613361656635616261
+          3336326132616166313134343336303033623966646333370a363135323331353234316431333334
+          33356432346431656636623765363534326237363239643164373830343535346533366331663731
+          6431323561643936330a333939333931633831326133303236353136623138373832383236656462
+          37656139313564376430316133306431313662623463383161376262356263633736
+    static_enabled: false
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
+    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
+    tool_dependency_dir: /home/galaxy/tool_dependencies
+    tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
+    ucsc_build_sites: /home/galaxy/galaxy/tool-data/shared/ucsc/ucsc_build_sites.txt.sample
+    visualization_plugins_directory: config/plugins/visualizations
+    watch_tool_data_dir: true
+
+  gravity:
+    galaxy_root: "{{ galaxy_server_dir }}"
+    app_server: gunicorn
+    gunicorn:
+      # listening options
+      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      # performance options
+      workers: 4
+      # Other options that will be passed to gunicorn
+      extra_args: '--forwarded-allow-ips="*"'
+      preload: true
+    celery:
+      concurrency: 2
+      loglevel: DEBUG
+    handlers:
+      handler:
+        processes: 4
+        pools:
+          - job-handler
+          - workflow-scheduler
+
+# deploy galaxy configuration files
+galaxy_config_files:
+  - src: environments/Conect/files/galaxy/config/job_conf.xml
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: environments/Conect/files/galaxy/config/tool_sheds_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: environments/Conect/files/galaxy/html/welcome.html
+    dest: "{{ galaxy_server_dir }}/static/welcome.html"
+  - src: environments/Conect/files/galaxy/html/images/ARTbio_logo.jpg
+    dest: "{{ galaxy_server_dir }}/static/images/ARTbio_logo.jpg"
+  - src: environments/Conect/files/galaxy/html/images/IBPS_logo.jpg
+    dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
+  - src: environments/Conect/files/galaxy/html/images/conect_logo.png
+    dest: "{{ galaxy_server_dir }}/static/images/conect_logo.png"
+
+# systemd
+galaxy_manage_systemd: true

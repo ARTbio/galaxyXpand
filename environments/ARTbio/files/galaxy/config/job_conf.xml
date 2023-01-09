@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!-- Do not modify this file, it will we overwritten by ansible galaxykickstart -->
+<job_conf>
+    <plugins workers="4">
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
+            <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
+        </plugin>
+    </plugins>
+
+    <destinations default="slurm_cluster">
+        <destination id="slurm_cluster" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=1 --share</param>
+        </destination>
+        <destination id="slurm_cluster_2" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=2 --share</param>
+        </destination>
+        <destination id="slurm_cluster_4" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=4 --share</param>
+        </destination>
+        <destination id="slurm_cluster_8" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=8 --share</param>
+        </destination>
+        <destination id="slurm_cluster_16" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=16 --share</param>
+        </destination>
+        <destination id="java_cluster" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <env id="_JAVA_OPTIONS">-Xmx40g</env>
+            <env id="_JAVA_OPTIONS">-Xms512m</env>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=1 --share</param>
+        </destination>
+        <destination id="slurm_upload" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=1 --share</param>
+        </destination>
+        <destination id="disk_intensive" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=8 --share</param>
+        </destination>
+        <destination id="varscan" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=1 --share</param>
+        </destination>
+        <destination id="smoove" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=8 --share</param>
+        </destination>
+        <destination id="vcfvcfintersect" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=8 --share</param>
+        </destination>
+        <destination id="artbio_bam_cleaning" runner="slurm">
+            <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
+            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+            <param id="nativeSpecification">--ntasks=2 --share</param>
+        </destination>
+
+    </destinations>
+    <limits>
+        <limit type="anonymous_user_concurrent_jobs">1</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_cluster">60</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_cluster_2">50</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_cluster_4">18</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_cluster_8">8</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_cluster_16">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="slurm_upload">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="java_cluster">35</limit>
+        <limit type="destination_user_concurrent_jobs" id="disk_intensive">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="varscan">25</limit>
+        <limit type="destination_user_concurrent_jobs" id="smoove">8</limit>
+        <limit type="destination_user_concurrent_jobs" id="vcfvcfintersect">6</limit>
+        <limit type="destination_user_concurrent_jobs" id="artbio_bam_cleaning">16</limit>
+
+        <limit type="destination_total_concurrent_jobs" id="slurm_cluster">60</limit>
+        <limit type="destination_total_concurrent_jobs" id="slurm_cluster_2">50</limit>
+        <limit type="destination_total_concurrent_jobs" id="slurm_cluster_4">18</limit>
+        <limit type="destination_total_concurrent_jobs" id="slurm_cluster_8">8</limit>
+        <limit type="destination_total_concurrent_jobs" id="slurm_cluster_16">4</limit>
+        <limit type="destination_total_concurrent_jobs" id="slurm_upload">8</limit>
+        <limit type="destination_user_concurrent_jobs" id="java_cluster">35</limit>
+        <limit type="destination_total_concurrent_jobs" id="disk_intensive">4</limit>
+        <limit type="destination_total_concurrent_jobs" id="varscan">25</limit>
+        <limit type="destination_total_concurrent_jobs" id="smoove">12</limit>
+        <limit type="destination_total_concurrent_jobs" id="vcfvcfintersect">6</limit>
+        <limit type="destination_total_concurrent_jobs" id="artbio_bam_cleaning">16</limit>
+    </limits>
+    <tools>
+        <tool id="upload1" destination="slurm_upload"/>
+        <tool id="retrieve_fasta_from_NCBI" destination="slurm_cluster_4"/>
+        <tool id="trimmomatic" destination="slurm_cluster_8"/>
+        <tool id="Group" destination="slurm_cluster"/>
+        <tool id="bcftools_annotate" destination="java_cluster"/>
+        <tool id="bcftools_mpileup" destination="slurm_cluster_16"/>
+        <tool id="bowtieForSmallRNA" destination="slurm_cluster_16"/>
+        <tool id="trinity" destination="slurm_cluster_16"/>
+        <tool id="spades" destination="slurm_cluster_16"/>
+        <tool id="bowtie2" destination="slurm_cluster_16"/>
+        <tool id="bwa_mem" destination="slurm_cluster_16"/>
+        <tool id="bwa" destination="slurm_cluster_16"/>
+        <tool id="hisat2" destination="slurm_cluster_8"/>
+        <tool id="rna_star" destination="slurm_cluster_8"/>
+        <tool id="arriba" destination="slurm_cluster_8"/>
+        <tool id="star_fusion" destination="slurm_cluster_8"/>
+        <tool id="featurecounts" destination="slurm_cluster_8"/>
+        <tool id="ncbi_blastn_wrapper" destination="slurm_cluster_16"/>
+        <tool id="ncbi_blastx_wrapper" destination="slurm_cluster_16"/>
+        <tool id="ncbi_tblastx_wrapper" destination="slurm_cluster_16"/>
+        <tool id="ncbi_tblastn_wrapper" destination="slurm_cluster_16"/>
+        <tool id="khmer_normalize_by_median" destination="slurm_cluster_16"/>
+        <tool id="deeptools_bam_coverage" destination="slurm_cluster_4"/>
+        <tool id="deeptools_plot_coverage" destination="slurm_cluster_16"/>
+        <tool id="lumpy" destination="disk_intensive"/>
+        <tool id="lumpy_smoove" destination="smoove"/>
+        <tool id="varscan_somatic" destination="varscan"/>
+        <tool id="freebayes" destination="slurm_cluster_16"/>
+        <tool id="manta" destination="slurm_cluster_8"/>
+        <tool id="sam_to_bam" destination="slurm_cluster_8"/>
+        <tool id="sambamba_sample_or_filter" destination="slurm_cluster_8"/>
+        <tool id="artbio_bam_cleaning" destination="artbio_bam_cleaning"/>
+        <tool id="picard_MarkDuplicates" destination="java_cluster"/>
+        <tool id="picard_ReplaceSamHeader" destination="java_cluster"/>
+        <tool id="snpsift" destination="java_cluster"/>
+        <tool id="snpSift_annotate" destination="java_cluster"/>
+        <tool id="snpEff" destination="java_cluster"/>
+        <tool id="mutect2" destination="java_cluster"/>
+        <tool id="samtools_slice_bam" destination="slurm_cluster_8"/>
+        <tool id="samtools_fastx" destination="slurm_cluster_4"/>
+        <tool id="samtool_filter2" destination="slurm_cluster_4"/>
+        <tool id="mutational_patterns" destination="slurm_cluster_2"/>
+        <tool id="samtools_calmd" destination="slurm_cluster_4"/>
+        <tool id="vcfvcfintersect" destination="vcfvcfintersect"/>
+    </tools>
+</job_conf>
