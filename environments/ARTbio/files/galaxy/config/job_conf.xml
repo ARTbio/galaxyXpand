@@ -9,63 +9,47 @@
     </plugins>
 
     <destinations default="single">
-            <destination id="single" runner="slurm">
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="type">python</param>
-               <param id="nativeSpecification">--partition=debug --ntasks=1</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="double" runner="slurm">
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="type">python</param>
-               <param id="nativeSpecification">--partition=debug --ntasks=2</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="cluster_4" runner="slurm">
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="type">python</param>
-               <param id="nativeSpecification">--partition=debug --ntasks=4</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="cluster" runner="slurm">
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="type">python</param>
-               <param id="nativeSpecification">--partition=debug --ntasks=8</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="cluster_heavy" runner="slurm">
-               <param id="type">python</param>
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="nativeSpecification">--partition=debug --ntasks=16</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="cluster_superheavy" runner="slurm">
-               <param id="type">python</param>
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="nativeSpecification">--partition=debug --ntasks=64</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="samtools_fastx" runner="slurm">
-               <param id="type">python</param>
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="nativeSpecification">--partition=debug --ntasks=5</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="lumpy_smoove" runner="slurm">
-               <param id="type">python</param>
-               <env file="/home/galaxy/galaxy/.venv/bin/activate" />
-               <param id="nativeSpecification">--partition=debug --ntasks=32</param>
-               <param id="docker_sudo">false</param>
-               <param id="docker_volumes_from">galaxy</param>
-            </destination>
-            <destination id="java_cluster" runner="slurm">
+        <destination id="single" runner="slurm">
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <param id="nativeSpecification">--partition=debug --ntasks=1</param>
+        </destination>
+        <destination id="double" runner="slurm">
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <param id="nativeSpecification">--partition=debug --ntasks=2</param>
+        </destination>
+        <destination id="cluster_4" runner="slurm">
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <param id="nativeSpecification">--partition=debug --ntasks=4</param>
+        </destination>
+        <destination id="cluster" runner="slurm">
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <param id="nativeSpecification">--partition=debug --ntasks=8</param>
+        </destination>
+        <destination id="cluster_heavy" runner="slurm">
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="nativeSpecification">--partition=debug --ntasks=16</param>
+        </destination>
+        <destination id="cluster_superheavy" runner="slurm">
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="nativeSpecification">--partition=debug --ntasks=64</param>
+        </destination>
+        <destination id="samtools_fastx" runner="slurm">
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="nativeSpecification">--partition=debug --ntasks=5</param>
+        </destination>
+        <destination id="lumpy_smoove" runner="slurm">
+           <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
+           <env file="/home/galaxy/galaxy/.venv/bin/activate" />
+           <param id="nativeSpecification">--partition=debug --ntasks=32</param>
+        </destination>
+        <destination id="java_cluster" runner="slurm">
             <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
             <env id="_JAVA_OPTIONS">-Xmx40g</env>
             <env id="_JAVA_OPTIONS">-Xms512m</env>
