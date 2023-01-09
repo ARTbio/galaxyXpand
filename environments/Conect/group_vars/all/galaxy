@@ -44,7 +44,6 @@ galaxy_config:
     data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
-    datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
     dependency_resolvers_config_file: /home/galaxy/galaxy/config/dependency_resolvers_conf.xml
     email_from: !vault |
           $ANSIBLE_VAULT;1.1;AES256
