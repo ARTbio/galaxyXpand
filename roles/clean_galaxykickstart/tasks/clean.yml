@@ -21,6 +21,12 @@
     state: stopped
     enabled: false
 
+- name: Remove and purge supervisor
+  ansible.builtin.apt:
+    name: supervisor
+    state: absent
+    purge: true
+
 - name: Remove and purge munge
   ansible.builtin.apt:
     name: munge
