@@ -8,7 +8,11 @@
         </plugin>
     </plugins>
 
-    <destinations default="single">
+    <destinations default="local">
+        <destination id="local" runner="local"/>
+        <destination id="gce_multicore" runner="local">
+            <param id="local_slots">4</param> <!-- Specify GALAXY_SLOTS for local jobs. -->
+        </destination>
         <destination id="single" runner="slurm">
            <env file="/home/galaxy/galaxy/.venv/bin/activate" />
            <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
