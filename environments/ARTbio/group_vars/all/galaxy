@@ -42,7 +42,8 @@ galaxy_config:
     container_resolvers_config_file: ''
     data_dir: /home/galaxy/galaxy/database
     data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
-    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
+    database_connection: "postgresql://galaxy:galaxy@localhost:5432/galaxy?client_encoding=utf8"
+    
     datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
     dependency_resolvers_config_file: /home/galaxy/galaxy/config/dependency_resolvers_conf.xml
     email_from: !vault |
