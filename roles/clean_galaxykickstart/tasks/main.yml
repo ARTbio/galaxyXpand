@@ -1,4 +1,4 @@
 - name: include cleaning tastk when asked
   import_tasks:
     file: clean.yml
-  when: galaxykickstart_to_gravity is defined
+  when: galaxykickstart_to_gravity

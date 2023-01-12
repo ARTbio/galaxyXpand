@@ -15,3 +15,5 @@ postgresql_backup_local_dir: "{{ '~postgres' | expanduser }}/backups"
 
 # galaxy
 galaxy_config_perms: 0664
+
+galaxykickstart_to_gravity == 'no'
