@@ -25,7 +25,8 @@
           - slurm-drmaa-dev
           - python-psutil
   roles:
-    - clean_galaxykickstart
+    - role: clean_galaxykickstart
+      when: galaxykickstart_to_gravity
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
@@ -38,7 +39,8 @@
     - galaxyproject.nginx
     - role: ansible-slurm
       become: true
-    - installUptime
+    - role: installUptime
+      when: install_uptime
 
   post_tasks:
 
