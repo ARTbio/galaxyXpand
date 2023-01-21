@@ -22,6 +22,8 @@ miniconda_manage_dependencies: false
 galaxy_config:
   galaxy:
     brand: "🧬 Mississippi[2]"
+    builds_file_path: shared/ucsc/builds.txt
+    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39653064333539343430663435376264653839386234306239356664356532633534623364306333
