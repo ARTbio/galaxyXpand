@@ -1,3 +1,5 @@
+[![Docker Repository on Quay](https://quay.io/repository/artbioplatform/galaxyxpand/status "Docker Repository on Quay")](https://quay.io/repository/artbioplatform/galaxyxpand)
+
 # galaxyXpand
 
 Our Next Generation of Ansible Playbook for Galaxy server deployment
