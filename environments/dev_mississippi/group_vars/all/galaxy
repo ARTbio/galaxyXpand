@@ -22,6 +22,7 @@ miniconda_manage_dependencies: false
 galaxy_config:
   galaxy:
     brand: "🧬 Mississippi-Dev"
+    builds_file_path: shared/ucsc/builds.txt
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           65353731346434303462643336643931653261663939323339343136343133326361366533343132
@@ -29,6 +30,7 @@ galaxy_config:
           37653539653339366665313532653864383064653263366536373463346338303633316561373832
           3861383436363836300a343064666235396633313135326164613231346435643065393432353661
           39306637323532666431633361633761323964316236633439613239306232626237
+    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     smtp_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39383132663838643530366563316535323331343737396132613839313438353531333662623361
