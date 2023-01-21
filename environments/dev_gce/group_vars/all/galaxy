@@ -21,17 +21,22 @@ miniconda_version: 4.7.12
 miniconda_manage_dependencies: false
 galaxy_config:
   galaxy:
-    brand: "🧬🔬🚀"
     admin_users: admin@example.org
-    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
-    file_path: datasets
-    object_store_store_by: id
+    brand: "🧬🔬🚀"
+    builds_file_path: shared/ucsc/builds.txt
     check_migrate_tools: false
-    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
+    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
+    file_path: datasets
     job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+    object_store_store_by: id
+    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
   gravity:
-    galaxy_root: "{{ galaxy_server_dir }}"
     app_server: gunicorn
+    celery:
+      concurrency: 2
+      loglevel: DEBUG
+    galaxy_root: "{{ galaxy_server_dir }}"
     gunicorn:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
@@ -40,9 +45,6 @@ galaxy_config:
       # Other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
       preload: true
-    celery:
-      concurrency: 2
-      loglevel: DEBUG
     handlers:
       handler:
         processes: 3
