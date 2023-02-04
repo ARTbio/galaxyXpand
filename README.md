@@ -16,7 +16,7 @@ ansible >= 2.10.1
 ### Example of use
 
 ```
-ansible-playbook install -r requirements.txt -p roles/
+ansible-galaxy install -r requirements.yml -p roles/
 ansible-playbook -i environments/dev_gce/hosts playbook.yml
 ```
 If executed on a GCE VM (4 cpu), this will deploy Galaxy with job being managed either
