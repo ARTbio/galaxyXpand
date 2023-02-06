@@ -6,6 +6,10 @@ upstream galaxy {
     # server unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock:/galaxy;
 }
 
+upstream omeroweb_omero {
+    server 127.0.0.1:4080 fail_timeout=0;
+}
+
 server {
     # Listen on port 443
     listen        *:443 ssl default_server;
@@ -13,8 +17,8 @@ server {
     server_name   "{{ inventory_hostname }}";
 
     # Our log files will go here.
-    access_log  syslog:server=unix:/dev/log;
-    error_log   syslog:server=unix:/dev/log;
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
 
     # The most important location block, by default all requests are sent to gunicorn
     # If you serve galaxy at a path like /galaxy, change that below (and all other locations!)
@@ -71,6 +75,35 @@ server {
 
     location /rstudio/ {
         proxy_pass http://127.0.0.1:8787/;
+    }
+
+    ## OMERO PART (in addition to the upstream directive above)
+    # maintenance page serve from here
+    location @maintenance_omero {
+        root /opt/omero/web/OMERO.web/etc/templates/error;
+        try_files $uri /maintainance.html =502;
+    }
+
+    # weblitz django apps serve media from here
+    location /omero/static {
+        alias /opt/omero/web/OMERO.web/var/static;
+    }
+
+    location @proxy_to_app_omero {
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_buffering off;
+
+        proxy_pass http://omeroweb_omero;
+    }
+
+    location /omero {
+
+        error_page 502 @maintenance_omero;
+        # checks for static file, if not found proxy to app
+        try_files $uri @proxy_to_app_omero;
     }
 
 }
