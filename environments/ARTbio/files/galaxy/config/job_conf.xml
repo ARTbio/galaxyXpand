@@ -148,5 +148,6 @@
         <tool id="vsearch_clustering" destination="cluster_superheavy"/>
         <tool id="xpore_dataprep" destination="cluster_heavy"/>
         <tool id="xpore_diffmod" destination="cluster_heavy"/>
-   </tools>
+        <tool id="sambamba_sample_or_filter" destination="cluster"/>
+    </tools>
 </job_conf>
