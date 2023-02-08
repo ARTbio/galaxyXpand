@@ -44,6 +44,8 @@
       when: install_slurm
     - role: installUptime
       when: install_uptime
+    - role: install.galaxy-tools
+      when: install_tools
 
   post_tasks:
 

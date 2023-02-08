@@ -67,3 +67,6 @@ galaxy_config_files:
 
 # systemd
 galaxy_manage_systemd: true
+
+# role install-tools
+install_tools: yes

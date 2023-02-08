@@ -27,3 +27,6 @@ install_postgresql: yes
 
 # to not install slurm set to 'no'
 install_slurm: yes
+
+# to install tools set to 'yes'
+install_tools: no
