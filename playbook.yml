@@ -45,7 +45,10 @@
     - role: installUptime
       when: install_uptime
     - role: install.galaxy-tools
+      become: yes
+      become_user: "{{ galaxy_user_name }}"
       when: install_tools
+      tags: install_tools
 
   post_tasks:
 
