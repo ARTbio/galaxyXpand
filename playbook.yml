@@ -46,7 +46,7 @@
       when: install_uptime
     - role: install.galaxy-tools
       become: yes
-      become_user: "{{ galaxy_user }}"
+      become_user: root  # "{{ galaxy_user }}"
       when: install_tools
       tags: install_tools
 
