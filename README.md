@@ -26,7 +26,7 @@ Then,
 ```
 ansible-playbook -i environments/dev_gce/hosts install_tools.yml
 ```
-installs 3 sample tools described in `files/`
+installs 3 sample tools described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample)
 
 ----
 ```
