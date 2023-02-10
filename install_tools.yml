@@ -5,5 +5,5 @@
   roles:
     - role: install.galaxy-tools
       become: yes
-      become_user: "{{ galaxy_user }}"
+      become_user: "{{ galaxy_user_name }}"
       tags: install_tools
