@@ -21,7 +21,7 @@ miniconda_version: 4.7.12
 miniconda_manage_dependencies: false
 galaxy_config:
   galaxy:
-    admin_users: admin@example.org
+    admin_users: admin@example.org,tooladmin@galaxy.org
     brand: "🧬🔬🚀"
     builds_file_path: shared/ucsc/builds.txt
     check_migrate_tools: false
