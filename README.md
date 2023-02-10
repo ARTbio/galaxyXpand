@@ -22,7 +22,13 @@ ansible-playbook -i environments/dev_gce/hosts playbook.yml
 If executed on a GCE VM (4 cpu), this will deploy Galaxy with job being managed either
 with celery or slurm (as defined in job_conf.xml)
 
+Then,
+```
+ansible-playbook -i environments/dev_gce/hosts install_tools.yml
+```
+installs 3 sample tools described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample)
 
+----
 ```
 ansible-playbook -i environments/Mississippi/hosts showvars.yml
 ```
