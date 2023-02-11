@@ -10,6 +10,7 @@
         repo: ppa:natefoo/slurm-drmaa
         state: present
         update_cache: yes
+      when: install_slurm
 
     - name: Install Dependencies
       package:
