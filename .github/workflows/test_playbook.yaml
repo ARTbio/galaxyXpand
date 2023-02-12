@@ -64,6 +64,7 @@ jobs:
       run: |
         ansible-galaxy install -r requirements.yml -p roles
 
+
     - name: ansible installs galaxy
       run: |
         sudo apt-get -qq update -y
