@@ -1,0 +1,101 @@
+name: Test Playbook
+on:
+  push:
+    branches-ignore:
+      - readthedocs
+      - master
+# env:
+#   GALAXY_USER: admin@galaxy.org
+#   GALAXY_USER_PASSWD: artbio2020
+#   BIOBLEND_GALAXY_API_KEY: "artbio2020"
+#   BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
+
+
+jobs:
+
+  Ubuntu_20-04:
+    name: GalaxyXpand in ubuntu 20.04
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Remove PostgreSQL on VM
+      run: |
+        export RUNNER_ALLOW_RUNASROOT="1"
+        sudo apt-get --purge remove postgresql
+        dpkg -l | grep postgres
+        sudo apt-get --purge remove pgdg-keyring postgresql*
+        sudo rm -rf /var/lib/postgresql/  # directory data postgresql
+        sudo rm -rf /var/log/postgresql/  # directory log postgresql
+        sudo rm -rf /etc/postgresql/  # directory base postgresql
+        sudo deluser postgres
+        sudo apt-get -qq update -y
+
+#     - name: Set up Python 3.7 in ubuntu 20.04
+#       uses: actions/setup-python@v4.3.1
+#       with:
+#         python-version: '3.7'
+    
+    - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu 20.04
+      run: |
+        sudo apt -qq remove ansible
+        sudo apt install python3-pip -y
+        python3 -m pip install -U pip setuptools
+
+
+    - name: Install ansible 2.10.1 and bioblend in ubuntu 20.04
+      run: |
+        python3 -m pip install ansible==2.10.1
+        python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.0.0.zip pytest
+    
+    - name: Display pip python and ansible settings
+      run: |
+        which python
+        python --version
+        which python3
+        python3 --version
+        ansible --version
+        pip show pytest
+        pip show bioblend
+        pip3 --version || true
+
+    - uses: actions/checkout@v3.2.0
+
+    - name: install ansible roles
+      run: |
+        ansible-galaxy install -r requirements.yml -p roles
+
+    - name: ansible installs galaxy
+      run: |
+        sudo apt-get -qq update -y
+#         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7FCC7D46ACCC4CF8
+        sudo apt-get -qq --purge remove nginx*
+        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
+
+# save 60 seconds
+#    - name: Sleep for 60 seconds
+#      run: |
+#        echo "waiting 60 sec" && sleep 60
+#        sudo supervisorctl status || true
+
+    - name: check Galaxy API is alive
+      uses: mydea/action-wait-for-api@main
+      with:
+        url: "http://localhost/api/version"
+        timeout: 120
+
+# this will be done differently in the future
+#    - name: ansible installs galaxy tools
+#      run: |
+#        ansible-playbook -i inventory_files/galaxy-kickstart --extra-vars RUNNER_ALLOW_RUNASROOT="1" galaxy_tool_install.yml
+
+# without galaxy_tool_install.yml, we are lacking a registered user !
+#    - name: run basic tests
+#      run: |
+#        curl http://localhost:80/api/version| grep version_major
+#        echo "\ntest ftp transfer to proftpd server\n"
+#        date > date.txt && curl --fail -T date.txt ftp://127.0.0.1:21 --user $GALAXY_USER:$GALAXY_USER_PASSWD
+
+#    - name: Bioblend tests
+#      run: |
+#        cd /opt/hostedtoolcache/Python/3.7.*/x64/lib/python3.7/site-packages/bioblend/_tests/
+#        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
