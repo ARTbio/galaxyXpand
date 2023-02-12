@@ -70,15 +70,13 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
 
-    - name: Sleep for 60 seconds
+    - name: Sleep for 15 seconds
       run: |
-        echo "waiting 60 sec" && sleep 60
+        echo "waiting 15 sec" && sleep 15
 
     - name: check Galaxy API is alive
-      uses: mydea/action-wait-for-api@main
-      with:
-        url: "http://localhost/api/version"
-        timeout: 120
+      run: |
+        curl http://localhost/api/version
 
 # this will be done differently in the future
 #    - name: ansible installs galaxy tools
