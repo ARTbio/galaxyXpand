@@ -63,7 +63,7 @@ jobs:
     - name: install ansible roles
       run: |
         ansible-galaxy install -r requirements.yml -p roles
-
+        echo "Hello world"
 
     - name: ansible installs galaxy
       run: |
