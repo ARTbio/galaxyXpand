@@ -5,11 +5,11 @@ on:
     branches-ignore:
       - readthedocs
       - master
-# env:
-#   GALAXY_USER: admin@galaxy.org
-#   GALAXY_USER_PASSWD: artbio2020
-#   BIOBLEND_GALAXY_API_KEY: "artbio2020"
-#   BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
+env:
+  GALAXY_USER: tooladmin@galaxy.org
+  GALAXY_USER_PASSWD: artbio2025
+  BIOBLEND_GALAXY_API_KEY: "myverysecretapikey"
+  BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
 
 
 jobs:
@@ -78,19 +78,11 @@ jobs:
       run: |
         curl http://localhost/api/version
 
-# this will be done differently in the future
-#    - name: ansible installs galaxy tools
-#      run: |
-#        ansible-playbook -i inventory_files/galaxy-kickstart --extra-vars RUNNER_ALLOW_RUNASROOT="1" galaxy_tool_install.yml
+    - name: ansible installs galaxy tools
+      run: |
+        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" install_tools.yml
 
-# without galaxy_tool_install.yml, we are lacking a registered user !
-#    - name: run basic tests
-#      run: |
-#        curl http://localhost:80/api/version| grep version_major
-#        echo "\ntest ftp transfer to proftpd server\n"
-#        date > date.txt && curl --fail -T date.txt ftp://127.0.0.1:21 --user $GALAXY_USER:$GALAXY_USER_PASSWD
-
-#    - name: Bioblend tests
-#      run: |
-#        cd /opt/hostedtoolcache/Python/3.7.*/x64/lib/python3.7/site-packages/bioblend/_tests/
-#        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
+    - name: Bioblend tests
+      run: |
+        cd /opt/hostedtoolcache/Python/3.8.*/x64/lib/python3.8/site-packages/bioblend/_tests/
+        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
