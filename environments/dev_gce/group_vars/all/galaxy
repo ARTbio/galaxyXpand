@@ -47,7 +47,7 @@ galaxy_config:
       preload: true
     handlers:
       handler:
-        processes: 3
+        processes: "{{ ansible_processor_nproc }}"
         pools:
           - job-handler
           - workflow-scheduler

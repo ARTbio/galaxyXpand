@@ -1,3 +1,4 @@
+[![Test Playbook](https://github.com/ARTbio/galaxyXpand/actions/workflows/test_playbook.yaml/badge.svg)](https://github.com/ARTbio/galaxyXpand/actions/workflows/test_playbook.yaml)
 [![Docker Repository on Quay](https://quay.io/repository/artbioplatform/galaxyxpand/status "Docker Repository on Quay")](https://quay.io/repository/artbioplatform/galaxyxpand)
 
 # galaxyXpand
