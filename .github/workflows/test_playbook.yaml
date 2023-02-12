@@ -70,9 +70,9 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
 
-    - name: Sleep for 30 seconds
+    - name: Sleep for 60 seconds
       run: |
-        echo "waiting 30 sec" && sleep 30
+        echo "waiting 60 sec" && sleep 60
 
     - name: check Galaxy API is alive
       run: |
