@@ -10,7 +10,7 @@ roles/galaxyproject.postgresql/
 roles/galaxyproject.postgresql_objects/
 roles/geerlingguy.pip/
 roles/uchida.miniconda/
-
+roles/install.galaxy-tools/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
