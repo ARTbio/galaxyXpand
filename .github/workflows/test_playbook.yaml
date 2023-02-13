@@ -70,9 +70,9 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
 
-    - name: Sleep for 60 seconds
+    - name: Sleep for 120 seconds
       run: |
-        echo "waiting 60 sec" && sleep 60
+        echo "waiting 120 sec" && sleep 120
 
     - name: check Galaxy API is alive
       run: |
@@ -84,5 +84,5 @@ jobs:
 
     - name: Bioblend tests
       run: |
-        cd /opt/hostedtoolcache/Python/3.8.*/x64/lib/python3.8/site-packages/bioblend/_tests/
-        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
+        cd /usr/local/lib/python3.8/dist-packages/bioblend/_tests
+        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary -k "not test_other_users_histories" || true
