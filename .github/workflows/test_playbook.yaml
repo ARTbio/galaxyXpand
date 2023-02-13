@@ -58,6 +58,8 @@ jobs:
         pip show pytest
         pip show bioblend
         pip3 --version || true
+        which pytest
+        which bioblend-galaxy-tests
 
     - uses: actions/checkout@v3.2.0
 
@@ -70,9 +72,14 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
 
-    - name: Sleep for 120 seconds
+    - name: Manually restart galaxy
       run: |
-        echo "waiting 120 sec" && sleep 120
+        /home/galaxy/galaxy/.venv/bin/galaxyctl graceful
+        sudo systemctl status galaxy*
+
+    - name: Sleep for 60 seconds
+      run: |
+        echo "waiting 60 sec" && sleep 60
 
     - name: check Galaxy API is alive
       run: |
