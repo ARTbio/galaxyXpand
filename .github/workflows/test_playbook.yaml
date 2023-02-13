@@ -72,10 +72,10 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" playbook.yml
 
-    - name: Manually restart galaxy
+    - name: Check galaxy server status
       run: |
-        /home/galaxy/galaxy/.venv/bin/galaxyctl graceful
         sudo systemctl status galaxy*
+#        /home/galaxy/galaxy/.venv/bin/galaxyctl graceful
 
     - name: Sleep for 60 seconds
       run: |
