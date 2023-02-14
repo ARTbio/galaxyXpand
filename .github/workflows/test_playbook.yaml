@@ -60,6 +60,7 @@ jobs:
         pip3 --version || true
         which pytest
         which bioblend-galaxy-tests
+        whoami
 
     - uses: actions/checkout@v3.2.0
 
