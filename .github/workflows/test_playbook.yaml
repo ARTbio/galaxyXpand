@@ -90,6 +90,6 @@ jobs:
       
     - name: Bioblend tests
       run: |
-        ls -la /home/runner/.local
+        ls -la /home/runner/.local/lib
         cd /home/runner/.local/lib/python3.8/dist-packages/bioblend/_tests
         bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary -k "not test_other_users_histories" || true
