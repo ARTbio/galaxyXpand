@@ -73,9 +73,9 @@ jobs:
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" playbook.yml
 
-    - name: Start galaxy server systemd service
-      run: |
-        sudo systemctl start galaxy.service
+#     - name: Start galaxy server systemd service
+#       run: |
+#         sudo systemctl start galaxy.service
 
     - name: Sleep for 60 seconds
       run: |
