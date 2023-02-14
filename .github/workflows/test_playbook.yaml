@@ -86,8 +86,7 @@ jobs:
         curl http://localhost/api/version
 
     - name: ansible installs galaxy tools
-      run: |
-        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
+      run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
 
     - name: Bioblend tests
       run: |
