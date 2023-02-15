@@ -83,6 +83,7 @@ jobs:
     - name: Sleep for 60 seconds
       run: |
         echo "waiting 60 sec" && sleep 60
+        sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
     - name: check Galaxy API is alive
       run: |
@@ -94,5 +95,5 @@ jobs:
     - name: Bioblend tests
       run: |
         pip show bioblend
-        cd /home/runner/.local/lib/python3.8/dist-packages/bioblend/_tests
+        cd /home/runner/.local/lib/python3.8/site-packages/bioblend/_tests
         bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary -k "not test_other_users_histories" || true
