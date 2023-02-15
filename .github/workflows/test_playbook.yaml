@@ -71,7 +71,10 @@ jobs:
       run: |
         sudo apt-get -qq update -y
         sudo apt-get -qq --purge remove nginx*
-        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" playbook.yml
+        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
+                         -e ansible_user="runner" \
+                         -e allow_world_readable_tmpfiles="true" \
+                         playbook.yml
 
 #     - name: Start galaxy server systemd service
 #       run: |
