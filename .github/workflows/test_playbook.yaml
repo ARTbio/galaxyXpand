@@ -82,7 +82,6 @@ jobs:
         sudo systemctl restart nginx
         echo "waiting 60 sec" && sleep 60
         sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
-        ls -la /home/galaxy/galaxy/config/gunicorn.sock
 
     - name: check Galaxy API is alive
       run: |
