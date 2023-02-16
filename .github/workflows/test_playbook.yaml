@@ -79,6 +79,7 @@ jobs:
 
     - name: Sleep for 60 seconds
       run: |
+        sudo systemctl restart nginx
         echo "waiting 60 sec" && sleep 60
         sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
