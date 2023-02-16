@@ -17,7 +17,8 @@ RUN apt update && \
     postgresql-12 postgresql-client-12 postgresql-contrib-12 \
     locales dirmngr && apt clean
 
-RUN python3 -m pip install -U pip && python3 -m pip install ansible==2.10.1
+RUN python3 -m pip install -U pip && python3 -m pip install ansible==2.10.7 && \
+    python3 -m pip install -U cryptography pyyaml
 
 # Run the rest of the commands as the ``postgres`` user created by the ``postgres-12``
 # package when it was ``apt-get installed``
