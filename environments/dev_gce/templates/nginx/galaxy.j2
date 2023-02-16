@@ -1,5 +1,5 @@
 upstream galaxy {
-    server unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock;
+    server 127.0.0.1:4000 fail_timeout=0;
 
     # Or if you serve galaxy at a path like http(s)://fqdn/galaxy
     # Remember to set galaxy_url_prefix in the galaxy.yml file.
