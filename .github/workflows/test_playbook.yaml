@@ -10,6 +10,7 @@ env:
   GALAXY_USER_PASSWD: artbio2025
   BIOBLEND_GALAXY_API_KEY: "myverysecretapikey"
   BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
+  BIOBLEND_TEST_JOB_TIMEOUT: "240"
 
 
 jobs:
@@ -76,10 +77,6 @@ jobs:
                          -e allow_world_readable_tmpfiles="true" \
                          playbook.yml
 
-    - name: Start galaxy server systemd service
-      run: |
-        sudo systemctl start galaxy.service
-
     - name: Sleep for 60 seconds
       run: |
         echo "waiting 60 sec" && sleep 60
@@ -87,7 +84,7 @@ jobs:
 
     - name: check Galaxy API is alive
       run: |
-        curl http://localhost/api/version
+        curl http://127.0.0.1/api/version
 
     - name: ansible installs galaxy tools
       run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
