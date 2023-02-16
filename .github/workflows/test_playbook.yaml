@@ -32,11 +32,6 @@ jobs:
         sudo deluser postgres
         sudo apt-get -qq update -y
 
-#     - name: Set up Python 3.7 in ubuntu 20.04
-#       uses: actions/setup-python@v4.3.1
-#       with:
-#         python-version: '3.7'
-    
     - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu 20.04
       run: |
         sudo apt -qq remove ansible
@@ -77,10 +72,9 @@ jobs:
                          -e allow_world_readable_tmpfiles="true" \
                          playbook.yml
 
-    - name: Sleep for 60 seconds
+    - name: Sleep for 15 seconds and check galaxyctl status
       run: |
-        sudo systemctl restart nginx
-        echo "waiting 60 sec" && sleep 60
+        echo "waiting 15 sec" && sleep 15
         sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
     - name: check Galaxy API is alive
@@ -92,6 +86,6 @@ jobs:
       
     - name: Bioblend tests
       run: |
-        pip show bioblend
         cd /home/runner/.local/lib/python3.8/site-packages/bioblend/_tests
-        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary -k "not test_other_users_histories" || true
+        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
+# -k "not test_other_users_histories"
