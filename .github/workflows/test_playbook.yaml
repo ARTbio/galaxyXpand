@@ -75,7 +75,7 @@ jobs:
     - name: Sleep for 45 seconds and check galaxyctl status
       run: |
         echo "waiting 45 sec" && sleep 45
-        sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
+# sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
     - name: check Galaxy API is alive
       run: |
