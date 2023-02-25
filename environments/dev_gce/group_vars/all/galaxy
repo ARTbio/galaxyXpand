@@ -13,7 +13,7 @@ galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_root: /home/galaxy
 galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_commit_id: release_23.0
 galaxy_force_checkout: true
 # galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/database/tool_dependencies"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
