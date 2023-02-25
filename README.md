@@ -3,7 +3,7 @@
 
 # galaxyXpand
 
-Our Next Generation of Ansible Playbook for Galaxy server deployment
+Our Next Generation of Ansible Playbook for Galaxy server deployment, **version >= 'release_22.05'**
 
 Documentation is coming soon.
 
