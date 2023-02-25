@@ -70,7 +70,7 @@ jobs:
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
-                         -e galaxy_build_client="no"
+                         -e galaxy_build_client="no" \
                          playbook.yml
 
     - name: Sleep for 45 seconds and check galaxyctl status
