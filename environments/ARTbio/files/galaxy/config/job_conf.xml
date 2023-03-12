@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- Do not modify this file, it will we overwritten by ansible galaxykickstart -->
 <job_conf>
-    <plugins workers="4">
+    <plugins workers="8">
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
         <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
             <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
