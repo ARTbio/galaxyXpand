@@ -5,6 +5,12 @@
         </plugin>
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
     </plugins>
+
+    <handlers assign_with="db-skip-locked" default="handlers">
+        <handler id="handler_0" tags="handlers"/>
+        <handler id="handler_1" tags="handlers"/>
+    </handlers>
+
     <destinations default="local">
         <destination id="local" runner="local"/>
         <destination id="gce_multicore" runner="local">
