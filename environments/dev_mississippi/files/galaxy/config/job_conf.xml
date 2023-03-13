@@ -6,6 +6,14 @@
             <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
         </plugin>
     </plugins>
+
+    <handlers assign_with="db-skip-locked" default="handlers">
+        <handler id="handler_0" tags="handlers"/>
+        <handler id="handler_1" tags="handlers"/>
+        <handler id="handler_2" tags="handlers"/>
+        <handler id="handler_3" tags="handlers"/>
+    </handlers>
+
     <destinations default="local">
         <destination id="local" runner="local"/>
         <destination id="gce_multicore" runner="local">
