@@ -102,7 +102,7 @@ galaxy_config:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
-      workers: 4
+      workers: 8
       # Other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
       preload: true
