@@ -37,7 +37,6 @@ galaxy_config:
     allow_user_impersonation: true
     brand: "🧬 CONECT-AML"
     builds_file_path: shared/ucsc/builds.txt
-    check_migrate_tools: false
     container_resolvers_config_file: ''
     data_dir: /home/galaxy/galaxy/database
     data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
@@ -103,7 +102,7 @@ galaxy_config:
           6431323561643936330a333939333931633831326133303236353136623138373832383236656462
           37656139313564376430316133306431313662623463383161376262356263633736
     static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
     tool_dependency_dir: /home/galaxy/tool_dependencies
@@ -139,6 +138,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Conect/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: environments/Conect/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/Conect/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Conect/files/galaxy/html/images/ARTbio_logo.jpg

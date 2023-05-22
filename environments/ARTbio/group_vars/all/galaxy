@@ -38,7 +38,6 @@ galaxy_config:
     allow_user_impersonation: true
     brand: "🧬 ARTbio Users"
     builds_file_path: shared/ucsc/builds.txt
-    check_migrate_tools: false
     container_resolvers_config_file: ''
     data_dir: /home/galaxy/galaxy/database
     data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
@@ -104,7 +103,7 @@ galaxy_config:
           6161346134376632340a616330313936353566613332633833326337623132386639626631633830
           30323130323632646264326466373337396230393131353832646536326135653633
     static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
     tool_dependency_dir: /home/galaxy/tool_dependencies
@@ -138,6 +137,8 @@ galaxy_config:
 galaxy_config_files:
   - src: environments/ARTbio/files/galaxy/config/job_conf.xml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: environments/ARTbio/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/ARTbio/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
   - src: environments/ARTbio/files/galaxy/html/welcome.html
