@@ -137,6 +137,8 @@ galaxy_config:
 galaxy_config_files:
   - src: environments/ARTbio/files/galaxy/config/job_conf.xml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: environments/ARTbio/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/ARTbio/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
   - src: environments/ARTbio/files/galaxy/html/welcome.html
