@@ -89,7 +89,7 @@ galaxy_config:
     integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
     len_file_path: /home/galaxy/galaxy/config/len
     static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
     tool_dependency_dir: /home/galaxy/tool_dependencies
     tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
@@ -121,6 +121,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Mississippi/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: environments/Mississippi/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/Mississippi/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Mississippi/files/galaxy/html/images/ARTbio_mississippi_screen.jpg
