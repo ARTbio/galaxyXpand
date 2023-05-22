@@ -103,7 +103,7 @@ galaxy_config:
           6161346134376632340a616330313936353566613332633833326337623132386639626631633830
           30323130323632646264326466373337396230393131353832646536326135653633
     static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
     tool_dependency_dir: /home/galaxy/tool_dependencies
