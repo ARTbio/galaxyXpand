@@ -89,7 +89,6 @@
     <tool file="filters/gff/gtf_filter_by_attribute_values_list.xml" />
   </section>
   <section id="group" name="Join, Subtract and Group">
-    <tool file="filters/joiner.xml" />
     <tool file="filters/compare.xml" />
     <tool file="stats/grouping.xml" />
   </section>
