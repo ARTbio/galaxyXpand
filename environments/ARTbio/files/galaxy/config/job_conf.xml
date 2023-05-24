@@ -1,5 +1,3 @@
-<?xml version="1.0"?>
-<!-- Do not modify this file, it will we overwritten by ansible galaxykickstart -->
 <job_conf>
     <plugins workers="8">
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
@@ -70,11 +68,11 @@
     </destinations>
     <limits>
         <limit type="destination_total_concurrent_jobs" id="lumpy_smoove">32</limit>
-        <limit type="destination_total_concurrent_jobs" id="cluster">4</limit>
+        <limit type="destination_total_concurrent_jobs" id="cluster">8</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_4">20</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_heavy">4</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_superheavy">1</limit>
-        <limit type="destination_total_concurrent_jobs" id="single">30</limit>
+        <limit type="destination_total_concurrent_jobs" id="single">60</limit>
         <limit type="destination_total_concurrent_jobs" id="double">30</limit>
         <limit type="destination_total_concurrent_jobs" id="samtools_fastx">30</limit>
         <limit type="destination_user_concurrent_jobs" id="java_cluster">4</limit>
@@ -83,11 +81,11 @@
         <limit type="anonymous_user_concurrent_jobs">1</limit>
 
         <limit type="destination_user_concurrent_jobs" id="lumpy_smoove">32</limit>
-        <limit type="destination_user_concurrent_jobs" id="cluster">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="cluster">8</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_4">20</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_heavy">6</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_superheavy">1</limit>
-        <limit type="destination_user_concurrent_jobs" id="single">30</limit>
+        <limit type="destination_user_concurrent_jobs" id="single">60</limit>
         <limit type="destination_user_concurrent_jobs" id="double">30</limit>
         <limit type="destination_user_concurrent_jobs" id="samtools_fastx">30</limit>
         <limit type="destination_user_concurrent_jobs" id="java_cluster">4</limit>
