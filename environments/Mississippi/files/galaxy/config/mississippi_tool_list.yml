@@ -1629,3 +1629,8 @@ tools:
   tool_panel_section_id: None
   tool_panel_section_label: None
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: yac_clipper
+  owner: artbio
+  tool_panel_section_id: mississippi_tool_suite
+  tool_panel_section_label: Mississippi Tool Suite
+  tool_shed_url: toolshed.g2.bx.psu.edu
