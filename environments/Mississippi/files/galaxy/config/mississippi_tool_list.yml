@@ -1629,3 +1629,8 @@ tools:
   tool_panel_section_id: None
   tool_panel_section_label: None
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: fastqtofasta
+  owner: devteam
+  tool_panel_section_id: ngs:_qc_and_manipulation
+  tool_panel_section_label: NGS: QC and manipulation
+  tool_shed_url: toolshed.g2.bx.psu.edu
