@@ -63,6 +63,12 @@ jobs:
     - name: Install ansible roles
       run: ansible-galaxy install -r requirements.yml -p roles/
 
+    - name: Install ansible community roles
+      run: |
+        ansible-galaxy collection install community.general
+        ansible-galaxy collection install community.postgresql
+        ansible-galaxy collection install community.seboolean
+
     - name: ansible installs galaxy
       run: |
         sudo apt-get -qq update -y
