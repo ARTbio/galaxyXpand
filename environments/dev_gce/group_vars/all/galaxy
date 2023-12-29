@@ -17,8 +17,9 @@ galaxy_commit_id: release_23.0
 galaxy_force_checkout: true
 # galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/database/tool_dependencies"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 4.7.12
-miniconda_manage_dependencies: false
+miniconda_version: 23.9
+miniconda_channels: ['conda-forge', 'defaults']
+# miniconda_manage_dependencies: false
 galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
