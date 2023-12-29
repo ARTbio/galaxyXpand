@@ -1,10 +1,24 @@
 ---
+---
+- hosts: dbservers
+  become: true
+  become_user: root
+  pre_tasks:
+    - name: Install Dependencies
+      package:
+        name: 'acl'
+  roles:
+    - galaxyproject.postgresql
+    - role: galaxyproject.postgresql_objects
+      become: true
+      become_user: postgres
+
+
 - hosts: all
   become: true
   become_user: root
 
   pre_tasks:
-
     - name: Add custom slurm PPA (used for Slurm DRMAA package)
       apt_repository:
         repo: ppa:natefoo/slurm-drmaa
@@ -19,20 +33,15 @@
           - 'bzip2'
           - 'git'
           - 'make'
-          - 'python3-psycopg2'
           -  'tar'
-          - 'virtualenv'
+          - 'python3-venv'
+          - 'python3-setuptools'
           - slurm-wlm
           - slurm-drmaa-dev
           - python-psutil
 
   roles:
-    - role: galaxyproject.postgresql
-      when: install_postgresql
-    - role: galaxyproject.postgresql_objects
-      become: true
-      become_user: postgres
-    - geerlingguy.pip
+#    - geerlingguy.pip
     - galaxyproject.galaxy
     - role: galaxyproject.miniconda
       become: true
