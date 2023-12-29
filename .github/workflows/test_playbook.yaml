@@ -67,7 +67,6 @@ jobs:
       run: |
         ansible-galaxy collection install community.general
         ansible-galaxy collection install community.postgresql
-        ansible-galaxy collection install community.seboolean
 
     - name: ansible installs galaxy
       run: |
