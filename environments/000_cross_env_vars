@@ -1,9 +1,13 @@
 ---
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m virtualenv
-pip_package: python3-pip
 
-# galaxy
+# Common variables needed by all hosts
+galaxy_user_name: galaxy
+galaxy_db_name: galaxy
+
+
+# galaxy (check requirement)
 galaxy_config_perms: 0664
 
 # when transitionning from galaxykickstart to galaxyXpand set to 'yes'
