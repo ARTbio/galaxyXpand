@@ -1,6 +1,5 @@
-- src: https://github.com/ARTbio/ansible-galaxy.git
-  name: galaxyproject.galaxy
-  version: galaxyXpand
+- src: galaxyproject.galaxy
+  version: 0.10.14
 - src: galaxyproject.nginx
   version: 0.7.0
 - src: galaxyproject.postgresql
