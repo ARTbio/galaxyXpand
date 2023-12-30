@@ -12,7 +12,8 @@ runners:
       drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
 
 handling:
-  assign: ['db-skip-locked']
+  assign:
+    - db-skip-locked
 
 execution:
   default: local
