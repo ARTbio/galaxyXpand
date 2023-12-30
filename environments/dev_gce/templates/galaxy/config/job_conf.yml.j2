@@ -44,12 +44,12 @@ limits:
 
 tools:
 
-  upload1:
-    destination: local
-  __DATA_FETCH__:
-    destination: local
-  __SET_METADATA__:
-    destination: local
+  - id: "upload1"
+    destination: "local"
+  - id: "__DATA_FETCH__"
+    destination: "local"
+  - id "__SET_METADATA__"
+    destination: "local"
 
   - id: "sam_to_bam"
     destination: "gce_multicore"
