@@ -39,7 +39,7 @@ galaxy_config:
     virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
       # listening options - work on this (sock)
-      bind: "localhost:4000"
+      bind: "unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
       # Other options that will be passed to gunicorn
