@@ -34,7 +34,6 @@
           -  'tar'
           - 'python3-venv'
           - 'python3-setuptools'
-          - 'virtualenv'
           - slurm-wlm
           - slurm-drmaa-dev
           - python-psutil
