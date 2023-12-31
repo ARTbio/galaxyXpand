@@ -40,7 +40,6 @@
           - python-psutil
 
   roles:
-#    - geerlingguy.pip
     - galaxyproject.galaxy
     - role: galaxyproject.miniconda
       become: true
@@ -52,10 +51,10 @@
     - role: installUptime
       when: install_uptime
 
-  post_tasks:
-
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
-      when: not nginx_supervisor
+#  post_tasks:
+#
+#    - name: restart nginx
+#      service:
+#        name: nginx
+#        state: restarted
+#      when: not nginx_supervisor
