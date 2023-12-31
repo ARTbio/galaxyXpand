@@ -18,6 +18,12 @@ galaxy_force_checkout: true
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 23.9
 miniconda_channels: ['conda-forge', 'defaults']
+
+
+# Galaxy Job Configuration
+# is deported to templates/galaxy/config/job_conf.yml.j2
+
+
 galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
