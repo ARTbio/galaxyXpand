@@ -7,7 +7,6 @@ runners:
     workers: 4
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    workers: 4
     params:
       drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
 
@@ -15,8 +14,11 @@ handling:
   assign:
     - db-skip-locked
 
+processes:
+
+
 execution:
-  default: local
+  default: cluster
   environments:
     local:
       runner: local
@@ -31,8 +33,7 @@ execution:
       runner: slurm
       env:
         - file: /home/galaxy/galaxy/.venv/bin/activate
-      params:
-        nativeSpecification: "--partition=debug --ntasks=4"
+      nativeSpecification: "--partition=debug --ntasks=4"
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -40,17 +41,17 @@ limits:
   - type: registered_user_concurrent_jobs
     value: '3'
   - type: destination_user_concurrent_jobs
-    id: bowtie
+    id: cluster
     value: '1'
 
 tools:
 
   - id: "upload1"
-    destination: "local"
+    destination: "cluster"
   - id: "__DATA_FETCH__"
-    destination: "local"
+    destination: "cluster"
   - id: "__SET_METADATA__"
-    destination: "local"
+    destination: "cluster"
 
   - id: "sam_to_bam"
     destination: "gce_multicore"
@@ -59,13 +60,13 @@ tools:
     destination: "gce_multicore"
 
   - id: "bowtie"
-    destination: "bowtie"
+    destination: "cluster"
 
   - id: "bowtie_wrapper"
-    destination: "bowtie"
+    destination: "cluster"
 
   - id: "bowtie2"
-    destination: "bowtie"
+    destination: "cluster"
 
   - id: "bowtieForSmallRNA"
     destination: "bowtie"
@@ -109,8 +110,5 @@ tools:
   - id: "sr_bowtie_dataset_annotation"
     destination: "bowtie"
 
-  - id: "bowtie_index_builder_data_manager"
-    destination: "gce_multicore"
-
   - id: "retrieve_fasta_from_NCBI"
-    destination: "cluster_4"
+    destination: "cluster"
