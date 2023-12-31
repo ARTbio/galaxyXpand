@@ -18,7 +18,7 @@ processes:
 
 
 execution:
-  default: cluster
+  default: local
   environments:
     local:
       runner: local
@@ -46,21 +46,14 @@ limits:
 
 tools:
 
-  - id: "upload1"
-    destination: "cluster"
-  - id: "__DATA_FETCH__"
-    destination: "cluster"
-  - id: "__SET_METADATA__"
-    destination: "cluster"
-
   - id: "sam_to_bam"
-    destination: "gce_multicore"
+    destination: "local"
 
   - id: "sambamba_sample_or_filter"
-    destination: "gce_multicore"
+    destination: "local"
 
   - id: "bowtie"
-    destination: "cluster"
+    destination: "local"
 
   - id: "bowtie_wrapper"
     destination: "cluster"
@@ -108,7 +101,7 @@ tools:
     destination: "gce_multicore"
 
   - id: "sr_bowtie_dataset_annotation"
-    destination: "bowtie"
+    destination: "local"
 
   - id: "retrieve_fasta_from_NCBI"
-    destination: "cluster"
+    destination: "local"
