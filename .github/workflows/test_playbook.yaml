@@ -78,10 +78,8 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Sleep for 2 mins for gunicorn.sock and check galaxyctl status
+    - name: Sleep for 45 secs and check galaxyctl status
       run: |
-        echo "waiting 45 sec" && sleep 45
-        sudo galaxyctl restart galaxy
         echo "waiting 45 sec" && sleep 45
         sudo galaxyctl status
 # sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
