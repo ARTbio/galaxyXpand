@@ -80,6 +80,7 @@ jobs:
 
     - name: Sleep for 45 secs and check galaxyctl status
       run: |
+        sudo galaxyctl graceful
         echo "waiting 45 sec" && sleep 45
         sudo galaxyctl status
 # sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
