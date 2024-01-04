@@ -11,34 +11,56 @@ galaxy_separate_privileges: true
 # galaxy_manage_paths: true
 galaxy_privsep_user: "{{ galaxy_user }}"
 galaxy_layout: legacy
+galaxy_root: /home/galaxy
 galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
 galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_root: /home/galaxy
-galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_commit_id: release_23.0
 galaxy_force_checkout: true
-# galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/database/tool_dependencies"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 4.7.12
-miniconda_manage_dependencies: false
+miniconda_version: 23.9
+miniconda_channels: ['conda-forge', 'defaults']
+
 galaxy_config:
   galaxy:
+    admin_users: admin@example.org,tooladmin@galaxy.org
     brand: "🧬🔬🚀"
     builds_file_path: shared/ucsc/builds.txt
-    admin_users: admin@example.org
+    check_migrate_tools: false
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     file_path: datasets
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
     object_store_store_by: id
-    check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+    # SQL Performance
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # File serving perfomance
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    # Automation / Ease of Use / User-facing features
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    enable_quotas: true
+    allow_user_deletion: true
+    show_welcome_with_login: true
+    expose_user_name: true
+    expose_dataset_path: true
+    expose_potentially_sensitive_job_metrics: true
+    # Debugging
+    cleanup_job: onsuccess
+    allow_user_impersonation: true
+    # Tool security
+    outputs_to_working_directory: true
+    new_user_dataset_access_role_default_private: true # Make datasets private by default
   gravity:
+    process_manager: systemd
     galaxy_root: "{{ galaxy_server_dir }}"
-    app_server: gunicorn
+    galaxy_user: "{{ galaxy_user_name }}"
+    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
@@ -46,20 +68,22 @@ galaxy_config:
       workers: 2
       # Other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
+      # This lets Gunicorn start Galaxy completely before forking which is faster.
+      # https://docs.gunicorn.org/en/stable/settings.html#preload-app
       preload: true
     celery:
       concurrency: 2
       loglevel: DEBUG
     handlers:
       handler:
-        processes: 3
+        processes: 2
         pools:
           - job-handler
           - workflow-scheduler
 
 # deploy galaxy configuration files
 galaxy_config_templates:
-  - src: environments/Docker/templates/galaxy/config/job_conf.xml.j2
+  - src: environments/Docker/templates/galaxy/config/job_conf.yml.j2
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Docker/templates/galaxy/html/galaxyXpand_welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
