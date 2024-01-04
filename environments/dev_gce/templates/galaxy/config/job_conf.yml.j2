@@ -4,7 +4,7 @@
 runners:
   local_runner:
     load: galaxy.jobs.runners.local:LocalJobRunner
-    workers: 4
+    workers: 2
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
     drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
@@ -29,10 +29,10 @@ execution:
       embed_metadata_in_job: true
     bowtie:
       runner: local_runner
-      local_slots: 4
+      local_slots: 2
     cluster:
       runner: slurm
-      nativeSpecification: "--partition=debug --ntasks=4"
+      nativeSpecification: "--partition=debug --ntasks=1"
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -47,66 +47,11 @@ tools:
   - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
     environment: local_env
 
-  - id: "sam_to_bam"
-    destination: "gce_multicore"
-
-  - id: "sambamba_sample_or_filter"
-    destination: "gce_multicore"
-
-  - id: "bowtie"
-    destination: "bowtie"
-
-  - id: "bowtie_wrapper"
-    destination: "bowtie"
-
-  - id: "bowtie2"
-    destination: "bowtie"
-
   - id: "bowtieForSmallRNA"
-    destination: "bowtie"
-
-  - id: "bowtie_wrapper"
-    destination: "gce_multicore"
-
-  - id: "mircounts"
-    destination: "gce_multicore"
-
-  - id: "picard_SamToFastq"
-    destination: "gce_multicore" 
-
-  - id: "rna_star"
-    destination: "gce_multicore"
-
-  - id: "rna_starsolo"
-    destination: "gce_multicore"
-
-  - id: "samtools_cram_to_bam"
-    destination: "gce_multicore"
-
-  - id: "samtools_slice_bam"
-    destination: "gce_multicore"
-
-  - id: "samtools_view"
-    destination: "gce_multicore"
-
-  - id: "samtools_rmdup"
-    destination: "gce_multicore"
-
-  - id: "samtools_fastx"
-    destination: "gce_multicore"
-
-  - id: "samtool_filter2"
-    destination: "gce_multicore"
-
-  - id: "small_rna_maps"
-    destination: "gce_multicore"
-
-  - id: "sr_bowtie_dataset_annotation"
-    destination: "bowtie"
+    destination: "cluster"
 
   - id: "bowtie_index_builder_data_manager"
     destination: "gce_multicore"
 
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster"
-    
