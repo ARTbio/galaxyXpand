@@ -1,8 +1,6 @@
 ---
 # Docker specific settings
-install_postgresql: no
 install_slurm: no
-galaxy_manage_systemd: false
 
 # Galaxy
 galaxy_additional_venv_packages: drmaa
