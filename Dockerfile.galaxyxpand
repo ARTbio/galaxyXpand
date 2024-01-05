@@ -37,7 +37,8 @@ USER postgres
 
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'galaxy';" && \
-    createdb -O root rootdb
+    createdb -O root rootdb && \
+    psql --command "CREATE USER galaxy WITH PASSWORD 'galaxy';"
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
