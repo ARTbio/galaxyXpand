@@ -86,7 +86,7 @@ RUN echo "remote_tmp = /setup/.ansible/tmp" >> ansible.cfg && \
     service postgresql start && \
     sed -i '/slurm-wlm/d' playbook.yml && sed -i '/slurm-drmaa-dev/d' playbook.yml && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
-    ansible-playbook -i environments/Docker/hosts -c local playbook.yml
+    ansible-playbook -i environments/Docker/hosts playbook.yml
 
 ONBUILD  WORKDIR  /setup
 ONBUILD  COPY  .  /setup
