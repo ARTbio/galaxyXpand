@@ -16,8 +16,5 @@ galaxykickstart_to_gravity: no
 # to install uptime set to 'yes'
 install_uptime: no
 
-# to not install postgresql set to 'no"
-install_postgresql: yes
-
 # to not install slurm set to 'no'
 install_slurm: yes

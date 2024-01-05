@@ -3,22 +3,24 @@
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
 galaxy_separate_privileges: true
+# galaxy_manage_paths: true
 galaxy_privsep_user: "{{ galaxy_user }}"
 galaxy_layout: legacy
+galaxy_root: /home/galaxy
 galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_user: {name: galaxy, shell: /bin/bash}
 galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
 galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_root: /home/galaxy
-galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_commit_id: release_23.0
 galaxy_force_checkout: true
+miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
+miniconda_version: 23.9
+miniconda_channels: ['conda-forge', 'defaults']
 galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/../tool_dependencies"
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
-miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 4.7.12
-miniconda_manage_dependencies: false
+
 galaxy_config:
   galaxy:
     brand: "🧬 Mississippi-Dev"
@@ -73,19 +75,35 @@ galaxy_config:
           6434343033353438613437353164623161383961323562313739
     check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
-    allow_user_impersonation: true
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
+    allow_library_path_paste: true
+    watch_tool_data_dir: true
+    # File serving perfomance
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    # SQL Performance
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # Automation / Ease of Use / User-facing features
     allow_user_dataset_purge: true
     enable_quotas: true
     allow_user_deletion: true
-    allow_library_path_paste: true
-    watch_tool_data_dir: true
-    nginx_x_accel_redirect_base: /_x_accel_redirect
+    allow_user_impersonation: true
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    expose_user_name: true
+    expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
     require_login: true
+    # Debugging
+    cleanup_job: onsuccess
+    # Tool security
+    outputs_to_working_directory: true
+    new_user_dataset_access_role_default_private: true # Make datasets private by default
   gravity:
+    process_manager: systemd
     galaxy_root: "{{ galaxy_server_dir }}"
-    app_server: gunicorn
+    galaxy_user: "{{ galaxy_user_name }}"
+    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
@@ -106,12 +124,14 @@ galaxy_config:
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/dev_mississippi/files/galaxy/config/job_conf.xml
+  - src: environments/dev_mississippi/files/galaxy/config/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/dev_mississippi/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
-  - src: environments/dev_mississippi/files/galaxy/html/images/biotechno_M2_logo.png
-    dest: "{{ galaxy_server_dir }}/static/biotechno_M2_logo.png"
+
+# deploy png galaxyXpand logo
+  - src: environments/dev_mississippi/files/galaxy/html/images/galaxyXpand_logo.png
+    dest: "{{ galaxy_server_dir }}/static/galaxyXpand_logo.png"
 
 # systemd
 galaxy_manage_systemd: true
