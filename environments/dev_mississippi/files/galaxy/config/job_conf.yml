@@ -17,6 +17,7 @@ handling:
 
 execution:
   default: cluster_1
+  environments:
     cluster_1:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=1"
