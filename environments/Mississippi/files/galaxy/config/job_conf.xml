@@ -8,6 +8,13 @@
         </plugin>
     </plugins>
 
+    <handlers assign_with="db-skip-locked" default="handlers">
+        <handler id="handler_0" tags="handlers"/>
+        <handler id="handler_1" tags="handlers"/>
+        <handler id="handler_2" tags="handlers"/>
+        <handler id="handler_3" tags="handlers"/>
+    </handlers>
+
     <destinations default="single">
         <destination id="local" runner="local"/>
         <destination id="local_multicore" runner="local">
