@@ -10,9 +10,6 @@ galaxy_db_name: galaxy
 # galaxy (check requirement)
 galaxy_config_perms: 0664
 
-# when transitionning from galaxykickstart to galaxyXpand set to 'yes'
-galaxykickstart_to_gravity: no
-
 # to install uptime set to 'yes'
 install_uptime: no
 
