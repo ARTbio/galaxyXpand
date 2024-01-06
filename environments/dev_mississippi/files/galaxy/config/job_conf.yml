@@ -12,8 +12,8 @@ handling:
   processes:
     handler0:
     handler1:
+    handler2:
     handler3:
-    handler4:
 
 execution:
   default: cluster_1
