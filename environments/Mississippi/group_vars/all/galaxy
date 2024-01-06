@@ -1,29 +1,29 @@
 ---
 # Galaxy
 galaxy_additional_venv_packages: drmaa
-galaxy_create_user: true
-galaxy_separate_privileges: true
-galaxy_privsep_user: "{{ galaxy_user }}"
-galaxy_layout: legacy
-galaxy_server_dir: "{{ galaxy_root }}/galaxy"
-galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
-galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_commit_id: release_23.0
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_root: /home/galaxy
-galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_create_user: true
 galaxy_force_checkout: true
-galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_layout: legacy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
+galaxy_privsep_user: "{{ galaxy_user }}"
+galaxy_root: /home/galaxy
+galaxy_separate_privileges: true
+galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_user: {name: galaxy, shell: /bin/bash}
+miniconda_channels: ['conda-forge', 'bioconda' 'defaults']
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 4.7.12
-miniconda_manage_dependencies: false
+miniconda_version: 23.9
+
 galaxy_config:
   galaxy:
     brand: "🧬 Mississippi[2]"
     builds_file_path: shared/ucsc/builds.txt
-    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39653064333539343430663435376264653839386234306239356664356532633534623364306333
@@ -33,6 +33,7 @@ galaxy_config:
           63316466613366346464316131316663366338386639303537313533656333656637626365323465
           38396235363832343430613230363236383538303066383163306264663961666266366335646336
           663636386537363938666438353139626637
+    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     smtp_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           61613536306433356230663264663932373037316337346561653530333630643933636233396130
@@ -75,16 +76,31 @@ galaxy_config:
           6239373664353064613166313031623534313366346230333932
     check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
-    allow_user_impersonation: true
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
+    allow_library_path_paste: true
+    watch_tool_data_dir: true
+    # File serving perfomance
+    nginx_x_accel_redirect_base: /_x_accel_redirect
+    # SQL Performance
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # Automation / Ease of Use / User-facing features
     allow_user_dataset_purge: true
     enable_quotas: true
     allow_user_deletion: true
-    allow_library_path_paste: true
-    watch_tool_data_dir: true
-    nginx_x_accel_redirect_base: /_x_accel_redirect
+    allow_user_impersonation: true
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    expose_user_name: true
+    expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
     require_login: true
+    # Debugging
+    cleanup_job: onsuccess
+    # Tool security
+    outputs_to_working_directory: true
+    new_user_dataset_access_role_default_private: true # Make datasets private by default
+    # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.183.152
     integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
@@ -92,12 +108,13 @@ galaxy_config:
     static_enabled: false
     tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
-    tool_dependency_dir: /home/galaxy/tool_dependencies
     tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
 
   gravity:
+    process_manager: systemd
     galaxy_root: "{{ galaxy_server_dir }}"
-    app_server: gunicorn
+    galaxy_user: "{{ galaxy_user_name }}"
+    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
@@ -118,7 +135,7 @@ galaxy_config:
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/Mississippi/files/galaxy/config/job_conf.xml
+  - src: environments/Mississippi/files/galaxy/config/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Mississippi/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
