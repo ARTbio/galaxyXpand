@@ -11,3 +11,14 @@ slurm_config:
   SelectType: select/cons_res
   SelectTypeParameters: CR_Core_Memory
 
+slurm_nodes:
+  - name: "localhost"
+    CoresPerSocket: 20
+    Sockets: 2
+    ThreadsPerCore: 2
+
+slurm_partitions:
+  - name: debug
+    Default: YES
+    MaxTime: UNLIMITED
+    Nodes: "localhost"
