@@ -44,7 +44,7 @@
       become: true
       become_user: "{{ galaxy_user.name }}"
     - galaxyproject.nginx
-    - role: ansible-slurm
+    - role: galaxyproject.slurm
       become: true
       when: install_slurm
     - role: installUptime
