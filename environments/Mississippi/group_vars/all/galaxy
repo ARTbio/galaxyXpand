@@ -16,7 +16,7 @@ galaxy_separate_privileges: true
 galaxy_server_dir: "{{ galaxy_root }}/galaxy"
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 galaxy_user: {name: galaxy, shell: /bin/bash}
-miniconda_channels: ['conda-forge', 'bioconda' 'defaults']
+miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 23.9
 
