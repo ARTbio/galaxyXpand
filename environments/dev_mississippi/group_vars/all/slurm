@@ -13,12 +13,12 @@ slurm_config:
 
 slurm_nodes:
   - name: "localhost"
-    CoresPerSocket: 4
-    Sockets: 2
-    ThreadsPerCore: 2
+    CPUs: 16
+    RealMemory: 96617
 
 slurm_partitions:
   - name: debug
     Default: YES
-    MaxTime: UNLIMITED
+    DefMemPerCPU: 6038
     Nodes: "localhost"
+
