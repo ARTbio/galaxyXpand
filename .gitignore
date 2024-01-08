@@ -3,9 +3,9 @@
 *.pyc
 docs/html
 .vault-password.txt
-
 roles/galaxyproject.galaxy
+roles/galaxyproject.miniconda
+roles/galaxyproject.nginx
 roles/galaxyproject.postgresql
 roles/galaxyproject.postgresql_objects
-roles/galaxyproject.miniconda
 roles/galaxyproject.slurm
