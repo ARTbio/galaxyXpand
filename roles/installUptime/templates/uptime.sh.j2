@@ -2,8 +2,8 @@
 # uptime.sh
 while true
 do
-  echo `date +"%Y/%m/%d %H:%M:%S"; cat /proc/loadavg` >> {{ galaxy_gravity_state_dir }}/log/uptime.log
-  tail -n 4032 {{ galaxy_gravity_state_dir }}/log/uptime.log > {{ galaxy_gravity_state_dir }}/log/lastuptime.log
-  Rscript {{ galaxy_gravity_state_dir }}/uptime.R {{ galaxy_gravity_state_dir }}/log/lastuptime.log 2>&1 >/dev/null
+  echo `date +"%Y/%m/%d %H:%M:%S"; cat /proc/loadavg` >> {{ uptime_dir }}/uptime.log
+  tail -n 4032 {{ uptime_dir }}/uptime.log > {{ uptime_dir }}/lastuptime.log
+  Rscript {{ uptime_dir }}/uptime.R {{ uptime_dir }}/lastuptime.log 2>&1 >/dev/null
   sleep 300
 done
