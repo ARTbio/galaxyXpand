@@ -1,0 +1,11 @@
+[Unit]
+Description={{ service_description }}
+
+[Service]
+Type=simple
+User={{ uptime_user }}
+ExecStart=/bin/bash -c "sh {{ uptime_dir }}/uptime.sh"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
