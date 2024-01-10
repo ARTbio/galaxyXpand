@@ -6,7 +6,6 @@ install_slurm: no
 galaxy_additional_venv_packages: drmaa
 galaxy_create_user: true
 galaxy_separate_privileges: true
-# galaxy_manage_paths: true
 galaxy_privsep_user: "{{ galaxy_user }}"
 galaxy_layout: legacy
 galaxy_root: /home/galaxy
@@ -20,7 +19,7 @@ galaxy_commit_id: release_23.0
 galaxy_force_checkout: true
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 23.9
-miniconda_channels: ['conda-forge', 'defaults']
+miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 
 galaxy_config:
   galaxy:
