@@ -76,7 +76,7 @@ galaxy_config:
           6636366361643132663339333535343462653261636436663531
     check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
     allow_library_path_paste: true
     watch_tool_data_dir: true
     # File serving perfomance
