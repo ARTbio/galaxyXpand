@@ -129,8 +129,8 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
 
 # deploy png galaxyXpand logo
-  - src: environments/dev_mississippi/files/galaxy/html/images/galaxyXpand_logo.png
-    dest: "{{ galaxy_server_dir }}/static/galaxyXpand_logo.png"
+  - src: environments/dev_mississippi/files/galaxy/html/images/mississippi_dev.png
+    dest: "{{ galaxy_server_dir }}/static/mississippi_dev.png"
 
 # systemd
 galaxy_manage_systemd: true
