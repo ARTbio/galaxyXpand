@@ -1,12 +1,19 @@
 <?xml version="1.0"?>
 <!-- Do not modify this file, it will we overwritten by ansible galaxykickstart -->
 <job_conf>
-    <plugins workers="4">
+    <plugins workers="8">
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner"/>
         <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
             <param id="drmaa_library_path">/usr/lib/slurm-drmaa/lib/libdrmaa.so</param>
         </plugin>
     </plugins>
+
+    <handlers assign_with="db-skip-locked" default="handlers">
+        <handler id="handler_0" tags="handlers"/>
+        <handler id="handler_1" tags="handlers"/>
+        <handler id="handler_2" tags="handlers"/>
+        <handler id="handler_3" tags="handlers"/>
+    </handlers>
 
     <destinations default="single">
         <destination id="local" runner="local"/>
@@ -55,39 +62,40 @@
         </destination>
         <destination id="java_cluster" runner="slurm">
             <env file="/home/galaxy/galaxy/.venv/bin/activate"/>
-            <env id="_JAVA_OPTIONS">-Xmx40g</env>
+            <env id="_JAVA_OPTIONS">-Xmx2g</env>
             <env id="_JAVA_OPTIONS">-Xms512m</env>
             <param id="enabled" from_environ="GALAXY_RUNNERS_ENABLE_SLURM">true</param>
-            <param id="nativeSpecification">--ntasks=4 --share</param>
+            <param id="nativeSpecification">--ntasks=1 --share</param>
         </destination>
     </destinations>
     <limits>
         <limit type="destination_total_concurrent_jobs" id="lumpy_smoove">32</limit>
-        <limit type="destination_total_concurrent_jobs" id="cluster">4</limit>
+        <limit type="destination_total_concurrent_jobs" id="cluster">8</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_4">20</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_heavy">4</limit>
         <limit type="destination_total_concurrent_jobs" id="cluster_superheavy">1</limit>
-        <limit type="destination_total_concurrent_jobs" id="single">30</limit>
+        <limit type="destination_total_concurrent_jobs" id="single">60</limit>
         <limit type="destination_total_concurrent_jobs" id="double">30</limit>
         <limit type="destination_total_concurrent_jobs" id="samtools_fastx">30</limit>
-        <limit type="destination_user_concurrent_jobs" id="java_cluster">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="java_cluster">25</limit>
 
 
         <limit type="anonymous_user_concurrent_jobs">1</limit>
 
         <limit type="destination_user_concurrent_jobs" id="lumpy_smoove">32</limit>
-        <limit type="destination_user_concurrent_jobs" id="cluster">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="cluster">8</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_4">20</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_heavy">6</limit>
         <limit type="destination_user_concurrent_jobs" id="cluster_superheavy">1</limit>
-        <limit type="destination_user_concurrent_jobs" id="single">30</limit>
+        <limit type="destination_user_concurrent_jobs" id="single">60</limit>
         <limit type="destination_user_concurrent_jobs" id="double">30</limit>
         <limit type="destination_user_concurrent_jobs" id="samtools_fastx">30</limit>
-        <limit type="destination_user_concurrent_jobs" id="java_cluster">4</limit>
+        <limit type="destination_user_concurrent_jobs" id="java_cluster">25</limit>
     </limits>
    <tools>
         <tool id="bcftools_annotate" destination="cluster" />
-        <tool id="bcftools_norm" destination="cluster" />
+        <tool id="bcftools_norm" destination="single" />
+        <tool id="bcftools_mpileup" destination="cluster" />
         <tool id="bowtie" destination="cluster_heavy"/>
         <tool id="bowtie2" destination="cluster_heavy"/>
         <tool id="bowtieForSmallRNA" destination="cluster_heavy"/>
@@ -103,15 +111,18 @@
         <tool id="deeptools_bam_coverage" destination="cluster_heavy"/>
         <tool id="deeptools_plot_coverage" destination="cluster"/>
         <tool id="deeptools_plot_fingerprint" destination="cluster_heavy"/>
+        <tool id="deeptools_bam_compare" destination="cluster_heavy"/>
         <tool id="dexseq_count" destination="double"/>
         <tool id="dexseq" destination="double"/>
         <tool id="fastq_dump" destination="double" />
-        <tool id="freebayes" destination="cluster" />
+        <tool id="justgzip" destination="cluster" />
+        <tool id="freebayes" destination="single" />
         <tool id="featurecounts" destination="cluster_4" />
         <tool id="Group" destination="single" />
         <tool id="guppy-basecaller" destination="cluster"/>
         <tool id="hisat2" destination="cluster_heavy"/>
         <tool id="hisat2_index_builder_data_manager" destination="cluster_4"/>
+        <tool id="kallisto_quant" destination="cluster"/>
         <tool id="lumpy_smoove" destination="lumpy_smoove" />
         <tool id="lumpy_sv" destination="cluster"/>
         <tool id="macs2_callpeak" destination="cluster_heavy"/>
@@ -124,6 +135,7 @@
         <tool id="ncbi_blastp_wrapper" destination="cluster_heavy"/>
         <tool id="ngsplot" destination="cluster"/>
         <tool id="picard_SamToFastq" destination="single" />
+        <tool id="picard_FilterSamReads" destination="java_cluster" />
         <tool id="repenrich" destination="cluster_heavy"/>
         <tool id="rna_star" destination="cluster"/>
         <tool id="rna_star_index_builder_data_manager" destination="cluster"/>
@@ -149,5 +161,6 @@
         <tool id="xpore_dataprep" destination="cluster_heavy"/>
         <tool id="xpore_diffmod" destination="cluster_heavy"/>
         <tool id="sambamba_sample_or_filter" destination="cluster"/>
+        <tool id="artbio_bam_cleaning" destination="cluster"/>
     </tools>
 </job_conf>
