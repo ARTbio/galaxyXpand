@@ -119,7 +119,7 @@ galaxy_config:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
-      workers: 4
+      workers: 8
       # Other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
       preload: true
@@ -139,6 +139,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Conect/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: environments/Conect/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/Conect/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Conect/files/galaxy/html/images/ARTbio_logo.jpg

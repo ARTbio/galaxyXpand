@@ -74,7 +74,6 @@ galaxy_config:
           3866653730623866620a636131363133336266336439353063353138663230333462663036653239
           32373437303433353230353030336334353661316537643736383239383036306264653334626435
           6239373664353064613166313031623534313366346230333932
-    check_migrate_tools: false
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
     allow_library_path_paste: true
@@ -106,7 +105,7 @@ galaxy_config:
     integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
     len_file_path: /home/galaxy/galaxy/config/len
     static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
+    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
     tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
 
@@ -119,7 +118,7 @@ galaxy_config:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
-      workers: 4
+      workers: 8
       # Other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
       preload: true
@@ -139,6 +138,8 @@ galaxy_config_files:
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/Mississippi/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
+  - src: environments/Mississippi/files/galaxy/config/tool_conf.xml
+    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
   - src: environments/Mississippi/files/galaxy/html/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Mississippi/files/galaxy/html/images/ARTbio_mississippi_screen.jpg

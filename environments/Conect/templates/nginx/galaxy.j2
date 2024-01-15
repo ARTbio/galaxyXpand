@@ -73,4 +73,5 @@ server {
         proxy_pass https://training.galaxyproject.org/training-material/;
     }
 
+    include /etc/nginx/phpmyadmin.d/phpmyadmin.conf;
 }
