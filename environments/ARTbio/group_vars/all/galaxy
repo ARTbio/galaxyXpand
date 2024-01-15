@@ -1,28 +1,29 @@
 ---
-# overwrite properly the previous uwgi-based galaxykickstart (default: no)
-
 # Galaxy
 galaxy_additional_venv_packages: drmaa
-galaxy_create_user: true
-galaxy_separate_privileges: true
-galaxy_privsep_user: "{{ galaxy_user }}"
-galaxy_layout: legacy
-galaxy_server_dir: "{{ galaxy_root }}/galaxy"
-galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
-galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_commit_id: release_23.0
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_root: /home/galaxy
-galaxy_user: {name: galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_create_user: true
 galaxy_force_checkout: true
-galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_layout: legacy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
+galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
+galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
+galaxy_privsep_user: "{{ galaxy_user }}"
+galaxy_root: /home/galaxy
+galaxy_separate_privileges: true
+galaxy_server_dir: "{{ galaxy_root }}/galaxy"
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_user: {name: galaxy, shell: /bin/bash}
+miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 4.7.12
-miniconda_manage_dependencies: false
+miniconda_version: 23.9
+
 galaxy_config:
   galaxy:
+    brand: "🧬 ARTbio Users"
+    builds_file_path: shared/ucsc/builds.txt
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           63643139343762383638653130303436363532333730326339373338303464303132646164636361
@@ -32,28 +33,21 @@ galaxy_config:
           64616530643039326363393338336464633635623631303634356265373735386138356134636439
           66386235666133626339666233646138613932336335646664316163616534663330306634306138
           393839386231643763643165376530623464
-    allow_library_path_paste: true
-    allow_user_dataset_purge: true
-    allow_user_deletion: true
-    allow_user_impersonation: true
-    brand: "🧬 ARTbio Users"
-    builds_file_path: shared/ucsc/builds.txt
-    check_migrate_tools: false
-    container_resolvers_config_file: ''
-    data_dir: /home/galaxy/galaxy/database
-    data_manager_config_file: /home/galaxy/galaxy/config/data_manager_conf.xml.sample
-    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
-    datatypes_config_file: /home/galaxy/galaxy/config/datatypes_conf.xml.sample
-    dependency_resolvers_config_file: /home/galaxy/galaxy/config/dependency_resolvers_conf.xml
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
-    email_from: !vault |
+    smtp_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
-          30663537623338346331663166663830386230386136356361346231626463383064363166336663
-          6464363832346330643136623961326438653266386431390a656438323963356636613835653162
-          39363266376262343236353535393435613332356262383130653838386261383866366636313230
-          3463376437376438320a383863333966383038343539363764396365333431336533633065623934
-          30386362636230323035613263336535333161633835633439346662326339633665
-    enable_quotas: true
+          35363239623130313538386637313462376235386364363466663631623931636666613166653165
+          3433346435643565313035633738353430633036333761340a393539623838666564303462363539
+          39333033383264306437326266646664356134313666643736366261306230643936383263383535
+          6161346134376632340a616330313936353566613332633833326337623132386639626631633830
+          30323130323632646264326466373337396230393131353832646536326135653633
+    smtp_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63663039356536353639356432326533646539376165626162376162643938626531623434643263
+          3432356132303430356139353332393537326361626536310a346264313136343663623566303234
+          61666234323161623863306431656239653836323934303866363739623735393332613861643531
+          3532663561316632350a613563376434363466623032373561383062366264636333393937333139
+          31326538393739656335313630616234626430373331636330313663316638373863
     error_email_to: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           65306633343037366561326632393730393731363066336566316430346638326630353632623638
@@ -61,11 +55,17 @@ galaxy_config:
           38383762643363383039353732623434636631626135613733636130393634303932653136656230
           6361623730303935660a666461396562396666666466633765616633643338353931613035336330
           32333532396466653665346135346462653239616234646639666462316137613565
-    expose_potentially_sensitive_job_metrics: true
-    external_service_type_config_file: /home/galaxy/galaxy/config/external_service_types_conf.xml.sample
+    email_from: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30663537623338346331663166663830386230386136356361346231626463383064363166336663
+          6464363832346330643136623961326438653266386431390a656438323963356636613835653162
+          39363266376262343236353535393435613332356262383130653838386261383866366636313230
+          3463376437376438320a383863333966383038343539363764396365333431336533633065623934
+          30386362636230323035613263336535333161633835633439346662326339633665
+    smtp_server: 'smtp.gmail.com:587'
+    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     file_path: datasets
-    ftp_upload_dir: /home/galaxy/galaxy/database/ftp
-    ftp_upload_site: ftp://134.157.185.153
+    object_store_store_by: id
     id_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           61363538613537363565396330346437636632396632326434663963393532336265626163323933
@@ -74,47 +74,47 @@ galaxy_config:
           3865316261666665310a343638393663616336343233393863633065303031656264663063636635
           33633238313161636239633532376563393261386439663762653566613339616261376366303731
           6264376664373139646366656434303766353836353436613439
-    integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
+    check_migrate_tools: false
+    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
-    job_metrics_config_file: /home/galaxy/galaxy/config/job_metrics_conf.xml
-    job_working_directory: /home/galaxy/galaxy/database/jobs
-    len_file_path: /home/galaxy/galaxy/config/len
-    migrated_tools_config: /home/galaxy/galaxy/config/migrated_tools_conf.xml
+    allow_library_path_paste: true
+    watch_tool_data_dir: true
+    # File serving perfomance
     nginx_x_accel_redirect_base: /_x_accel_redirect
-    object_store_store_by: id
-    openid_config_file: /home/galaxy/galaxy/config/openid_conf.xml.sample
+    # SQL Performance
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # Automation / Ease of Use / User-facing features
+    allow_user_dataset_purge: true
+    enable_quotas: true
+    allow_user_deletion: true
+    allow_user_impersonation: true
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    expose_user_name: true
+    expose_dataset_path: true
+    expose_potentially_sensitive_job_metrics: true
     require_login: true
-    shed_data_manager_config_file: /home/galaxy/galaxy/config/shed_data_manager_conf.xml
-    shed_tool_config_file: /home/galaxy/galaxy/config/shed_tool_conf.xml
-    shed_tool_data_table_config: /home/galaxy/galaxy/config/shed_tool_data_table_conf.xml
-    smtp_password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          63663039356536353639356432326533646539376165626162376162643938626531623434643263
-          3432356132303430356139353332393537326361626536310a346264313136343663623566303234
-          61666234323161623863306431656239653836323934303866363739623735393332613861643531
-          3532663561316632350a613563376434363466623032373561383062366264636333393937333139
-          31326538393739656335313630616234626430373331636330313663316638373863
-    smtp_server: 'smtp.gmail.com:587'
-    smtp_username: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          35363239623130313538386637313462376235386364363466663631623931636666613166653165
-          3433346435643565313035633738353430633036333761340a393539623838666564303462363539
-          39333033383264306437326266646664356134313666643736366261306230643936383263383535
-          6161346134376632340a616330313936353566613332633833326337623132386639626631633830
-          30323130323632646264326466373337396230393131353832646536326135653633
+    # Debugging
+    cleanup_job: onsuccess
+    # Tool security
+    outputs_to_working_directory: true
+    new_user_dataset_access_role_default_private: true # Make datasets private by default
+    # Miscellaneous
+    ftp_upload_dir: /home/galaxy/galaxy/database/ftp
+    ftp_upload_site: ftp://134.157.185.153
+    integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
+    len_file_path: /home/galaxy/galaxy/config/len
     static_enabled: false
     tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
-    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
-    tool_dependency_dir: /home/galaxy/tool_dependencies
     tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
-    ucsc_build_sites: /home/galaxy/galaxy/tool-data/shared/ucsc/ucsc_build_sites.txt.sample
-    visualization_plugins_directory: config/plugins/visualizations
-    watch_tool_data_dir: true
 
   gravity:
+    process_manager: systemd
     galaxy_root: "{{ galaxy_server_dir }}"
-    app_server: gunicorn
+    galaxy_user: "{{ galaxy_user_name }}"
+    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
       # listening options
       bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
@@ -135,7 +135,7 @@ galaxy_config:
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/ARTbio/files/galaxy/config/job_conf.xml
+  - src: environments/ARTbio/files/galaxy/config/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/ARTbio/files/galaxy/config/tool_sheds_conf.xml
     dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"

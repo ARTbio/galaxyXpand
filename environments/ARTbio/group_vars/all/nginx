@@ -1,6 +1,7 @@
 ---
 # NGINX
 nginx_server_src_dir: environments/ARTbio/templates/nginx/
+nginx_selinux_allow_local_connections: true
 nginx_ssl_servers:
   - galaxy
 nginx_enable_default_server: false
