@@ -19,7 +19,7 @@ handling:
     handler3:
 
 execution:
-  default: local_env
+  default: cluster_1
   environments:
     local_env:
       runner: local_runner
