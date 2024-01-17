@@ -156,6 +156,9 @@ tools:
   - id: "dexseq"
     destination: "cluster_2"
 
+  - id: "fastqc"
+    destination: "java_cluster"
+
   - id: "fastq_dump"
     destination: "cluster_2" 
 
