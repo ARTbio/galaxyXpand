@@ -3,16 +3,27 @@
     name:
       - 'r-base'
 
+- name: Create an uptime directory
+  become_user: "{{ uptime_user }}"
+  file:
+    path: "{{ galaxy_root }}"
+    state: directory
+
 - name: Instantiate uptime templates
-  become_user: 'galaxy'
+  become_user: "{{ uptime_user }}"
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     force: yes
     mode: "{{ galaxy_config_perms }}"
   with_items: "{{ uptime_templates }}"
+  
+- name: Create uptime systemd service file
+  template:
+    src: templates/uptime.service.j2
+    dest: /lib/systemd/system/uptime.service
 
-- name: galaxyctl supervisorctl reload
-  command: "{{ galaxy_venv_dir }}/bin/galaxyctl supervisorctl reload"
-  environment:
-    GRAVITY_STATE_DIR: "{{ galaxy_gravity_state_dir }}"
+- name: Start uptime service
+  systemd:
+    name: uptime
+    state: started

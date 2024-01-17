@@ -11,3 +11,14 @@ slurm_config:
   SelectType: select/cons_res
   SelectTypeParameters: CR_Core_Memory
 
+slurm_nodes:
+  - name: "localhost"
+    CPUs: 16
+    RealMemory: 96617
+
+slurm_partitions:
+  - name: debug
+    Default: YES
+    DefMemPerCPU: 6038
+    Nodes: "localhost"
+

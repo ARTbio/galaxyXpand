@@ -17,7 +17,7 @@ RUN apt update && \
     postgresql-12 postgresql-client-12 postgresql-contrib-12 \
     locales dirmngr && apt clean
 
-RUN python3 -m pip install -U pip && python3 -m pip install ansible==2.10.7 && \
+RUN python3 -m pip install -U pip && python3 -m pip install ansible==3.0 && \
     python3 -m pip install -U cryptography pyyaml
 
 # Run the rest of the commands as the ``postgres`` user created by the ``postgres-12``
@@ -37,7 +37,9 @@ USER postgres
 
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER root WITH SUPERUSER PASSWORD 'galaxy';" && \
-    createdb -O root rootdb
+    createdb -O root rootdb && \
+    psql --command "CREATE USER galaxy WITH PASSWORD 'galaxy';" && \
+    createdb -O galaxy galaxy
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
@@ -80,11 +82,16 @@ WORKDIR /setup
 ENV LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8
 
+# in next step, a faulty handler that triggered systemctl is deleted
+# before running the playbook
+
 RUN echo "remote_tmp = /setup/.ansible/tmp" >> ansible.cfg && \
     service postgresql start && \
     sed -i '/slurm-wlm/d' playbook.yml && sed -i '/slurm-drmaa-dev/d' playbook.yml && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
-    ansible-playbook -i environments/Docker/hosts -c local playbook.yml
+    head -n -4 roles/galaxyproject.galaxy/handlers/main.yml > tmp.txt &&\
+    mv tmp.txt roles/galaxyproject.galaxy/handlers/main.yml &&\
+    ansible-playbook -i environments/Docker/hosts playbook.yml
 
 ONBUILD  WORKDIR  /setup
 ONBUILD  COPY  .  /setup

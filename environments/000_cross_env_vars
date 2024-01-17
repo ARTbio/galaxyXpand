@@ -1,29 +1,17 @@
 ---
 # Python 3 support
-pip_virtualenv_command: /usr/bin/python3 -m virtualenv
-pip_package: python3-pip
+pip_virtualenv_command: /usr/bin/python3 -m venv
 
-# PostgreSQL
-postgresql_objects_users:
-  - name: galaxy
-postgresql_objects_databases:
-  - name: galaxy
-    owner: galaxy
-# PostgreSQL Backups
-postgresql_backup_dir: /data/backups
-postgresql_backup_local_dir: "{{ '~postgres' | expanduser }}/backups"
+# Common variables needed by all hosts
+galaxy_user_name: galaxy
+galaxy_db_name: galaxy
 
-# galaxy
+
+# galaxy (check requirement)
 galaxy_config_perms: 0664
-
-# when transitionning from galaxykickstart to galaxyXpand set to 'yes'
-galaxykickstart_to_gravity: no
 
 # to install uptime set to 'yes'
 install_uptime: no
-
-# to not install postgresql set to 'no"
-install_postgresql: yes
 
 # to not install slurm set to 'no'
 install_slurm: yes

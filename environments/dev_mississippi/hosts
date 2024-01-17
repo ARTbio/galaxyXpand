@@ -1,3 +1,6 @@
 [dev_mississippi]
-
 localhost  ansible_connection=local ansible_user=root
+
+[dbservers:children]
+dev_mississippi
+

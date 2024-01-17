@@ -1,18 +1,14 @@
-- src: https://github.com/ARTbio/ansible-galaxy.git
-  name: galaxyproject.galaxy
-  version: galaxyXpand
+- src: galaxyproject.galaxy
+  version: 0.10.19
 - src: galaxyproject.nginx
-  version: 0.7.0
+  version: 0.7.1
 - src: galaxyproject.postgresql
-  version: 1.0.3
+  version: 1.1.2
 - src: galaxyproject.postgresql_objects
-  version: 1.1.0
-- src: geerlingguy.pip
-  version: 2.0.0
-- src: uchida.miniconda
-  version: 0.3.0
-- src: https://github.com/ARTbio/ansible-slurm.git
-  name: ansible-slurm
-  version: artbio
+  version: 1.2.0
+- src: galaxyproject.miniconda
+  version: 0.3.1
+- src: galaxyproject.slurm
+  version: 1.0.4
 - src: https://github.com/ARTbio/ansible-galaxy-tools.git
   name: install.galaxy-tools

@@ -1,8 +1,10 @@
-install_uptime: yes
+install_uptime: no
+uptime_dir: "{{ galaxy_root }}"
+uptime_user: "{{ galaxy_user.name }}"
+service_description: "A service to run uptime.sh and publish server usage image through galaxy nginx"
+
 uptime_templates:
-  - src: uptime.conf.j2
-    dest: "{{ galaxy_gravity_state_dir }}/supervisor/supervisord.conf.d/_default_.d/uptime.conf"
   - src: uptime.R.j2
-    dest: "{{ galaxy_gravity_state_dir }}/uptime.R"
+    dest: "{{ uptime_dir }}/uptime.R"
   - src: uptime.sh.j2
-    dest: "{{ galaxy_gravity_state_dir }}/uptime.sh"
+    dest: "{{ uptime_dir }}/uptime.sh"
