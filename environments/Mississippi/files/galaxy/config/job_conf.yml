@@ -131,6 +131,9 @@ tools:
   - id: "dexseq"
     destination: "cluster_1"
 
+  - id: "fastqc"
+    destination: "cluster_8"
+
   - id: "freebayes"
     destination: "cluster_8"
 
