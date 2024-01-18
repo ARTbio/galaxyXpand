@@ -39,7 +39,7 @@
           - python-psutil
     - name: merge common and specific galaxy_config dictionary
       set_fact:
-        galaxy_config: "{{ common_galaxy_config|ansible.builtin.combine(galaxy_config, recursive=true) }}"
+        galaxy_config: "{{ defaults|ansible.builtin.combine(common_galaxy_config, galaxy_config, recursive=true) }}"
       
   roles:
     - galaxyproject.galaxy
