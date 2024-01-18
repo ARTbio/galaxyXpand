@@ -89,6 +89,7 @@ jobs:
     - name: check Galaxy API is alive
       run: |
         curl http://127.0.0.1/api/version
+        sudo cat /var/log/nginx/error.log
 
     - name: ansible installs galaxy tools
       run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
