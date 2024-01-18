@@ -47,7 +47,7 @@ common_galaxy_config:
     nginx_x_accel_redirect_base: /_x_accel_redirect
     # Automation / Ease of Use / User-facing features
     watch_job_rules: 'auto'
-    watch_tools: 'true '
+    watch_tools: 'true'
     allow_path_paste: true
     enable_quotas: true
     allow_user_deletion: true
