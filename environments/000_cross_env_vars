@@ -8,6 +8,9 @@ install_uptime: yes
 # to install slurm set to 'yes'
 install_slurm: yes
 
+# nginx.conf File
+nginx_conf_user: "www-data galaxy"
+
 # Galaxy common to all hosts
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
