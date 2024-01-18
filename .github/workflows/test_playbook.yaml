@@ -75,15 +75,14 @@ jobs:
 
     - name: Sleep for 30 secs and check galaxyctl status
       run: |
-        sudo sed -E -i 's/^user.+/user www-data galaxy;/' /etc/nginx/nginx.conf
+        sudo sed -E -i 's/www-data/galaxy/' /etc/nginx/nginx.conf
+        sudo systemctl restart nginx.service
         sudo galaxyctl graceful
         echo "waiting 30 sec" && sleep 30
-        sudo systemctl restart nginx.service
-        echo "waiting 30 sec" && sleep 30
-        sudo galaxyctl status
         sudo ls -latr /home/galaxy/galaxy/config | grep sock
         sudo cat /etc/nginx/nginx.conf
         sudo cat /var/log/nginx/error.log
+        sudo galaxyctl status
 
 # sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
