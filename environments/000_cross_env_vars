@@ -30,7 +30,7 @@ miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: 23.9
 miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 
-galaxy_config:
+common_galaxy_config:
   galaxy:
     builds_file_path: shared/ucsc/builds.txt
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
