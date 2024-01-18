@@ -65,7 +65,6 @@ jobs:
 
     - name: ansible installs galaxy
       run: |
-        sudo sed -E -i 's/^user.+/user www-data galaxy;/' /etc/nginx/nginx.conf
         sudo apt-get -qq update -y
         sudo apt-get -qq --purge remove nginx*
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
@@ -76,7 +75,9 @@ jobs:
 
     - name: Sleep for 30 secs and check galaxyctl status
       run: |
+        sudo sed -E -i 's/^user.+/user www-data galaxy;/' /etc/nginx/nginx.conf
         sudo galaxyctl graceful
+        sudo systemctl restart nginx.service
         echo "waiting 30 sec" && sleep 30
         sudo galaxyctl status
 # sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
