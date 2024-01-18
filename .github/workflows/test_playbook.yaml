@@ -80,6 +80,7 @@ jobs:
         sudo systemctl restart nginx.service
         echo "waiting 30 sec" && sleep 30
         sudo galaxyctl status
+        sudo cat /etc/nginx/nginx.conf
 # sudo su - galaxy -c "source galaxy/.venv/bin/activate && galaxyctl status"
 
     - name: check Galaxy API is alive
