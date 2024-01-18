@@ -28,7 +28,7 @@ galaxy_commit_id: release_23.2
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 23.9
+miniconda_version: 23.11
 miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 
 common_galaxy_config:
