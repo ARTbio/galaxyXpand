@@ -8,7 +8,7 @@ galaxy_config:
   gravity:
     gunicorn:
       # listening options
-      bind: "localhost:4000"
+      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 2
     celery:
