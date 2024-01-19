@@ -3,7 +3,7 @@
 pip_virtualenv_command: /usr/bin/python3 -m venv
 
 # to install uptime set to 'yes'
-install_uptime: yes
+install_uptime: no
 
 # to install slurm set to 'yes'
 install_slurm: yes
