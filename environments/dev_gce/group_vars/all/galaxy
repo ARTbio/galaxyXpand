@@ -7,24 +7,17 @@ galaxy_config:
     brand: "🧬🔬🚀"
   gravity:
     gunicorn:
-      # listening option
+      # listening option on port 4000 for google cloud
       bind: "localhost:4000"
-      # performance options
-      workers: 2
-    celery:
-      concurrency: 2
-    handlers:
-      handler:
-        processes: 2
 
 # deploy galaxy configuration files
 galaxy_config_templates:
-  - src: environments/dev_gce/templates/galaxy/config/job_conf.yml.j2
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
-  - src: environments/dev_gce/templates/galaxy/html/galaxyXpand_welcome.html.j2
+  - src: environments/dev_gce/galaxyXpand_welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
 
 # deploy png galaxyXpand logo
 galaxy_config_files:
+  - src: environments/dev_gce/files/job_conf.yml
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/dev_gce/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
