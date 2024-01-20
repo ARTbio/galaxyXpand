@@ -12,7 +12,7 @@ galaxy_config:
 
 # deploy galaxy configuration files
 galaxy_config_templates:
-  - src: environments/dev_gce/galaxyXpand_welcome.html.j2
+  - src: environments/dev_gce/templates/galaxyXpand_welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
 
 # deploy png galaxyXpand logo
