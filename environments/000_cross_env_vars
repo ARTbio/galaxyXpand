@@ -40,6 +40,7 @@ miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 common_galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
+    allow_user_dataset_purge: true
     builds_file_path: shared/ucsc/builds.txt
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
