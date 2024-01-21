@@ -87,5 +87,5 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/images/conect_logo.png"
 
 galaxy_config_templates:
-  - src: environments/Conect/template/html/welcome.html.j2
+  - src: environments/Conect/templates/html/welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
