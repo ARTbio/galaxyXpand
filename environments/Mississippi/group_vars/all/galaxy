@@ -71,7 +71,6 @@ galaxy_config:
 # Welcome html page variables
 _Mississippi_info: |
   Mississippi is on track of release_23.1 !
-  <br>
   Please report any unusual bugs
 Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
