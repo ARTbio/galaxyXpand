@@ -1,7 +1,5 @@
 ---
 # Galaxy
-# Test release_23.1
-galaxy_commit_id: release_23.1
 galaxy_tool_dependency_dir: "{{ galaxy_server_dir }}/../tool_dependencies"
 
 galaxy_config:

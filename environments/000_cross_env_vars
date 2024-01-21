@@ -30,7 +30,7 @@ galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
 galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_commit_id: release_23.0
+galaxy_commit_id: release_23.1
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
