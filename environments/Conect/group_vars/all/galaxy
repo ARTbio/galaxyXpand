@@ -73,7 +73,7 @@ galaxy_config:
 _conect_info: |
   This is a text message
   when needing user information
-conect_info: {{ _conect_info | indent( width=10, indentfirst=True) }}
+conect_info: "{{ _conect_info | indent( width=10, indentfirst=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
