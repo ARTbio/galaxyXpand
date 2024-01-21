@@ -15,6 +15,7 @@ nginx_conf_user: "www-data galaxy"
 galaxy_manage_systemd: true
 
 # Galaxy common to all hosts
+galaxy_commit_id: release_23.1
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
@@ -30,7 +31,6 @@ galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
 galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_commit_id: release_23.1
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
@@ -40,7 +40,6 @@ miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
 common_galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
-    allow_user_dataset_purge: true
     builds_file_path: shared/ucsc/builds.txt
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
@@ -53,11 +52,14 @@ common_galaxy_config:
     enable_per_request_sql_debugging: true
     # File serving perfomance
     nginx_x_accel_redirect_base: /_x_accel_redirect
+    static_enabled: false
     # Automation / Ease of Use / User-facing features
     watch_job_rules: 'auto'
+    watch_tool_data_dir: true
     watch_tools: 'true'
     allow_path_paste: true
     enable_quotas: true
+    allow_user_dataset_purge: true
     allow_user_deletion: true
     show_welcome_with_login: true
     expose_user_name: true
