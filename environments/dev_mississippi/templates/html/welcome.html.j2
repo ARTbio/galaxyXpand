@@ -1,28 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" /> -->
-    <link rel="stylesheet" href="style/base.css" type="text/css" />
-<link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
-      integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
-      crossorigin="anonymous"
-    />
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="dist/base.css" type="text/css" />
 </head>
-<body>
+<body class="m-0">
     <div class="document">
             <p align="center">
                 <img src="images/mississippi_dev.png" width="800" />
@@ -30,12 +11,12 @@
         <hr/>
         <!-- -->
         <div class="alert alert-success" style="margin-top: 0.5em">
-            <h3>
+            <h3><center><p>
                 Hello, <strong>galaxyXpand</strong> has deployed <strong>Galaxy</strong> 
                 <a href="https://github.com/galaxyproject/galaxy/tree/{{ galaxy_commit_id }}" target="_blank">
                 {{ galaxy_commit_id }}
                 </a>
-            </h3>
+            </p></center></h3>
 {{ banner_text_1 }}
         <div>
 {{ banner_text_2 }}
@@ -51,9 +32,23 @@
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
             </div>
         </div>
-        <hr/>
-        <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy</a> is an open, web-based platform for data intensive biomedical research.  The <a target="_blank" class="reference" href="http://wiki.galaxyproject.org/GalaxyTeam">Galaxy team</a> is a part of <a target="_blank" class="reference" href="http://www.bx.psu.edu">BX</a> at <a target="_blank" class="reference" href="http://www.psu.edu">Penn State</a>, and the <a target="_blank" class="reference" href="http://www.bio.jhu.edu/">Biology</a> department at <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins University</a>.  The <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy Project</a> is supported in part by <a target="_blank" class="reference" href="http://www.genome.gov">NHGRI</a>, <a target="_blank" class="reference" href="http://www.nsf.gov">NSF</a>, <a target="_blank" class="reference" href="http://www.huck.psu.edu">The Huck Institutes of the Life Sciences</a>, <a target="_blank" class="reference" href="http://www.ics.psu.edu">The Institute for CyberScience at Penn State</a>, and <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins</a>.</p>
-
     </div>
+    <hr/>
+        <div class="container">
+            <p>
+                <a target="_blank" class="reference" href="http://galaxyproject.org/">
+                Galaxy</a> is an open platform for supporting data intensive
+                research. Galaxy is developed by <a target="_blank" class="reference" href="https://galaxyproject.org/galaxy-team/">The Galaxy Team</a>
+                with the support of  <a target="_blank" class="reference" href="https://github.com/galaxyproject/galaxy/blob/dev/CONTRIBUTORS.md">many contributors</a>.
+            </p>
+            <footer>
+                The <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy Project</a>
+                is supported in part by <a target="_blank" class="reference" href="http://www.genome.gov">NHGRI</a>,
+                <a target="_blank" class="reference" href="http://www.nsf.gov">NSF</a>,
+                <a target="_blank" class="reference" href="http://www.huck.psu.edu">The Huck Institutes of the Life Sciences</a>,
+                <a target="_blank" class="reference" href="http://www.ics.psu.edu">The Institute for CyberScience at Penn State</a>,
+                and <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins University</a>.
+            </footer>
+        </div>
 </body>
 </html>
