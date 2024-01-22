@@ -71,8 +71,9 @@ galaxy_config:
 
 # Welcome html page variables
 _conect_info: |
-  This is a text message
-  when needing user information
+  <strong>This is a text message
+  <br>
+  when needing user information</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
