@@ -67,6 +67,18 @@ galaxy_config:
       handler:
         processes: 4
 
+# Welcome html page variables
+_artbio_info: |
+  <h4>
+  The ARTbio server is hosting our first
+  <strong>I</strong>nteractive <strong>O</strong>nline <strong>C</strong>ompanionship on
+  <a href="https://artbio.github.io/startbio/bulk_RNAseq-IOC/00_IOC_RNAseq_program/" target="_blank">
+  Bulk RNAseq analysis</a> 
+  <br>
+  From January 8th to March 18th, 2024
+  </h4>
+artbio_info: "{{ _conect_info | indent(width=10, first=True) }}"
+
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/ARTbio/files/galaxy/config/job_conf.yml
