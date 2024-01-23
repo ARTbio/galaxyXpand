@@ -1,29 +1,11 @@
 ---
 # Galaxy
-galaxy_additional_venv_packages: drmaa
-galaxy_commit_id: release_23.0
-galaxy_config_dir: "{{ galaxy_server_dir }}/config"
-galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_create_user: true
-galaxy_force_checkout: true
-galaxy_layout: legacy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
-galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
-galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
-galaxy_privsep_user: "{{ galaxy_user }}"
-galaxy_root: /home/galaxy
-galaxy_separate_privileges: true
-galaxy_server_dir: "{{ galaxy_root }}/galaxy"
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
-galaxy_user: {name: galaxy, shell: /bin/bash}
-miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
-miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 23.9
 
 galaxy_config:
   galaxy:
     brand: "🧬 Mississippi[2]"
-    builds_file_path: shared/ucsc/builds.txt
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           39653064333539343430663435376264653839386234306239356664356532633534623364306333
@@ -33,7 +15,6 @@ galaxy_config:
           63316466613366346464316131316663366338386639303537313533656333656637626365323465
           38396235363832343430613230363236383538303066383163306264663961666266366335646336
           663636386537363938666438353139626637
-    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     smtp_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           61613536306433356230663264663932373037316337346561653530333630643933636233396130
@@ -63,9 +44,6 @@ galaxy_config:
           6336386336336636660a316261663465616366656362646264633334323538303364626261346133
           62336335656165366336343861353761343132316338386365336132633761366363
     smtp_server: 'smtp.gmail.com:587'
-    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
-    file_path: datasets
-    object_store_store_by: id
     id_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           31336161396161623365633464316131626362313930313163333162623636656632373265323137
@@ -74,74 +52,33 @@ galaxy_config:
           3866653730623866620a636131363133336266336439353063353138663230333462663036653239
           32373437303433353230353030336334353661316537643736383239383036306264653334626435
           6239373664353064613166313031623534313366346230333932
-    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
-    allow_library_path_paste: true
-    watch_tool_data_dir: true
-    # File serving perfomance
-    nginx_x_accel_redirect_base: /_x_accel_redirect
-    # SQL Performance
-    slow_query_log_threshold: 5
-    enable_per_request_sql_debugging: true
-    # Automation / Ease of Use / User-facing features
-    allow_user_dataset_purge: true
-    enable_quotas: true
-    allow_user_deletion: true
-    allow_user_impersonation: true
-    watch_job_rules: 'auto'
-    allow_path_paste: true
-    expose_user_name: true
-    expose_dataset_path: true
-    expose_potentially_sensitive_job_metrics: true
     require_login: true
-    # Debugging
-    cleanup_job: onsuccess
-    # Tool security
-    outputs_to_working_directory: true
-    new_user_dataset_access_role_default_private: true # Make datasets private by default
     # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.183.152
-    integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
+    # default len_file_path: shared/ucsc/chrom
     len_file_path: /home/galaxy/galaxy/config/len
-    static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml
-    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
-    tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
+    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
 
   gravity:
-    process_manager: systemd
-    galaxy_root: "{{ galaxy_server_dir }}"
-    galaxy_user: "{{ galaxy_user_name }}"
-    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
-      # listening options
-      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 8
-      # Other options that will be passed to gunicorn
-      extra_args: '--forwarded-allow-ips="*"'
-      preload: true
-    celery:
-      concurrency: 2
-      loglevel: DEBUG
     handlers:
       handler:
         processes: 4
-        pools:
-          - job-handler
-          - workflow-scheduler
+
+# Welcome html page variables
+_Mississippi_info: |
+  <strong>Mississippi recently upgraded to release 23.1
+  <br>
+  Please report any unusual bugs</strong>
+Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/Mississippi/files/galaxy/config/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
-  - src: environments/Mississippi/files/galaxy/config/tool_sheds_conf.xml
-    dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
-  - src: environments/Mississippi/files/galaxy/config/tool_conf.xml
-    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
-  - src: environments/Mississippi/files/galaxy/html/welcome.html
-    dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/Mississippi/files/galaxy/html/images/ARTbio_mississippi_screen.jpg
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_mississippi_screen.jpg"
   - src: environments/Mississippi/files/galaxy/html/images/IBPS_logo.jpg
@@ -149,5 +86,6 @@ galaxy_config_files:
   - src: environments/Mississippi/files/galaxy/html/images/mississippi_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/mississippi_logo.png"
 
-# systemd
-galaxy_manage_systemd: true
+galaxy_config_templates:
+  - src: environments/Mississippi/templates/html/welcome.html.j2
+    dest: "{{ galaxy_server_dir }}/static/welcome.html"

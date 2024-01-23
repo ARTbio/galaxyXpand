@@ -1,29 +1,10 @@
 ---
 # Galaxy
-galaxy_additional_venv_packages: drmaa
-galaxy_commit_id: release_23.0
-galaxy_config_dir: "{{ galaxy_server_dir }}/config"
-galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
-galaxy_create_user: true
-galaxy_force_checkout: true
-galaxy_layout: legacy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
-galaxy_mutable_config_dir: "{{ galaxy_server_dir }}/config"
-galaxy_mutable_data_dir: "{{ galaxy_server_dir }}/database"
-galaxy_privsep_user: "{{ galaxy_user }}"
-galaxy_root: /home/galaxy
-galaxy_separate_privileges: true
-galaxy_server_dir: "{{ galaxy_root }}/galaxy"
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
-galaxy_user: {name: galaxy, shell: /bin/bash}
-miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
-miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: 23.11
 
 galaxy_config:
   galaxy:
-    brand: "🧬 ARTbio Users"
-    builds_file_path: shared/ucsc/builds.txt
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           63643139343762383638653130303436363532333730326339373338303464303132646164636361
@@ -33,7 +14,6 @@ galaxy_config:
           64616530643039326363393338336464633635623631303634356265373735386138356134636439
           66386235666133626339666233646138613932336335646664316163616534663330306634306138
           393839386231643763643165376530623464
-    display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     smtp_username: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           35363239623130313538386637313462376235386364363466663631623931636666613166653165
@@ -63,9 +43,6 @@ galaxy_config:
           3463376437376438320a383863333966383038343539363764396365333431336533633065623934
           30386362636230323035613263336535333161633835633439346662326339633665
     smtp_server: 'smtp.gmail.com:587'
-    database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
-    file_path: datasets
-    object_store_store_by: id
     id_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           61363538613537363565396330346437636632396632326434663963393532336265626163323933
@@ -74,77 +51,41 @@ galaxy_config:
           3865316261666665310a343638393663616336343233393863633065303031656264663063636635
           33633238313161636239633532376563393261386439663762653566613339616261376366303731
           6264376664373139646366656434303766353836353436613439
-    check_migrate_tools: false
-    tool_data_path: "{{ galaxy_server_dir }}/tool-data"
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
-    allow_library_path_paste: true
-    watch_tool_data_dir: true
-    # File serving perfomance
-    nginx_x_accel_redirect_base: /_x_accel_redirect
-    # SQL Performance
-    slow_query_log_threshold: 5
-    enable_per_request_sql_debugging: true
-    # Automation / Ease of Use / User-facing features
-    allow_user_dataset_purge: true
-    enable_quotas: true
-    allow_user_deletion: true
-    allow_user_impersonation: true
-    watch_job_rules: 'auto'
-    allow_path_paste: true
-    expose_user_name: true
-    expose_dataset_path: true
-    expose_potentially_sensitive_job_metrics: true
     require_login: true
-    # Debugging
-    cleanup_job: onsuccess
-    # Tool security
-    outputs_to_working_directory: true
-    new_user_dataset_access_role_default_private: true # Make datasets private by default
     # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.185.153
-    integrated_tool_panel_config: /home/galaxy/galaxy/config/integrated_tool_panel.xml
+    # default len_file_path: shared/ucsc/chrom
     len_file_path: /home/galaxy/galaxy/config/len
-    static_enabled: false
-    tool_config_file: /home/galaxy/galaxy/config/tool_conf.xml.sample
-    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml.sample
-    tool_sheds_config_file: /home/galaxy/galaxy/config/tool_sheds_conf.xml
+    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
 
   gravity:
-    process_manager: systemd
-    galaxy_root: "{{ galaxy_server_dir }}"
-    galaxy_user: "{{ galaxy_user_name }}"
-    virtualenv: "{{ galaxy_venv_dir }}"
     gunicorn:
-      # listening options
-      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
       # performance options
       workers: 8
-      # Other options that will be passed to gunicorn
-      extra_args: '--forwarded-allow-ips="*"'
-      preload: true
-    celery:
-      concurrency: 2
-      loglevel: DEBUG
     handlers:
       handler:
         processes: 4
-        pools:
-          - job-handler
-          - workflow-scheduler
+
+# Welcome html page variables
+_artbio_info: |
+  <h4>
+  The ARTbio server is hosting our first
+  <strong>I</strong>nteractive <strong>O</strong>nline <strong>C</strong>ompanionship on
+  <a href="https://artbio.github.io/startbio/bulk_RNAseq-IOC/00_IOC_RNAseq_program/" target="_blank">
+  Bulk RNAseq analysis</a> 
+  <br>
+  From January 8th to March 18th, 2024
+  </h4>
+artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/ARTbio/files/galaxy/config/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
-  - src: environments/ARTbio/files/galaxy/config/tool_conf.xml
-    dest: "{{ galaxy_config_dir }}/tool_conf.xml"
-  - src: environments/ARTbio/files/galaxy/config/tool_sheds_conf.xml
-    dest: "{{ galaxy_config_dir }}/tool_sheds_conf.xml"
-  - src: environments/ARTbio/files/galaxy/html/welcome.html
-    dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.png"
 
-# systemd
-galaxy_manage_systemd: true
+galaxy_config_templates:
+  - src: environments/ARTbio/templates/html/welcome.html.j2
+    dest: "{{ galaxy_server_dir }}/static/welcome.html"
