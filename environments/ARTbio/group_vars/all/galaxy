@@ -77,7 +77,7 @@ _artbio_info: |
   <br>
   From January 8th to March 18th, 2024
   </h4>
-artbio_info: "{{ _conect_info | indent(width=10, first=True) }}"
+artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
