@@ -110,4 +110,16 @@ server {
         try_files $uri @proxy_to_app_omero;
     }
 
+    # Wael application djangodb
+    location /conectdb/ {
+        include proxy_params;
+        proxy_pass http://unix:/home/wael/django-conectaml/conect/conect.sock;
+
+    }
+
+    #conectdb static path (order location static blocks matters)
+    location /conectdb/static {
+        alias /home/wael/django-conectaml/conect/static/;
+    }
+    
 }
