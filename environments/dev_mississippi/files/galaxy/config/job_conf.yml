@@ -78,6 +78,9 @@ tools:
   - id: "picard_SamToFastq"
     destination: "cluster_1" 
 
+  - id: "repenrich"
+    destination: "cluster_8"
+
   - id: "rna_star"
     destination: "cluster_8"
 

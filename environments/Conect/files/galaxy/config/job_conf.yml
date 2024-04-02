@@ -191,6 +191,9 @@ tools:
   - id: "picard_ReplaceSamHeader"
     destination: "java_cluster"
 
+  - id: "repenrich"
+    destination: "cluster_16"
+
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_4"
 
