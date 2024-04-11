@@ -14,7 +14,7 @@ slurm_config:
 slurm_nodes:
   - name: "localhost"
     CPUs: 80
-    RealMemory: 385639
+    RealMemory: 385600
 
 slurm_partitions:
   - name: debug
