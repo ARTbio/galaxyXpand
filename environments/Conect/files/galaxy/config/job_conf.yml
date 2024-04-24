@@ -125,7 +125,13 @@ tools:
   - id: "bcftools_mpileup"
     destination: "cluster_16"
 
+  - id: "bowtie_wrapper"
+    destination: "cluster_16"
+
   - id: "bowtie2"
+    destination: "cluster_16"
+
+  - id: "bowtie2_index_builder_data_manager"
     destination: "cluster_16"
 
   - id: "bowtieForSmallRNA"
@@ -192,6 +198,9 @@ tools:
     destination: "java_cluster"
 
   - id: "repenrich"
+    destination: "cluster_16"
+
+  - id: "repenrich2"
     destination: "cluster_16"
 
   - id: "retrieve_fasta_from_NCBI"
