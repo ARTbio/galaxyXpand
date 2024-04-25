@@ -207,7 +207,7 @@ tools:
     destination: "cluster_16"
 
   - id: "repenrich2"
-    destination: "cluster_16"
+    destination: "repenrich2"
 
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_4"
@@ -249,7 +249,7 @@ tools:
     destination: "cluster_8"
 
   - id: "trimmomatic"
-    destination: "cluster_8"
+    destination: "cluster_4"
 
   - id: "trinity"
     destination: "cluster_16"
