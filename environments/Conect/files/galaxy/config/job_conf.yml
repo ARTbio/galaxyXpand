@@ -68,6 +68,9 @@ execution:
     artbio_bam_cleaning:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=4"
+    repenrich2:
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=16"
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -108,6 +111,9 @@ limits:
   - type: environment_total_concurrent_jobs
     id: artbio_bam_cleaning
     value: 4
+  - type: environment_total_concurrent_jobs
+    id: repenrich2
+    value: 5
 
 tools:
   - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
