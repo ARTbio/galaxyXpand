@@ -113,7 +113,7 @@ limits:
     value: 4
   - type: environment_total_concurrent_jobs
     id: repenrich2
-    value: 5
+    value: 2
 
 tools:
   - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
