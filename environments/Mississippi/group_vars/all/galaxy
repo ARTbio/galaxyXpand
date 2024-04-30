@@ -70,7 +70,7 @@ galaxy_config:
 
 # Welcome html page variables
 _Mississippi_info: |
-  <strong>Mississippi recently upgraded to release 23.1
+  <strong>Mississippi recently upgraded to release 23.2
   <br>
   Please report any unusual bugs</strong>
 Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
