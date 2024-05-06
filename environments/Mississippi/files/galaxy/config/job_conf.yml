@@ -188,6 +188,9 @@ tools:
   - id: "repenrich"
     destination: "cluster_8"
 
+  - id: "repenrich2"
+    destination: "cluster_8"
+
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_2"
 
