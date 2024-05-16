@@ -68,6 +68,9 @@ execution:
     artbio_bam_cleaning:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=4"
+    repenrich2:
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=16"
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -108,6 +111,9 @@ limits:
   - type: environment_total_concurrent_jobs
     id: artbio_bam_cleaning
     value: 4
+  - type: environment_total_concurrent_jobs
+    id: repenrich2
+    value: 2
 
 tools:
   - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
@@ -125,7 +131,13 @@ tools:
   - id: "bcftools_mpileup"
     destination: "cluster_16"
 
+  - id: "bowtie_wrapper"
+    destination: "cluster_16"
+
   - id: "bowtie2"
+    destination: "cluster_16"
+
+  - id: "bowtie2_index_builder_data_manager"
     destination: "cluster_16"
 
   - id: "bowtieForSmallRNA"
@@ -194,6 +206,9 @@ tools:
   - id: "repenrich"
     destination: "cluster_16"
 
+  - id: "repenrich2"
+    destination: "repenrich2"
+
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_4"
 
@@ -234,7 +249,7 @@ tools:
     destination: "cluster_8"
 
   - id: "trimmomatic"
-    destination: "cluster_8"
+    destination: "cluster_4"
 
   - id: "trinity"
     destination: "cluster_16"

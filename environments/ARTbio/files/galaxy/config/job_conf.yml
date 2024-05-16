@@ -94,13 +94,13 @@ tools:
     destination: "cluster_8"
 
   - id: "bcftools_annotate"
-    destination: "cluster_8" 
+    destination: "cluster_8"
 
   - id: "bcftools_mpileup"
-    destination: "cluster_8" 
+    destination: "cluster_8"
 
   - id: "bcftools_norm"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "bowtie_wrapper"
     destination: "cluster_16"
@@ -127,7 +127,7 @@ tools:
     destination: "cluster_16"
 
   - id: "cutadapt"
-    destination: "cluster_16" 
+    destination: "cluster_16"
 
   - id: "deeptools_bam_compare"
     destination: "cluster_16"
@@ -160,16 +160,16 @@ tools:
     destination: "java_cluster"
 
   - id: "fastq_dump"
-    destination: "cluster_2" 
+    destination: "cluster_2"
 
   - id: "featurecounts"
-    destination: "cluster_4" 
+    destination: "cluster_4"
 
   - id: "freebayes"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "Group"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "guppy-basecaller"
     destination: "cluster_8"
@@ -181,13 +181,13 @@ tools:
     destination: "cluster_16"
 
   - id: "justgzip"
-    destination: "cluster_8" 
+    destination: "cluster_8"
 
   - id: "kallisto_quant"
     destination: "cluster_8"
 
   - id: "lumpy_smoove"
-    destination: "cluster_8" 
+    destination: "cluster_8"
 
   - id: "lumpy_sv"
     destination: "cluster_8"
@@ -220,10 +220,10 @@ tools:
     destination: "cluster_8"
 
   - id: "picard_FilterSamReads"
-    destination: "java_cluster" 
+    destination: "java_cluster"
 
   - id: "picard_SamToFastq"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "repenrich"
     destination: "cluster_16"
@@ -289,7 +289,7 @@ tools:
     destination: "cluster_16"
 
   - id: "tp_grep_tool"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "vsearch_clustering"
     destination: "cluster_64"

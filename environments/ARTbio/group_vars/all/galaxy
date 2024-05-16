@@ -70,12 +70,9 @@ galaxy_config:
 # Welcome html page variables
 _artbio_info: |
   <h4>
-  The ARTbio server is hosting our first
-  <strong>I</strong>nteractive <strong>O</strong>nline <strong>C</strong>ompanionship on
-  <a href="https://artbio.github.io/startbio/bulk_RNAseq-IOC/00_IOC_RNAseq_program/" target="_blank">
-  Bulk RNAseq analysis</a> 
+  <strong> ARTbio server recently upgraded to release 23.2
   <br>
-  From January 8th to March 18th, 2024
+  Please report any unusual bugs</strong>
   </h4>
 artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
