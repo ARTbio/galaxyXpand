@@ -110,7 +110,10 @@ limits:
     value: 6
   - type: environment_total_concurrent_jobs
     id: artbio_bam_cleaning
-    value: 4
+    value: 6
+  - type: environment_total_concurrent_jobs
+    id: varscan
+    value: 40
   - type: environment_total_concurrent_jobs
     id: repenrich2
     value: 2
