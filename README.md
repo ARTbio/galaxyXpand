@@ -11,12 +11,17 @@ Requirements
 ```
 
 Python >= 3.7 
-ansible >= 2.10.1
+ansible >= 3.0
 ```
 
 ### Example of use
 
 ```
+apt update
+apt install python3-pip python3-virtualenv
+pip install ansible==3.0
+git clone https://github.com/ARTbio/galaxyXpand.git
+cd galaxyXpand
 ansible-galaxy install -r requirements.yml -p roles/
 ansible-playbook -i environments/dev_gce/hosts playbook.yml
 ```
