@@ -82,6 +82,7 @@ jobs:
         sudo cat /etc/nginx/nginx.conf
         sudo cat /home/galaxy/galaxy/config/galaxy.yml
         sudo galaxyctl status
+        sudo systemctl restart galaxy.target
 
     - name: check Galaxy API is alive
       run: |
