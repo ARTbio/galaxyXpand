@@ -73,12 +73,12 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Sleep for 30 secs and check galaxyctl status
+    - name: Sleep for 60 secs and check galaxyctl status
       run: |
         sudo sed -E -i 's/www-data/galaxy/' /etc/nginx/nginx.conf
         sudo systemctl restart nginx.service
         sudo galaxyctl graceful
-        echo "waiting 30 sec" && sleep 30
+        echo "waiting 60 sec" && sleep 60
         sudo cat /etc/nginx/nginx.conf
         sudo cat /home/galaxy/galaxy/config/galaxy.yml
         sudo galaxyctl status
