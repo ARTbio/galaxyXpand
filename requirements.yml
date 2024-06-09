@@ -11,4 +11,5 @@
 - src: galaxyproject.slurm
   version: 1.0.4
 - src: https://github.com/ARTbio/ansible-galaxy-tools.git
+  version: release_24.0
   name: install.galaxy-tools
