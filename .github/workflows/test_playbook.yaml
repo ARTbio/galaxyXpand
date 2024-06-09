@@ -41,8 +41,8 @@ jobs:
 
     - name: Install ansible 3.0 and bioblend in ubuntu 20.04
       run: |
-        python3 -m pip install ansible==3.0 bioblend
-        # python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.2.0.zip pytest
+        python3 -m pip install ansible==3.0
+        python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
     
     - name: Display pip python and ansible settings
       run: |
