@@ -75,14 +75,15 @@ jobs:
 
     - name: Sleep for 60 secs and check galaxyctl status
       run: |
-        sudo sed -E -i 's/www-data/galaxy/' /etc/nginx/nginx.conf
-        sudo systemctl restart nginx.service
+        # sudo sed -E -i 's/www-data/galaxy/' /etc/nginx/nginx.conf
+        # sudo systemctl restart nginx.service
+        sudo galaxyctl status
         sudo galaxyctl graceful
         echo "waiting 60 sec" && sleep 60
-        sudo cat /etc/nginx/nginx.conf
-        sudo cat /home/galaxy/galaxy/config/galaxy.yml
+        # sudo cat /etc/nginx/nginx.conf
+        # sudo cat /home/galaxy/galaxy/config/galaxy.yml
         sudo galaxyctl status
-        sudo systemctl restart galaxy.target
+        # sudo systemctl restart galaxy.target
 
     - name: check Galaxy API is alive
       run: |
