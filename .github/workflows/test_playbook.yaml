@@ -8,7 +8,7 @@ on:
 env:
   GALAXY_USER: tooladmin@galaxy.org
   GALAXY_USER_PASSWD: artbio2024
-  BIOBLEND_GALAXY_API_KEY: "myverysecretapikey"
+  # BIOBLEND_GALAXY_API_KEY: "myverysecretapikey"
   BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
   BIOBLEND_TEST_JOB_TIMEOUT: "240"
 
