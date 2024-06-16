@@ -15,7 +15,7 @@ nginx_conf_user: "www-data galaxy"
 galaxy_manage_systemd: true
 
 # Galaxy common to all hosts
-galaxy_commit_id: release_23.2
+galaxy_commit_id: release_24.0
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
