@@ -89,7 +89,7 @@ jobs:
       run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
       
     - name: check api key
-      run: echo $BIOBLEND_GALAXY_API_KEY
+      run: echo "printing api key variable $BIOBLEND_GALAXY_API_KEY"
 
     - name: Bioblend tests
       run: |
