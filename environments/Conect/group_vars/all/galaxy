@@ -71,9 +71,9 @@ galaxy_config:
 
 # Welcome html page variables
 _conect_info: |
-  <strong>This is a text message
+  <strong>Galaxy software was upgraded to
   <br>
-  when needing user information</strong>
+  release_24.0 (2024-06-17)</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
