@@ -229,12 +229,12 @@ tools:
   tool_panel_section_id: samtools
   tool_panel_section_label: SAMtools
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: crossmap_bed
+- name: bedtools
   owner: iuc
   tool_panel_section_id: bedtools
   tool_panel_section_label: BEDtools
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: bedtools
+- name: crossmap_bed
   owner: iuc
   tool_panel_section_id: bedtools
   tool_panel_section_label: BEDtools
@@ -643,6 +643,11 @@ tools:
   owner: bgruening
   tool_panel_section_id: machine_learning
   tool_panel_section_label: Machine Learning
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: ez_histograms
+  owner: artbio
+  tool_panel_section_id: stats
+  tool_panel_section_label: Statistics
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: table_compute
   owner: iuc
