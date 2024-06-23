@@ -65,6 +65,8 @@ common_galaxy_config:
     expose_user_name: true
     expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
+    enable_tool_source_display: true
+    interactivetools_enable: true
     # Debugging
     cleanup_job: onsuccess
     allow_user_impersonation: true
