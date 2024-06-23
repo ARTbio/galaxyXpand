@@ -142,6 +142,9 @@ tools:
   - id: "bwa"
     destination: "cluster_16"
 
+  - id: "cnvkit_batch"
+    destination: "cluster_4"
+
   - id: "deeptools_bam_coverage"
     destination: "cluster_4"
 
