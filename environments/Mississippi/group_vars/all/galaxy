@@ -70,9 +70,9 @@ galaxy_config:
 
 # Welcome html page variables
 _Mississippi_info: |
-  <strong>Mississippi recently upgraded to release 23.2
+  <strong> On 2024-06-23, Mississippi was upgraded to release 24.0
   <br>
-  Please report any unusual bugs</strong>
+  Please report any unusual bugs with tools or workflows</strong>
 Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
 # deploy galaxy configuration files
