@@ -175,6 +175,9 @@ tools:
   - id: "picard_MergeSamFiles"
     destination: "cluster_8"
 
+  - id: "picard_AddOrReplaceReadGroups"
+    destination: "cluster_8"
+
   - id: "picard_SortSam"
     destination: "cluster_8"
 
