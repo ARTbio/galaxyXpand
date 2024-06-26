@@ -136,6 +136,9 @@ tools:
   - id: "lofreq_call"
     destination: "cluster_8"
 
+  - id: "lumpy_smoove"
+    destination: "cluster_4"
+
   - id: "macs2_callpeak"
     destination: "cluster_8"
 
