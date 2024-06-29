@@ -54,6 +54,8 @@ galaxy_config:
           6636366361643132663339333535343462653261636436663531
     # Automation / Ease of Use / User-facing features
     require_login: true
+    user_activation_on: true
+    allow_user_creation: false
     # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.183.195
@@ -71,9 +73,9 @@ galaxy_config:
 
 # Welcome html page variables
 _conect_info: |
-  <strong>This is a text message
+  <strong>Galaxy software was upgraded to
   <br>
-  when needing user information</strong>
+  release_24.0 (2024-06-17)</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files

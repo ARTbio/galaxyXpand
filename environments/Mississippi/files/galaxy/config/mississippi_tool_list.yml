@@ -299,6 +299,11 @@ tools:
   tool_panel_section_id: stats
   tool_panel_section_label: Statistics
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: ggplot2_point
+  owner: iuc
+  tool_panel_section_id: plots
+  tool_panel_section_label: Graph/Display Data
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: high_dim_heatmap
   owner: artbio
   tool_panel_section_id: plots
@@ -709,6 +714,11 @@ tools:
   tool_panel_section_id: nuclear_3d_organisation
   tool_panel_section_label: Nuclear 3D organisation
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: trinity
+  owner: iuc
+  tool_panel_section_id: ngs:_assembly
+  tool_panel_section_label: 'NGS: Assembly'
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: trinity_samples_qccheck
   owner: iuc
   tool_panel_section_id: ngs:_assembly
@@ -750,11 +760,6 @@ tools:
   tool_panel_section_label: 'NGS: Assembly'
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: trinity_abundance_estimates_to_matrix
-  owner: iuc
-  tool_panel_section_id: ngs:_assembly
-  tool_panel_section_label: 'NGS: Assembly'
-  tool_shed_url: toolshed.g2.bx.psu.edu
-- name: trinity
   owner: iuc
   tool_panel_section_id: ngs:_assembly
   tool_panel_section_label: 'NGS: Assembly'
@@ -1209,6 +1214,11 @@ tools:
   tool_panel_section_id: ngs:_rna_analysis
   tool_panel_section_label: 'NGS: RNA Analysis'
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: repenrich2
+  owner: artbio
+  tool_panel_section_id: transposon_detection
+  tool_panel_section_label: Transposon Detection
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: pindel
   owner: artbio
   tool_panel_section_id: transposon_detection
@@ -1553,6 +1563,31 @@ tools:
   owner: iuc
   tool_panel_section_id: single-cell_rnaseq
   tool_panel_section_label: Single-cell RNAseq
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: umi_tools_whitelist
+  owner: iuc
+  tool_panel_section_id: umi_tools
+  tool_panel_section_label: UMI Tools
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: umi_tools_group
+  owner: iuc
+  tool_panel_section_id: umi_tools
+  tool_panel_section_label: UMI Tools
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: umi_tools_count
+  owner: iuc
+  tool_panel_section_id: umi_tools
+  tool_panel_section_label: UMI Tools
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: umi_tools_extract
+  owner: iuc
+  tool_panel_section_id: umi_tools
+  tool_panel_section_label: UMI Tools
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: umi_tools_dedup
+  owner: iuc
+  tool_panel_section_id: umi_tools
+  tool_panel_section_label: UMI Tools
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: ceas
   owner: pjbriggs

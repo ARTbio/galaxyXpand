@@ -57,6 +57,9 @@ tools:
   - id: "bowtie_index_builder_data_manager"
     destination: "cluster_1"
 
+  - id: "bwa_mem"
+    destination: "cluster_8"
+
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_1"
 
@@ -69,6 +72,9 @@ tools:
   - id: "bowtie_wrapper"
     destination: "cluster_8"
 
+  - id: "bowtie2"
+    destination: "cluster_8"
+
   - id: "fastqc"
     destination: "cluster_2"
 
@@ -76,7 +82,7 @@ tools:
     destination: "cluster_2"
 
   - id: "picard_SamToFastq"
-    destination: "cluster_1" 
+    destination: "cluster_1"
 
   - id: "repenrich"
     destination: "cluster_8"
@@ -85,6 +91,9 @@ tools:
     destination: "cluster_8"
 
   - id: "rna_starsolo"
+    destination: "cluster_8"
+
+  - id: "sambamba_sample_or_filter"
     destination: "cluster_8"
 
   - id: "samtools_cram_to_bam"
@@ -105,6 +114,9 @@ tools:
   - id: "samtool_filter2"
     destination: "cluster_2"
 
+  - id: "seqtk_sample"
+    destination: "cluster_8"
+
   - id: "small_rna_maps"
     destination: "cluster_2"
 
@@ -112,4 +124,4 @@ tools:
     destination: "cluster_4"
 
   - id: "tp_grep_tool"
-    destination: "cluster_1" 
+    destination: "cluster_1"

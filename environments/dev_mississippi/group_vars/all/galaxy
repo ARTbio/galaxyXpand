@@ -52,6 +52,11 @@ galaxy_config:
 
     # Automation / Ease of Use / User-facing features
     require_login: true
+    # settings in test before generalisation
+    user_activation_on: true
+    interactivetools_enable: true
+    allow_user_creation: false
+    enable_tool_source_display: true
 
   gravity:
     gunicorn:

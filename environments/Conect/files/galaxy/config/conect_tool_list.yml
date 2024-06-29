@@ -229,12 +229,12 @@ tools:
   tool_panel_section_id: samtools
   tool_panel_section_label: SAMtools
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: crossmap_bed
+- name: bedtools
   owner: iuc
   tool_panel_section_id: bedtools
   tool_panel_section_label: BEDtools
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: bedtools
+- name: crossmap_bed
   owner: iuc
   tool_panel_section_id: bedtools
   tool_panel_section_label: BEDtools
@@ -643,6 +643,11 @@ tools:
   owner: bgruening
   tool_panel_section_id: machine_learning
   tool_panel_section_label: Machine Learning
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: ez_histograms
+  owner: artbio
+  tool_panel_section_id: stats
+  tool_panel_section_label: Statistics
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: table_compute
   owner: iuc
@@ -1378,6 +1383,91 @@ tools:
   owner: iuc
   tool_panel_section_id: cnv
   tool_panel_section_label: CNV
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_target
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_antitarget
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_breaks
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_access
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_scatter
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_autobin
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_segment
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_batch
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_heatmap
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_sex
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_fix
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_coverage
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_call
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_segmetrics
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_reference
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_genemetrics
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnvkit_diagram
+  owner: iuc
+  tool_panel_section_id: cnvkit
+  tool_panel_section_label: CNVkit
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: data_manager_bowtie_index_builder
   owner: iuc
