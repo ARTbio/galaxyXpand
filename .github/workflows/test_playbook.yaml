@@ -7,8 +7,7 @@ on:
       - master
 env:
   GALAXY_USER: tooladmin@galaxy.org
-  GALAXY_USER_PASSWD: artbio2025
-  BIOBLEND_GALAXY_API_KEY: "myverysecretapikey"
+  GALAXY_USER_PASSWD: artbio2024
   BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
   BIOBLEND_TEST_JOB_TIMEOUT: "240"
 
@@ -42,7 +41,7 @@ jobs:
     - name: Install ansible 3.0 and bioblend in ubuntu 20.04
       run: |
         python3 -m pip install ansible==3.0
-        python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.2.0.zip pytest
+        python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
     
     - name: Display pip python and ansible settings
       run: |
@@ -73,14 +72,12 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Sleep for 30 secs and check galaxyctl status
+    - name: Sleep for 60 secs and check galaxyctl status
       run: |
-        sudo sed -E -i 's/www-data/galaxy/' /etc/nginx/nginx.conf
         sudo systemctl restart nginx.service
+        sudo galaxyctl status
         sudo galaxyctl graceful
-        echo "waiting 30 sec" && sleep 30
-        sudo cat /etc/nginx/nginx.conf
-        sudo cat /home/galaxy/galaxy/config/galaxy.yml
+        echo "waiting 60 sec" && sleep 60
         sudo galaxyctl status
 
     - name: check Galaxy API is alive
@@ -90,6 +87,11 @@ jobs:
     - name: ansible installs galaxy tools
       run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
       
+    - name: retrieve api key and reference it in glob env variable
+      run: |
+        BIOBLEND_GALAXY_API_KEY=`cat ./apikey.txt`
+        echo "BIOBLEND_GALAXY_API_KEY=$BIOBLEND_GALAXY_API_KEY" >> $GITHUB_ENV
+
     - name: Bioblend tests
       run: |
         cd /home/runner/.local/lib/python3.8/site-packages/bioblend/_tests

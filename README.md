@@ -10,13 +10,18 @@ Documentation is coming soon.
 Requirements
 ```
 
-Python >= 3.7 
-ansible >= 2.10.1
+Python >= 3.8 
+ansible >= 3.0
 ```
 
 ### Example of use
 
 ```
+apt update
+apt install python3-pip python3-virtualenv
+pip install ansible==3.0
+git clone https://github.com/ARTbio/galaxyXpand.git
+cd galaxyXpand
 ansible-galaxy install -r requirements.yml -p roles/
 ansible-playbook -i environments/dev_gce/hosts playbook.yml
 ```
@@ -27,7 +32,7 @@ Then,
 ```
 ansible-playbook -i environments/dev_gce/hosts install_tools.yml
 ```
-installs 3 sample tools described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample)
+installs 2 tools described as described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample)
 
 ----
 ```
