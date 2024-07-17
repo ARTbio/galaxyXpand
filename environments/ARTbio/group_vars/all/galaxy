@@ -70,7 +70,7 @@ galaxy_config:
 # Welcome html page variables
 _artbio_info: |
   <h4>
-  <strong> ARTbio server recently upgraded to release 24.0 (2024-06-29)
+  <strong> ARTbio server recently upgraded to release 24.1 (2024-07-17)
   <br>
   Please report any unusual bugs</strong>
   </h4>
