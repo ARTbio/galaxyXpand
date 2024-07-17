@@ -2,7 +2,7 @@
 # Galaxy
 
 # development branch
-galaxy_commit_id: release_24.0
+galaxy_commit_id: release_24.1
 
 galaxy_config:
   galaxy:

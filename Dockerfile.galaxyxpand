@@ -89,8 +89,9 @@ RUN echo "remote_tmp = /setup/.ansible/tmp" >> ansible.cfg && \
     service postgresql start && \
     sed -i '/slurm-wlm/d' playbook.yml && sed -i '/slurm-drmaa-dev/d' playbook.yml && \
     ansible-galaxy install -r requirements.yml -p roles -f && \
-    head -n -4 roles/galaxyproject.galaxy/handlers/main.yml > tmp.txt &&\
-    mv tmp.txt roles/galaxyproject.galaxy/handlers/main.yml &&\
+    # following was commented with the release_24.1
+    # head -n -4 roles/galaxyproject.galaxy/handlers/main.yml > tmp.txt &&\
+    # mv tmp.txt roles/galaxyproject.galaxy/handlers/main.yml &&\
     ansible-playbook -i environments/Docker/hosts playbook.yml
 
 ONBUILD  WORKDIR  /setup
