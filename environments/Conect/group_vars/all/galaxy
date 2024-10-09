@@ -75,7 +75,7 @@ galaxy_config:
 _conect_info: |
   <strong>Galaxy software was upgraded to
   <br>
-  release_24.0 (2024-06-17)</strong>
+  release_24.1 (2024-07-17)</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
