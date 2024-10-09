@@ -36,11 +36,15 @@ jobs:
         sudo apt -qq remove ansible
         sudo apt install python3-pip -y
         python3 -m pip install -U pip setuptools
+        python3 -m pip install "packaging>=24" "ordered-set>=3.1.1" "more_itertools>=8.8" \
+                                "jaraco.text>=3.7" "importlib_resources>=5.10.2" \
+                                "importlib_metadata>=6" "tomli>=2.0.1" "wheel>=0.43.0" \
+                                "platformdirs >= 2.6.2"
 
 
     - name: Install ansible 3.0 and bioblend in ubuntu 20.04
       run: |
-        python3 -m pip install ansible==3.4.0
+        python3 -m pip install ansible==3.0.0
         python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
     
     - name: Display pip python and ansible settings
