@@ -70,7 +70,7 @@ limits:
 
   - type: environment_total_concurrent_jobs
     id: cluster_1
-    value: 40
+    value: 30
   - type: environment_total_concurrent_jobs
     id: cluster_2
     value: 30
@@ -109,8 +109,14 @@ limits:
     value: 2
 
 tools:
-  - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
-    environment: "cluster_1"
+#  - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
+#    environment: "cluster_1"
+
+  - id: "Add_a_column1"
+    destination: "cluster_1"
+
+  - id: "addValue"
+    destination: "cluster_1"
 
   - id: "arriba"
     destination: "cluster_8"
@@ -153,6 +159,9 @@ tools:
 
   - id: "featurecounts"
     destination: "cluster_8"
+
+  - id: "Filter1"
+    destination: "cluster_1"
 
   - id: "freebayes"
     destination: "cluster_16"
@@ -199,6 +208,9 @@ tools:
   - id: "picard_ReplaceSamHeader"
     destination: "java_cluster"
 
+  - id: "regexColumn1"
+    destination: "cluster_1"
+
   - id: "repenrich"
     destination: "cluster_16"
 
@@ -230,7 +242,7 @@ tools:
     destination: "cluster_8"
 
   - id: "snpEff"
-    destination: "java_cluster"
+    destination: "cluster_2"
 
   - id: "snpSift_annotate"
     destination: "java_cluster"
@@ -238,11 +250,17 @@ tools:
   - id: "snpsift"
     destination: "java_cluster"
 
+  - id: "snpSift_extractFields"
+    destination: "cluster_2"
+
   - id: "spades"
     destination: "cluster_16"
 
   - id: "star_fusion"
     destination: "cluster_8"
+
+  - id: "tp_sort_header_tool"
+    destination: "cluster_1"
 
   - id: "trimmomatic"
     destination: "cluster_4"
@@ -257,7 +275,10 @@ tools:
     destination: "varscan"
 
   - id: "vcf2maf"
-    destination: "cluster_4"
+    destination: "cluster_1"
 
   - id: "vcfvcfintersect"
     destination: "vcfvcfintersect"
+
+  - id: "vcf2hrdetect"
+    destination: "cluster_1"

@@ -66,7 +66,7 @@ galaxy_config:
   gravity:
     gunicorn:
       # performance options
-      workers: 10
+      workers: 8
     handlers:
       handler:
         processes: 4
