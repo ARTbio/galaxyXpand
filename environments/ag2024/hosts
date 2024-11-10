@@ -1,5 +1,5 @@
-[dev_gce]
+[ag2024]
 localhost  ansible_connection=local ansible_user=ubuntu
 
 [dbservers:children]
-dev_gce
+ag2024
