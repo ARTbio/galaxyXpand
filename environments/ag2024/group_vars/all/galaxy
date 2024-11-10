@@ -1,0 +1,26 @@
+---
+# Galaxy
+
+# development branch
+galaxy_commit_id: release_24.1
+
+galaxy_config:
+  galaxy:
+    admin_users: admin@galaxy.org,tooladmin@galaxy.org
+    brand: "🧬🔬🚀"
+  gravity:
+    gunicorn:
+      # listening option on port 4000 for google cloud
+      bind: "localhost:4000"
+
+# deploy galaxy configuration files
+galaxy_config_templates:
+  - src: environments/ag2024/templates/galaxyXpand_welcome.html.j2
+    dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
+
+# deploy png galaxyXpand logo
+galaxy_config_files:
+  - src: environments/ag2024/files/job_conf.yml
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: environments/ag2024/files/galaxyXpand_logo.png
+    dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
