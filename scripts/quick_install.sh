@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt update
-apt install python3-pip
+apt install python3-pip python3-dev
 pip install -U pip
 source .bashrc
 pip install ansible==3.0.0
