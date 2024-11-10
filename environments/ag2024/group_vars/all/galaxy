@@ -23,4 +23,6 @@ galaxy_config_files:
   - src: environments/ag2024/files/job_conf.yml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: environments/ag2024/files/galaxyXpand_logo.png
-    dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
+    dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
+
+galaxy_tools_tool_list_files: [ "environments/ag2024/files/ag2024_tools.yaml" ]

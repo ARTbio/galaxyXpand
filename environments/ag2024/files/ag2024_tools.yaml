@@ -1,0 +1,7 @@
+tools:
+- name: bedtools
+  owner: iuc
+  tool_panel_section_label: 'BED tools'
+- name: data_manager_fetch_genome_dbkeys_all_fasta
+  owner: devteam
+  tool_shed_url: https://toolshed.g2.bx.psu.edu
