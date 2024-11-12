@@ -1,11 +1,11 @@
 #!/bin/bash
-date
+date | tee install_log.txt
 apt update
 apt upgrade -y
 apt install python3-pip python3-dev -y
 pip install -U pip
 /usr/local/bin/pip install ansible==3.0.0
-ansible-galaxy install -r requirements.yml -p roles/ -f
-time ansible-playbook -i environments/ag2024/hosts playbook.yml
-time ansible-playbook -i environments/ag2024/hosts install_tools.yml
+ansible-galaxy install -r requirements.yml -p roles/ -f | tee install_log.txt
+time ansible-playbook -i environments/ag2024/hosts playbook.yml | tee install_log.txt
+time ansible-playbook -i environments/ag2024/hosts install_tools.yml | tee install_log.txt
 date
