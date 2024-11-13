@@ -13,3 +13,4 @@ sleep 30
 galaxyctl status >> ~/install_log.txt
 time ansible-playbook -i ~/galaxyXpand/environments/ag2024/hosts ~/galaxyXpand/install_tools.yml >> ~/install_log.txt
 date >> ~/install_log.txt
+echo "Installation is complete" >> ~/install_log.txt
