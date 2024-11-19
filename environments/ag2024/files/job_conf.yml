@@ -27,7 +27,7 @@ execution:
       nativeSpecification: "--partition=debug --ntasks=3"
     cluster_7:
       runner: slurm
-      nativeSpecification: "--partition=debug --ntasks=8"
+      nativeSpecification: "--partition=debug --ntasks=7"
 
 limits:
   - type: anonymous_user_concurrent_jobs
