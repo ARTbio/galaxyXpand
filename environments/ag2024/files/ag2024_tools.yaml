@@ -1,0 +1,169 @@
+tools:
+
+# data managers
+- name: data_manager_fetch_genome_dbkeys_all_fasta
+  owner: devteam
+  tool_panel_section_label: null
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: data_manager_bowtie_index_builder
+  owner: iuc
+  changeset_revision: cb157f55b4fd
+  tool_panel_section_label: null
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: sequence_format_converter
+  owner: artbio
+  tool_panel_section_id: hts_data
+  tool_panel_section_label: "HTS data manipulation"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: trimmomatic
+  owner: pjbriggs
+  tool_panel_section_id: hts_data
+  tool_panel_section_label: "HTS data manipulation"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: fastqc
+  owner: devteam
+  tool_panel_section_id: hts_data
+  tool_panel_section_label: "HTS data manipulation"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: seqtk
+  owner: iuc
+  tool_panel_section_id: hts_data
+  tool_panel_section_label: "HTS data manipulation"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: multiqc
+  owner: iuc
+  tool_panel_section_id: hts_data
+  tool_panel_section_label: "HTS data manipulation"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: justdiff
+  owner: artbio
+  tool_panel_section_id: ag2024
+  tool_panel_section_label: "AG 2024"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+#- name: regex_find_replace
+#  owner: galaxyp
+#  tool_panel_section_id: ag2024
+#  tool_panel_section_label: "AG 2024"
+#  tool_shed_url: https://toolshed.g2.bx.psu.edu
+
+- name: cherry_pick_fasta
+  owner: artbio
+  tool_panel_section_id: ag2024
+  tool_panel_section_label: "AG 2024"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu
+
+- name: text_processing
+  owner: bgruening
+  tool_panel_section_id: ag2024
+  tool_panel_section_label: "AG 2024"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: bowtie_wrappers
+  owner: devteam
+  tool_panel_section_id: rna
+  tool_panel_section_label: "RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: rseqc
+  owner: nilesh
+  tool_panel_section_id: rna
+  tool_panel_section_label: "RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: featurecounts
+  owner: iuc
+  tool_panel_section_id: rna
+  tool_panel_section_label: "RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: deseq2
+  owner: iuc
+  tool_panel_section_id: rna
+  tool_panel_section_label: "RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: volcanoplot
+  owner: iuc
+  tool_panel_section_id: rna
+  tool_panel_section_label: "RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: yac_clipper
+  owner: artbio
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: sr_bowtie
+  owner: artbio
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: small_rna_maps
+  owner: artbio
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: small_rna_signatures
+  owner: artbio
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: sr_bowtie_dataset_annotation
+  owner: artbio
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: weblogo3
+  owner: devteam
+  tool_panel_section_id: srna
+  tool_panel_section_label: "Small RNAs"
+  tool_shed_url: toolshed.g2.bx.psu.edu
+
+- name: samtools_sort
+  owner: devteam
+  tool_panel_section_id: samtools
+  tool_panel_section_label: "Samtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: samtools_stats
+  owner: devteam
+  tool_panel_section_id: samtools
+  tool_panel_section_label: "Samtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: samtools_view
+  owner: iuc
+  tool_panel_section_id: samtools
+  tool_panel_section_label: "Samtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: samtool_filter2
+  owner: devteam
+  tool_panel_section_id: samtools
+  tool_panel_section_label: "Samtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+
+- name: sambamba
+  owner: artbio
+  tool_panel_section_id: samtools
+  tool_panel_section_label: "Samtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
+  
+- name: bedtools
+  owner: iuc
+  tool_panel_section_id: bedtools
+  tool_panel_section_label: "Bedtools"
+  tool_shed_url: https://toolshed.g2.bx.psu.edu/
