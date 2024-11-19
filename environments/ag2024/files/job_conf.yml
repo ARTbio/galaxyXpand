@@ -67,7 +67,7 @@ tools:
   - id: "bowtieForSmallRNA"
     destination: "cluster_7"
 
-  - id: "bowtie_wrappers"
+  - id: "bowtie_wrapper"
     destination: "cluster_7"
 
   - id: "multiqc"
