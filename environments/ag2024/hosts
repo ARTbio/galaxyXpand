@@ -1,0 +1,5 @@
+[ag2024]
+localhost  ansible_connection=local ansible_user=ubuntu
+
+[dbservers:children]
+ag2024
