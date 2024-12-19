@@ -1,9 +1,9 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 LABEL maintainer="Christophe Antoniewski <drosofff@gmail.com>"
 ARG DEBIAN_FRONTEND=noninteractive
 
 
-# Install ``python-software-properties`` and ``software-properties-common``
+# Install ``python-software-properties``, ``software-properties-common`` and PostgreSQL 16 (default in 24.04)
 #  There are some warnings (in red) that show up during the build. You can hide
 #  them by prefixing each apt-get statement with DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
@@ -14,21 +14,8 @@ RUN apt update && \
     apt install -y -qq --no-install-recommends \
     apt-transport-https software-properties-common \
     apt-utils git nano python3-pip python3-virtualenv \
-    ca-certificates locales dirmngr lsb-release curl
-
-# PostgreSQL 15
-RUN apt update && \
-    \
-    echo "===> Allow start of services"  && \
-    echo "exit 0" > /usr/sbin/policy-rc.d  && \
-    \
-    curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | \
-    tee /usr/share/keyrings/postgresql.gpg > /dev/null && \
-    echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main | \
-    tee /etc/apt/sources.list.d/postgresql.list && \
-    apt update && \
-    apt -y -qq --no-install-recommends install postgresql-client-15 postgresql-15 && \
-    apt clean
+    postgresql postgresql-contrib \
+    locales dirmngr && apt clean
 
 RUN python3 -m pip install -U pip && python3 -m pip install ansible==3.0 && \
     python3 -m pip install -U cryptography pyyaml
@@ -56,10 +43,10 @@ RUN    /etc/init.d/postgresql start &&\
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/15/main/pg_hba.conf
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/16/main/pg_hba.conf
 
-# And add ``listen_addresses`` to ``/etc/postgresql/15/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/15/main/postgresql.conf
+# And add ``listen_addresses`` to ``/etc/postgresql/16/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/16/main/postgresql.conf
 
 USER root
 
