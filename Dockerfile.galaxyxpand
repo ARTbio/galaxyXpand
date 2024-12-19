@@ -14,7 +14,7 @@ RUN apt update && \
     apt install -y -qq --no-install-recommends \
     apt-transport-https software-properties-common \
     apt-utils git nano python3-pip python3-virtualenv \
-    ca-certificates locales dirmngr lsb-release && \
+    ca-certificates locales dirmngr lsb-release curl && \
     curl -fSsL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | \
     sudo tee /usr/share/keyrings/postgresql.gpg > /dev/null && \
     echo deb [arch=amd64,arm64,ppc64el signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main | \
