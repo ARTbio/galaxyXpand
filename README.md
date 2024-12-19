@@ -43,4 +43,4 @@ This will display the value of all ansible variables for the environment Mississ
 
 
 Our previous [GalaxyKickStart](https://github.com/artbio/galaxykickstart) Ansible playbook
-supports the deployment of Galaxy releases <= 22.01
+supports the deployment of Galaxy releases <= 22.01. It is not supported anymore.
