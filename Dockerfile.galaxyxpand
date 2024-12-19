@@ -14,7 +14,7 @@ RUN apt update && \
     apt install -y -qq --no-install-recommends \
     apt-transport-https software-properties-common \
     apt-utils git nano python3-pip python3-virtualenv \
-    postgresql-12 postgresql-client-12 postgresql-contrib-12 \
+    postgresql-15 postgresql-client-15 postgresql-contrib-15 \
     locales dirmngr && apt clean
 
 RUN python3 -m pip install -U pip && python3 -m pip install ansible==3.0 && \
