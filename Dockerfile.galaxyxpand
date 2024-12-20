@@ -12,7 +12,7 @@ RUN apt update && \
     echo "exit 0" > /usr/sbin/policy-rc.d  && \
     \
     apt install -y -qq --no-install-recommends \
-    apt-transport-https software-properties-common \
+    apt-transport-https software-properties-common 2to3 \
     apt-utils git nano python3-pip python3-virtualenv \
     postgresql postgresql-contrib \
     locales dirmngr && apt clean
