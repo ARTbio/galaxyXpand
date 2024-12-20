@@ -5,7 +5,7 @@ galaxy_manage_systemd: false
 
 
 # Galaxy
-miniconda_version: 23.9
+# miniconda_version: 23.9
 
 galaxy_config:
   galaxy:
