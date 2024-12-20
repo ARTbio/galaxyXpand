@@ -18,7 +18,7 @@ RUN apt update && \
     locales dirmngr && apt clean
 
 # RUN pip install -U pip cryptography pyyaml && pip install ansible==3.0
-RUN pip install ansible==3.0 --break-system-packages
+RUN pip install ansible --break-system-packages
 # Run the rest of the commands as the ``postgres`` user created by the ``postgres-15``
 # package when it was ``apt-get installed``
 
