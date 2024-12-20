@@ -1,11 +1,10 @@
 ---
-# Docker specific settings
+# Docker specific settings (Ubuntu 24.04 base)
 install_slurm: no
 galaxy_manage_systemd: false
 
 
 # Galaxy
-# miniconda_version: 23.9
 
 galaxy_config:
   galaxy:

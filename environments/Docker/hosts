@@ -1,5 +1,4 @@
 [Docker]
 localhost  ansible_connection=local ansible_user=root
 
-#[dbservers:children]
-#Docker
+# Note that Docker has its independent postgresql installation
