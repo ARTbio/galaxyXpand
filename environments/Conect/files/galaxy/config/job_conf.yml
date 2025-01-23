@@ -282,3 +282,6 @@ tools:
 
   - id: "vcf2hrdetect"
     destination: "cluster_1"
+
+  - id: "wisecondorx_reference_builder"
+    destination: "cluster_16"
