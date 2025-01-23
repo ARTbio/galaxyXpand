@@ -664,6 +664,11 @@ tools:
   tool_panel_section_id: fetch_sequences
   tool_panel_section_label: Fetch Sequences
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: trim_galore
+  owner: bgruening
+  tool_panel_section_id: ngs:_qc_and_manipulation
+  tool_panel_section_label: 'NGS: QC and manipulation'
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: multiqc
   owner: iuc
   tool_panel_section_id: ngs:_qc_and_manipulation
@@ -1188,6 +1193,16 @@ tools:
   owner: devteam
   tool_panel_section_id: differential_expression
   tool_panel_section_label: Differential Expression
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: idr
+  owner: iuc
+  tool_panel_section_id: chip-seq
+  tool_panel_section_label: ChIP-seq
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: chipseeker
+  owner: rnateam
+  tool_panel_section_id: chip-seq
+  tool_panel_section_label: ChIP-seq
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: macs2
   owner: iuc
@@ -1769,6 +1784,11 @@ tools:
   tool_panel_section_id: bcftools
   tool_panel_section_label: BCFtools
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: guppy_basecaller
+  owner: artbio
+  tool_panel_section_id: nanopore
+  tool_panel_section_label: Nanopore
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: nanopore_qc
   owner: jvolkening
   tool_panel_section_id: nanopore
@@ -1791,11 +1811,6 @@ tools:
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: nanocompore_sampcomp
   owner: iuc
-  tool_panel_section_id: nanopore
-  tool_panel_section_label: Nanopore
-  tool_shed_url: toolshed.g2.bx.psu.edu
-- name: guppy_basecaller
-  owner: artbio
   tool_panel_section_id: nanopore
   tool_panel_section_label: Nanopore
   tool_shed_url: toolshed.g2.bx.psu.edu
@@ -1948,6 +1963,41 @@ tools:
   owner: bobbledavidson
   tool_panel_section_id: human_genetics
   tool_panel_section_label: HUMAN GENETICS
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_data
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_plot
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_create
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_reduce_dimension
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_integrate
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_preprocessing
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: seurat_clustering
+  owner: iuc
+  tool_panel_section_id: seurat_v5
+  tool_panel_section_label: Seurat_v5
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: data_manager_bowtie_index_builder
   owner: iuc
