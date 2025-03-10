@@ -35,7 +35,7 @@
           - 'python3-venv'
           - 'python3-setuptools'
           - slurm-wlm
-          - slurm-drmaa
+#          - slurm-drmaa
 #          - python-psutil
     - name: merge common and specific galaxy_config dictionary
       set_fact:
