@@ -14,9 +14,9 @@ env:
 
 jobs:
 
-  Ubuntu_20-04:
-    name: GalaxyXpand in ubuntu 20.04
-    runs-on: ubuntu-20.04
+  Ubuntu_latest:
+    name: GalaxyXpand in ubuntu latest
+    runs-on: ubuntu-latest
     
     steps:
     - name: Remove PostgreSQL on VM
@@ -31,7 +31,7 @@ jobs:
         sudo deluser postgres
         sudo apt-get -qq update -y
 
-    - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu 20.04
+    - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu latest
       run: |
         sudo apt -qq remove ansible
         sudo apt install python3-pip -y
@@ -42,7 +42,7 @@ jobs:
                                 "platformdirs >= 2.6.2"
 
 
-    - name: Install ansible 3.0 and bioblend in ubuntu 20.04
+    - name: Install ansible 3.0 and bioblend in ubuntu latest
       run: |
         python3 -m pip install ansible==3.0.0
         python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
