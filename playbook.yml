@@ -17,12 +17,12 @@
   become_user: root
 
   pre_tasks:
-    - name: Add custom slurm PPA (used for Slurm DRMAA package)
-      apt_repository:
-        repo: ppa:natefoo/slurm-drmaa
-        state: present
-        update_cache: yes
-      when: install_slurm
+#    - name: Add custom slurm PPA (used for Slurm DRMAA package)
+#      apt_repository:
+#        repo: ppa:natefoo/slurm-drmaa
+#        state: present
+#        update_cache: yes
+#      when: install_slurm
 
     - name: Install Dependencies
       package:
