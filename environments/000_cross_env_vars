@@ -8,6 +8,9 @@ install_uptime: no
 # to install slurm set to 'yes'
 install_slurm: yes
 
+# this is introduced for compatibility with ubuntu 24.04 (used for GitHub actions)
+slurm_upgrade: true
+
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
 
