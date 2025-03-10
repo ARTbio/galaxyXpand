@@ -42,9 +42,9 @@ jobs:
                                 "platformdirs >= 2.6.2"
 
 
-    - name: Install ansible 3.0 and bioblend in ubuntu latest
+    - name: Install latest ansible and bioblend in ubuntu latest
       run: |
-        python3 -m pip install ansible==3.0.0
+        python3 -m pip install ansible
         python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
     
     - name: Display pip python and ansible settings
