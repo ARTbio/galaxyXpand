@@ -61,13 +61,13 @@ jobs:
     - uses: actions/checkout@v3.2.0
 
     - name: Install ansible roles
-      run: ansible-galaxy install -r requirements.yml -p roles/
+      run: /home/aligre/.local/bin/ansible-galaxy install -r requirements.yml -p roles/
 
     - name: ansible installs galaxy
       run: |
         sudo apt-get -qq update -y
         sudo apt-get -qq --purge remove nginx*
-        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
+        /home/aligre/.local/bin/ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
                          --skip-tags galaxy_build_client \
