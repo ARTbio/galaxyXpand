@@ -13,27 +13,26 @@ env:
 
 
 jobs:
-
   Ubuntu_20-04:
     name: GalaxyXpand in ubuntu 20.04
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     
     steps:
-    - name: Remove PostgreSQL on VM
-      run: |
-        export RUNNER_ALLOW_RUNASROOT="1"
-        sudo apt-get --purge remove postgresql
-        dpkg -l | grep postgres
-        sudo apt-get --purge remove pgdg-keyring postgresql*
-        sudo rm -rf /var/lib/postgresql/  # directory data postgresql
-        sudo rm -rf /var/log/postgresql/  # directory log postgresql
-        sudo rm -rf /etc/postgresql/  # directory base postgresql
-        sudo deluser postgres
-        sudo apt-get -qq update -y
+#    - name: Remove PostgreSQL on VM
+#      run: |
+#        export RUNNER_ALLOW_RUNASROOT="1"
+#        sudo apt-get --purge remove postgresql
+#        dpkg -l | grep postgres
+#        sudo apt-get --purge remove pgdg-keyring postgresql*
+#        sudo rm -rf /var/lib/postgresql/  # directory data postgresql
+#        sudo rm -rf /var/log/postgresql/  # directory log postgresql
+#        sudo rm -rf /etc/postgresql/  # directory base postgresql
+#        sudo deluser postgres
+#        sudo apt-get -qq update -y
 
     - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu 20.04
       run: |
-        sudo apt -qq remove ansible
+        # sudo apt -qq remove ansible
         sudo apt install python3-pip -y
         python3 -m pip install -U pip setuptools
         python3 -m pip install "packaging>=24" "ordered-set>=3.1.1" "more_itertools>=8.8" \
@@ -46,31 +45,17 @@ jobs:
       run: |
         python3 -m pip install ansible==3.0.0
         python3 -m pip install --ignore-installed https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip pytest
-    
-    - name: Display pip python and ansible settings
-      run: |
-        which python
-        python --version
-        which python3
-        python3 --version
-        ansible --version
-        pip show pytest
-        pip show bioblend
-        pip3 --version || true
-        which pytest
-        which bioblend-galaxy-tests
-        whoami
 
     - uses: actions/checkout@v3.2.0
 
     - name: Install ansible roles
-      run: ansible-galaxy install -r requirements.yml -p roles/
+      run: /home/aligre/.local/bin/ansible-galaxy install -r requirements.yml -p roles/
 
     - name: ansible installs galaxy
       run: |
         sudo apt-get -qq update -y
         sudo apt-get -qq --purge remove nginx*
-        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
+        /home/aligre/.local/bin/ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
                          --skip-tags galaxy_build_client \
@@ -89,7 +74,7 @@ jobs:
         curl http://127.0.0.1/api/version
 
     - name: ansible installs galaxy tools
-      run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
+      run: /home/aligre/.local/bin/ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
       
     - name: retrieve api key and reference it in glob env variable
       run: |
@@ -98,6 +83,6 @@ jobs:
 
     - name: Bioblend tests
       run: |
-        cd /home/runner/.local/lib/python3.8/site-packages/bioblend/_tests
-        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
+        cd /home/aligre/.local/lib/python3.8/site-packages/bioblend/_tests/
+        /home/aligre/.local/bin/bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
 # -k "not test_other_users_histories"
