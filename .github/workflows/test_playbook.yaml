@@ -96,5 +96,5 @@ jobs:
     - name: Bioblend tests
       run: |
         cd /home/aligre/.local/lib/python3.8/site-packages/bioblend/_tests/
-        bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
+        /home/aligre/.local/bin/bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
 # -k "not test_other_users_histories"
