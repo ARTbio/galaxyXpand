@@ -49,8 +49,8 @@ jobs:
     
     - name: Display pip python and ansible settings
       run: |
-        export PATH=$PATH:/home/aligre/.local/bin
-        which python
+        /usr/bin/bash export PATH=$PATH:/home/aligre/.local/bin
+        /usr/bin/bash which python
         python --version
         which python3
         python3 --version
@@ -58,9 +58,9 @@ jobs:
         pip show pytest
         pip show bioblend
         pip3 --version || true
-        which pytest
-        which bioblend-galaxy-tests
-        whoami
+        /usr/bin/bash which pytest
+        /usr/bin/bash which bioblend-galaxy-tests
+        /usr/bin/bash whoami
 
     - uses: actions/checkout@v3.2.0
 
