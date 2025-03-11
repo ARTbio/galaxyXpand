@@ -49,7 +49,7 @@ jobs:
     
     - name: Display pip python and ansible settings
       run: |
-        /usr/bin/bash export PATH=$PATH:/home/aligre/.local/bin
+        PATH=$PATH:/home/aligre/.local/bin
         /usr/bin/bash which python
         python --version
         which python3
