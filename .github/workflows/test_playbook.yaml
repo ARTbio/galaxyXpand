@@ -86,7 +86,7 @@ jobs:
         curl http://127.0.0.1/api/version
 
     - name: ansible installs galaxy tools
-      run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
+      run: /home/aligre/.local/bin/ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
       
     - name: retrieve api key and reference it in glob env variable
       run: |
@@ -95,6 +95,6 @@ jobs:
 
     - name: Bioblend tests
       run: |
-        cd /home/runner/.local/lib/python3.8/site-packages/bioblend/_tests
+        cd /home/aligre/.local/lib/python3.8/site-packages/bioblend/_tests/
         bioblend-galaxy-tests --color=yes -v TestGalaxyHistories.py TestGalaxyTools.py --no-summary || true
 # -k "not test_other_users_histories"
