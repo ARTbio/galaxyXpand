@@ -13,7 +13,6 @@ env:
 
 
 jobs:
-
   Ubuntu_20-04:
     name: GalaxyXpand in ubuntu 20.04
     runs-on: self-hosted
