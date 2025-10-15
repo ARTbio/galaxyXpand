@@ -31,8 +31,9 @@ jobs:
 #        pip list # DEBUG: Show what was actually installed by pip
 
     - name: Install Python dependencies and verify
-      # This tells bash not to load any startup/profile files
-      shell: bash --noprofile --norc
+      # CORRECT SYNTAX: Custom shell arguments must be followed by the {0} placeholder,
+      # which represents the path to the temporary script file.
+      shell: bash --noprofile --norc {0}
       id: install_deps
       run: |
         python -m pip install -U pip
