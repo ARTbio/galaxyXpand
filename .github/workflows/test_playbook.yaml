@@ -22,19 +22,20 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Python with venv and cache dependencies
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.8' # Adjust to your Python version
-        cache: 'pip'
-
-    - name: Install Python dependencies
+    - name: Install Python dependencies and verify
+      id: install_deps
       run: |
         python -m pip install -U pip
-        pip install -r requirements.txt # Don't forget to create this requirements.txt file
+        pip install -r requirements.txt
+        echo "--- INSTALLED PACKAGES ---"
+        pip list # DEBUG: Show what was actually installed by pip
 
-    - name: Install Ansible roles
-      run: ansible-galaxy install -r requirements.yml -p roles/
+    - name: Debug environment before running Ansible
+      run: |
+        echo "--- DEBUGGING PATH ---"
+        echo "Current PATH is: $PATH"
+        echo "--- LOCATING ANSIBLE-GALAXY ---"
+        which ansible-galaxy || echo "ansible-galaxy command NOT FOUND by 'which'" # DEBUG: Check if the shell can find the command
 
     - name: Run Ansible playbook to install Galaxy
       run: |
