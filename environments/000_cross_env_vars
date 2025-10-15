@@ -91,7 +91,7 @@ common_galaxy_config:
       # https://docs.gunicorn.org/en/stable/settings.html#preload-app
       preload: true
     handlers:
-      handler:
+      job_handlers:
         processes: 2
         pools:
           - job-handler
