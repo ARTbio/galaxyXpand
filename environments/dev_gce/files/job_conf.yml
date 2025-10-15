@@ -8,6 +8,10 @@ runners:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
     drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
 
+handling:
+  assign:
+    - db-skip-locked
+
 execution:
   default: local_env
   environments:
