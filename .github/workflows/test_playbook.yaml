@@ -18,18 +18,6 @@ jobs:
     runs-on: self-hosted
     
     steps:
-#    - name: Remove PostgreSQL on VM
-#      run: |
-#        export RUNNER_ALLOW_RUNASROOT="1"
-#        sudo apt-get --purge remove postgresql
-#        dpkg -l | grep postgres
-#        sudo apt-get --purge remove pgdg-keyring postgresql*
-#        sudo rm -rf /var/lib/postgresql/  # directory data postgresql
-#        sudo rm -rf /var/log/postgresql/  # directory log postgresql
-#        sudo rm -rf /etc/postgresql/  # directory base postgresql
-#        sudo deluser postgres
-#        sudo apt-get -qq update -y
-
     - name: Remove ansible and Set up pip, ansible and bioblend in ubuntu 20.04
       run: |
         # sudo apt -qq remove ansible
