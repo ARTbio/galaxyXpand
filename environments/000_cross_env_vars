@@ -35,7 +35,9 @@ galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 miniconda_version: latest
-miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
+miniconda_channels:
+  - conda-forge
+  - bioconda
 
 common_galaxy_config:
   galaxy:
