@@ -36,11 +36,29 @@
           - 'python3-setuptools'
           - slurm-wlm
           - slurm-drmaa-dev
-#          - python-psutil
     - name: merge common and specific galaxy_config dictionary
       set_fact:
         galaxy_config: "{{ common_galaxy_config|ansible.builtin.combine(galaxy_config, recursive=true) }}"
-      
+
+    - name: Ensure galaxy user exists for Conda ToS acceptance
+      ansible.builtin.user:
+        name: "{{ galaxy_user.name | default('galaxy') }}"
+        state: present
+
+  tasks:
+    - name: Accept Anaconda Terms of Service for the galaxy user
+      # Execute the commands to accept the Terms of Service
+      ansible.builtin.command: "{{ galaxy_home }}/galaxy/database/dependencies/_conda/bin/conda tos accept --override-channels --channel {{ item }}"
+      become: yes
+      become_user: "{{ galaxy_user.name | default('galaxy') }}"
+      loop:
+        - https://repo.anaconda.com/pkgs/main
+        - https://repo.anaconda.com/pkgs/r
+      # We don't want this task to fail if Conda is not yet installed.
+      # This can happen depending on the playbook structure.
+      failed_when: false
+
+
   roles:
     - galaxyproject.galaxy
     - role: galaxyproject.miniconda
