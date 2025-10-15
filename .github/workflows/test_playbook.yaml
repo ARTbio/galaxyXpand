@@ -22,13 +22,23 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+#    - name: Install Python dependencies and verify
+#      id: install_deps
+#      run: |
+#        python -m pip install -U pip
+#        pip install -r requirements.txt
+#        echo "--- INSTALLED PACKAGES ---"
+#        pip list # DEBUG: Show what was actually installed by pip
+
     - name: Install Python dependencies and verify
+      # This tells bash not to load any startup/profile files
+      shell: bash --noprofile --norc
       id: install_deps
       run: |
         python -m pip install -U pip
         pip install -r requirements.txt
         echo "--- INSTALLED PACKAGES ---"
-        pip list # DEBUG: Show what was actually installed by pip
+        pip list
 
     - name: Debug environment before running Ansible
       run: |
