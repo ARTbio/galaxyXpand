@@ -13,8 +13,8 @@ handling:
   assign:
     - db-skip-locked
   processes:
-    handler0:
-    handler1:
+    handler_0:
+    handler_1:
 
 execution:
   default: local_env
