@@ -81,7 +81,7 @@ conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/Conect/files/galaxy/config/job_conf.yml
-    dest: "{{ galaxy_job_conf_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: environments/Conect/files/galaxy/html/images/ARTbio_logo.jpg
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_logo.jpg"
   - src: environments/Conect/files/galaxy/html/images/IBPS_logo.jpg

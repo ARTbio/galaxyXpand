@@ -42,15 +42,16 @@ galaxy_config:
       assign:
         strategy: db-skip-locked
 
-# deploy galaxy configuration files
+# deploy galaxy static files
+
 galaxy_config_templates:
   - src: environments/dev_gce/templates/galaxyXpand_welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
 
-# deploy png galaxyXpand logo
+# deploy galaxyXpand logo and job_conf.yml
 galaxy_config_files:
   - src: environments/dev_gce/files/job_conf.yml
-    dest: "{{ galaxy_job_conf_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: environments/dev_gce/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
 
