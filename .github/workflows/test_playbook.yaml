@@ -48,7 +48,7 @@ jobs:
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
-                         --skip-tags galaxy_build_client \
+                         # --skip-tags galaxy_build_client \
                          playbook.yml
 
     # Step 6: Wait for the Galaxy instance to be fully available

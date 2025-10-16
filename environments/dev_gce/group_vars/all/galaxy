@@ -2,7 +2,7 @@
 # optimize 2 cpu VM GCE
 
 # development branch
-galaxy_commit_id: release_24.1
+galaxy_commit_id: release_25.0
 
 galaxy_config:
   gravity:
