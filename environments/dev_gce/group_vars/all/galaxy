@@ -16,8 +16,8 @@ galaxy_config:
     handlers:
       job_handlers:
         pools:
-          - job-handler
-        processes: 1      # un seul handler pour éviter la contention
+          - job-handlers
+        processes: 2      # optimisation test
     celery:
       workers: 1          # un seul worker Celery si utilisé
     process_manager: systemd
