@@ -38,9 +38,6 @@ galaxy_config:
     cleanup_job: onsuccess
     expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
-    job_config:
-      assign:
-        strategy: db-skip-locked
 
 # deploy galaxy static files
 
