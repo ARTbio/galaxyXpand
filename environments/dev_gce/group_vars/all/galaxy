@@ -38,6 +38,7 @@ galaxy_config:
     cleanup_job: onsuccess
     expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
+    job_handler_monitor_sleep: 0.05 # test de performance
 
 # deploy galaxy static files
 
