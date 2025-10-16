@@ -38,7 +38,7 @@ jobs:
 
     # Step 4: Install the required Ansible roles from requirements.yml
     - name: Install Ansible roles
-      run: ansible-galaxy install -r requirements.yml -p roles/
+      run: ansible-galaxy install -r requirements.yml -p roles/ -f
 
     # Step 5: Run the main playbook to install Galaxy
     - name: Run Ansible playbook to install Galaxy
