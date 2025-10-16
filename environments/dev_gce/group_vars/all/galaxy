@@ -26,7 +26,7 @@ galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
     database_connection: postgresql:///galaxy?host=/var/run/postgresql
-    job_config_file: '' # overwrite for getting default (job_conf.yml)
+    # job_config_file is now ignored for getting default (job_conf.yml)
     job_working_directory: /home/galaxy/galaxy/database/jobs
     file_path: datasets
     enable_per_request_sql_debugging: false
@@ -50,7 +50,7 @@ galaxy_config_templates:
 # deploy png galaxyXpand logo
 galaxy_config_files:
   - src: environments/dev_gce/files/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_job_conf_file }}"
   - src: environments/dev_gce/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
 

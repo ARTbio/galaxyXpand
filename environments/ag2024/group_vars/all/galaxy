@@ -21,7 +21,7 @@ galaxy_config_templates:
 # deploy png galaxyXpand logo
 galaxy_config_files:
   - src: environments/ag2024/files/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_job_conf_file }}"
   - src: environments/ag2024/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
   - src: environments/ag2024/files/ag_logo.png

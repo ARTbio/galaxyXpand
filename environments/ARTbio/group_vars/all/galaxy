@@ -79,7 +79,7 @@ artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/ARTbio/files/galaxy/config/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_job_conf_file }}"
   - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.png"
 
