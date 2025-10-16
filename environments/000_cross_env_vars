@@ -90,6 +90,7 @@ common_galaxy_config:
       # This lets Gunicorn start Galaxy completely before forking which is faster.
       # https://docs.gunicorn.org/en/stable/settings.html#preload-app
       preload: true
+# this can be overwrited in group_vars/all/galaxy
     handlers:
       job_handlers:
         processes: 2
