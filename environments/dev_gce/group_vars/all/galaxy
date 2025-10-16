@@ -26,7 +26,6 @@ galaxy_config:
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
     database_connection: postgresql:///galaxy?host=/var/run/postgresql
-    job_config_file: /home/galaxy/galaxy/config/job_conf.yml
     job_working_directory: /home/galaxy/galaxy/database/jobs
     file_path: datasets
     enable_per_request_sql_debugging: false
