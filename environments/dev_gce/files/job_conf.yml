@@ -11,7 +11,7 @@ runners:
 
 handling:
   assign:
-    - db-transaction-isolation
+    - db-skip-locked
 
 execution:
   default: local_env
