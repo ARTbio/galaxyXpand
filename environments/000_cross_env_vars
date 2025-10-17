@@ -11,9 +11,6 @@ install_slurm: yes
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
 
-# systemd
-galaxy_manage_systemd: yes
-
 # Galaxy common to all hosts
 galaxy_commit_id: release_24.1
 galaxy_user_name: galaxy
