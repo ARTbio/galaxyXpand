@@ -32,6 +32,6 @@ nginx_conf_http:
 
 nginx_ssl: true
 nginx_ssl_remote_src: true
-nginx_ssl_certificate:/etc/nginx/ssl/usegalaxy_sorbonne-universite_fr_bundle.crt
+nginx_ssl_certificate: /etc/nginx/ssl/usegalaxy_sorbonne-universite_fr_bundle.crt
 nginx_ssl_certificate_key: /etc/nginx/ssl/usegalaxy_sorbonne-universite_fr.key
 
