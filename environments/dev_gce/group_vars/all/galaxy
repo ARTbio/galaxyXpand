@@ -6,8 +6,6 @@ galaxy_commit_id: release_24.1
 
 galaxy_config:
   gravity:
-    galaxy_root: /home/galaxy/galaxy
-    galaxy_user: galaxy
     gunicorn:
       bind: localhost:4000
       extra_args: --forwarded-allow-ips="*"
@@ -20,8 +18,6 @@ galaxy_config:
         processes: 2      # optimisation test
     celery:
       workers: 1          # un seul worker Celery si utilisé
-    process_manager: systemd
-    virtualenv: /home/galaxy/galaxy/.venv
   
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
