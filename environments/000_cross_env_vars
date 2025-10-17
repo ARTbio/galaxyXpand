@@ -39,6 +39,7 @@ miniconda_version: "latest"
 miniconda_channels:
   - conda-forge
   - bioconda
+  - default
 
 common_galaxy_config:
   galaxy:
