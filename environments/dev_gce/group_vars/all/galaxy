@@ -6,12 +6,8 @@ galaxy_commit_id: release_24.1
 
 galaxy_config:
   gravity:
-    galaxy_root: /home/galaxy/galaxy
-    galaxy_user: galaxy
     gunicorn:
       bind: localhost:4000
-      extra_args: --forwarded-allow-ips="*"
-      preload: true
       workers: 2         # deux workers web, idéal sur 2 CPU
     handlers:
       job_handlers:
@@ -20,8 +16,6 @@ galaxy_config:
         processes: 2      # optimisation test
     celery:
       workers: 1          # un seul worker Celery si utilisé
-    process_manager: systemd
-    virtualenv: /home/galaxy/galaxy/.venv
   
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org

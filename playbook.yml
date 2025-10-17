@@ -43,6 +43,7 @@
   roles:
     - galaxyproject.galaxy
     - role: galaxyproject.miniconda
+      tags: [miniconda]
       become: true
       become_user: "{{ galaxy_user.name }}"
     - galaxyproject.nginx
@@ -51,11 +52,3 @@
       when: install_slurm
     - role: installUptime
       when: install_uptime
-
-#  post_tasks:
-#
-#    - name: restart nginx
-#      service:
-#        name: nginx
-#        state: restarted
-#      when: not nginx_supervisor
