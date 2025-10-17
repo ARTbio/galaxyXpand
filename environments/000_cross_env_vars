@@ -12,7 +12,7 @@ install_slurm: yes
 nginx_conf_user: "www-data galaxy"
 
 # systemd
-galaxy_manage_systemd: true
+galaxy_manage_systemd: false
 
 # Galaxy common to all hosts
 galaxy_commit_id: release_24.1
@@ -34,8 +34,11 @@ galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_version: latest
-miniconda_channels: ['conda-forge', 'bioconda', 'defaults']
+miniconda_installer_python: "3.8"
+miniconda_version: "latest"
+miniconda_channels:
+  - conda-forge
+  - bioconda
 
 common_galaxy_config:
   galaxy:
@@ -44,7 +47,6 @@ common_galaxy_config:
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
     file_path: datasets
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
     object_store_store_by: id
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
     # SQL Performance
@@ -88,8 +90,9 @@ common_galaxy_config:
       # This lets Gunicorn start Galaxy completely before forking which is faster.
       # https://docs.gunicorn.org/en/stable/settings.html#preload-app
       preload: true
+# this can be overwrited in group_vars/all/galaxy
     handlers:
-      handler:
+      job_handlers:
         processes: 2
         pools:
           - job-handler

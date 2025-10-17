@@ -1,26 +1,55 @@
 ---
-# Galaxy
+# optimize 2 cpu VM GCE
 
 # development branch
 galaxy_commit_id: release_24.1
 
 galaxy_config:
+  gravity:
+    galaxy_root: /home/galaxy/galaxy
+    galaxy_user: galaxy
+    gunicorn:
+      bind: localhost:4000
+      extra_args: --forwarded-allow-ips="*"
+      preload: true
+      workers: 2         # deux workers web, idéal sur 2 CPU
+    handlers:
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 2      # optimisation test
+    celery:
+      workers: 1          # un seul worker Celery si utilisé
+    process_manager: systemd
+    virtualenv: /home/galaxy/galaxy/.venv
+  
   galaxy:
     admin_users: admin@example.org,tooladmin@galaxy.org
-    brand: "🧬🔬🚀"
-  gravity:
-    gunicorn:
-      # listening option on port 4000 for google cloud
-      bind: "localhost:4000"
+    database_connection: postgresql:///galaxy?host=/var/run/postgresql
+    # job_config_file is now ignored for getting default (job_conf.yml)
+    job_working_directory: /home/galaxy/galaxy/database/jobs
+    file_path: datasets
+    enable_per_request_sql_debugging: false
+    enable_quotas: false
+    static_enabled: false
+    allow_user_dataset_purge: true
+    allow_user_deletion: true
+    allow_user_impersonation: true
+    cleanup_job: onsuccess
+    expose_dataset_path: true
+    expose_potentially_sensitive_job_metrics: true
+    job_handler_monitor_sleep: 0.05 # test de performance
 
-# deploy galaxy configuration files
+# deploy galaxy static files
+
 galaxy_config_templates:
   - src: environments/dev_gce/templates/galaxyXpand_welcome.html.j2
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
 
-# deploy png galaxyXpand logo
+# deploy galaxyXpand logo and job_conf.yml
 galaxy_config_files:
   - src: environments/dev_gce/files/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: environments/dev_gce/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 
+

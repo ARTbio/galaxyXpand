@@ -78,7 +78,7 @@ Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/Mississippi/files/galaxy/config/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: environments/Mississippi/files/galaxy/html/images/ARTbio_mississippi_screen.jpg
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_mississippi_screen.jpg"
   - src: environments/Mississippi/files/galaxy/html/images/IBPS_logo.jpg

@@ -19,7 +19,7 @@ galaxy_config_templates:
 
 galaxy_config_files:
   - src: environments/Docker/files/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   # deploy png galaxyXpand logo
   - src: environments/Docker/files/galaxyXpand_logo.png
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png" 

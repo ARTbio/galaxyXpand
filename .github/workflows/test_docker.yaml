@@ -1,9 +1,11 @@
 name: Build galaxyXpand docker image
+#on:
+#  push:
+#    branches-ignore:
+#      - master
+#      - readthedocs
 on:
-  push:
-    branches-ignore:
-      - master
-      - readthedocs
+  workflow_dispatch:    # 👈 manual trigger only
   
 jobs:
   buildx:

@@ -80,7 +80,7 @@ banner_text_2: |
 # deploy galaxy configuration files
 galaxy_config_files:
   - src: environments/dev_mississippi/files/galaxy/config/job_conf.yml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   # deploy png galaxyXpand logo
   - src: environments/dev_mississippi/files/galaxy/html/images/mississippi_dev.png
     dest: "{{ galaxy_server_dir }}/static/images/mississippi_dev.png"
