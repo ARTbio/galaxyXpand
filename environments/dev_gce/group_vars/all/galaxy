@@ -8,8 +8,6 @@ galaxy_config:
   gravity:
     gunicorn:
       bind: localhost:4000
-      extra_args: --forwarded-allow-ips="*"
-      preload: true
       workers: 2         # deux workers web, idéal sur 2 CPU
     handlers:
       job_handlers:
