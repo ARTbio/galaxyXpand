@@ -12,11 +12,6 @@ runners:
 handling:
   assign:
     - db-skip-locked
-  processes:
-    handler0:
-    handler1:
-    handler2:
-    handler3:
 
 # artbio has 72 CPUs
 execution:

@@ -9,11 +9,6 @@ runners:
 handling:
   assign:
     - db-skip-locked
-  processes:
-    handler0:
-    handler1:
-    handler2:
-    handler3:
 
 execution:
   default: cluster_1

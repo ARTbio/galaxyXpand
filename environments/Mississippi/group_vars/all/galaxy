@@ -63,10 +63,14 @@ galaxy_config:
   gravity:
     gunicorn:
       # performance options
-      workers: 8
+      workers: 4 # web traffic. likely enough for Mississippi
     handlers:
-      handler:
-        processes: 4
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 4 # likely enough for Mississippi
+    celery:
+      workers: 2  # eg workflow scheduling
 
 # Welcome html page variables
 _Mississippi_info: |
