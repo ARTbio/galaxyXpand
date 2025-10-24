@@ -22,7 +22,7 @@
         repo: ppa:natefoo/slurm-drmaa
         state: present
         update_cache: yes
-      when: install_slurm
+      when: install_slurm and ansible_distribution_release != "noble"
 
     - name: Install Dependencies
       package:
@@ -35,10 +35,31 @@
           - 'python3-venv'
           - 'python3-setuptools'
           - slurm-wlm
-          - slurm-drmaa-dev
+        state: present
+
+    - name: Install DRMAA dev package (Jammy only)
+      package:
+        name: slurm-drmaa-dev
+        state: present
+      when: ansible_distribution_release != "noble"
+
+    - name: Install Slurm basic plugins (Ubuntu ≥ 24.04)
+      package:
+        name: slurm-wlm-basic-plugins
+        state: present
+      when: ansible_distribution_release == "noble"
+
+
     - name: merge common and specific galaxy_config dictionary
       set_fact:
         galaxy_config: "{{ common_galaxy_config|ansible.builtin.combine(galaxy_config, recursive=true) }}"
+
+
+  tasks:
+    - name: (Optional) Build slurm-drmaa from source on Noble
+      import_tasks: build_drmaa.yml
+      when: install_slurm and ansible_distribution_release == "noble"
+
 
   roles:
     - galaxyproject.galaxy

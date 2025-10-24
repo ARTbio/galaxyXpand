@@ -9,3 +9,4 @@ roles/galaxyproject.nginx
 roles/galaxyproject.postgresql
 roles/galaxyproject.postgresql_objects
 roles/galaxyproject.slurm
+roles/install.galaxy-tools

@@ -1,4 +1,6 @@
 ---
+slurm_upgrade: true
+
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m venv
 
