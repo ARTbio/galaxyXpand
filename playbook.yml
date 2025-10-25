@@ -1,65 +1,48 @@
 ---
+# playbook.yml — installation Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
+# Version simplifiée — utilise le PPA Natefoo officiel pour slurm-drmaa
+# Auteur : Christophe Antoniewski / ARTbio
+# Date   : 2025-10-25
+
 - hosts: dbservers
   become: true
   become_user: root
-  pre_tasks:
-    - name: Install Dependencies
-      package:
-        name: 'acl'
+
   roles:
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
 
+
 - hosts: all
   become: true
   become_user: root
 
   pre_tasks:
-    - name: Add custom slurm PPA (used for Slurm DRMAA package)
-      apt_repository:
+
+    - name: Add official Slurm-DRMAA PPA (Natefoo)
+      ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
         state: present
         update_cache: yes
-      when: install_slurm and ansible_distribution_release != "noble"
 
-    - name: Install Dependencies
-      package:
+    - name: Install required packages
+      ansible.builtin.package:
         name:
-          - 'acl'
-          - 'bzip2'
-          - 'git'
-          - 'make'
-          -  'tar'
-          - 'python3-venv'
-          - 'python3-setuptools'
+          - bzip2
+          - git
+          - make
+          - tar
+          - python3-venv
+          - python3-setuptools
           - slurm-wlm
+          - slurm-drmaa1
         state: present
 
-    - name: Install DRMAA dev package (Jammy only)
-      package:
-        name: slurm-drmaa-dev
-        state: present
-      when: ansible_distribution_release != "noble"
-
-    - name: Install Slurm basic plugins (Ubuntu ≥ 24.04)
-      package:
-        name: slurm-wlm-basic-plugins
-        state: present
-      when: ansible_distribution_release == "noble"
-
-
-    - name: merge common and specific galaxy_config dictionary
-      set_fact:
-        galaxy_config: "{{ common_galaxy_config|ansible.builtin.combine(galaxy_config, recursive=true) }}"
-
-
-  tasks:
-    - name: (Optional) Build slurm-drmaa from source on Noble
-      import_tasks: build_drmaa.yml
-      when: install_slurm and ansible_distribution_release == "noble"
-
+    - name: Merge common and specific Galaxy configuration
+      ansible.builtin.set_fact:
+        galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
 
   roles:
     - galaxyproject.galaxy
