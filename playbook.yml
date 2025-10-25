@@ -56,3 +56,15 @@
       when: install_slurm
     - role: installUptime
       when: install_uptime
+
+  post_tasks:
+
+    - name: Reload systemd units after Galaxy installation
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Ensure Galaxy is restarted and enabled
+      ansible.builtin.systemd:
+        name: galaxy.target
+        state: restarted
+        enabled: yes
