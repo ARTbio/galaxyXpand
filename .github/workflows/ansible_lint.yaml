@@ -19,6 +19,10 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install ansible==9.4.0 ansible-lint==6.22.2
+
       - name: Run ansible-lint
-        working-directory: ${{ github.workspace }}
-        run: ansible-lint galaxy.yml galaxy_tool_install.yml
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          echo "Now in: $(pwd)"
+          ls -l galaxy.yml galaxy_tool_install.yml
+          ansible-lint galaxy.yml galaxy_tool_install.yml
