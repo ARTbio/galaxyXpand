@@ -4,7 +4,8 @@
 # Auteur : Christophe Antoniewski / ARTbio
 # Date   : 2025-10-25
 
-- hosts: dbservers
+- name: Install PostgreSQL objects
+  hosts: dbservers
   become: true
   become_user: root
 
@@ -14,8 +15,8 @@
       become: true
       become_user: postgres
 
-
-- hosts: all
+- name: Install/Expand Galaxy
+  hosts: all
   become: true
   become_user: root
 
