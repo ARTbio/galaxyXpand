@@ -4,11 +4,11 @@ slurm_upgrade: true
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m venv
 
-# to install uptime set to 'yes'
-install_uptime: no
+# to install uptime set to 'true'
+install_uptime: false
 
-# to install slurm set to 'yes'
-install_slurm: yes
+# to install slurm set to 'true'
+install_slurm: true
 
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
