@@ -34,8 +34,7 @@
           - git
           - make
           - tar
-          - python3-venv
-          - python3-setuptools
+          - python3.12-full
           - slurm-wlm
           - slurm-drmaa1
         state: present
