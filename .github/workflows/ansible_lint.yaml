@@ -21,8 +21,4 @@ jobs:
           pip install ansible==9.4.0 ansible-lint==6.22.2
 
       - name: Run ansible-lint
-        run: |
-          cd "$GITHUB_WORKSPACE"
-          echo "Now in: $(pwd)"
-          ls -l galaxy.yml galaxy_tool_install.yml
-          ansible-lint galaxy.yml galaxy_tool_install.yml
+        run: ansible-lint playbook.yml install_tools.yml
