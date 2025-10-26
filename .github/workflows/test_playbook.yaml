@@ -27,7 +27,6 @@ jobs:
         sudo apt-get update -y
         sudo apt-get install -y python3.12-full ansible
         ansible --version
-        ansible-lint --version
         which 2to3 || echo "2to3 not found!"
 
 
