@@ -1,17 +1,17 @@
 - name: Install R for usage plot
-  package:
+  ansible.builtin.package:
     name:
       - 'r-base'
 
 - name: Create an uptime directory
   become_user: "{{ uptime_user }}"
-  file:
+  ansible.builtin.file:
     path: "{{ galaxy_root }}"
     state: directory
 
 - name: Instantiate uptime templates
   become_user: "{{ uptime_user }}"
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     force: yes
@@ -19,11 +19,11 @@
   with_items: "{{ uptime_templates }}"
   
 - name: Create uptime systemd service file
-  template:
+  ansible.builtin.template:
     src: templates/uptime.service.j2
     dest: /lib/systemd/system/uptime.service
 
 - name: Start uptime service
-  systemd:
+  ansible.builtin.systemd:
     name: uptime
     state: started

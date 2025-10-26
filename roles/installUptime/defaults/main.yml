@@ -1,4 +1,4 @@
-install_uptime: no
+install_uptime: true
 uptime_dir: "{{ galaxy_root }}"
 uptime_user: "{{ galaxy_user.name }}"
 service_description: "A service to run uptime.sh and publish server usage image through galaxy nginx"
