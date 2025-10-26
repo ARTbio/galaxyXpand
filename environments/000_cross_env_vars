@@ -58,7 +58,7 @@ common_galaxy_config:
     # Automation / Ease of Use / User-facing features
     watch_job_rules: 'auto'
     watch_tool_data_dir: true
-    watch_tools: 'true'
+    watch_tools: true
     allow_path_paste: true
     enable_quotas: true
     allow_user_dataset_purge: true
