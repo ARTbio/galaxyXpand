@@ -14,7 +14,7 @@ env:
   GALAXY_USER_PASSWD: artbio2024
 
 jobs:
-  Ubuntu_24.04:
+  Ubuntu_24-04:
     name: GalaxyXpand on Ubuntu 24.04
     runs-on: ubuntu-24.04
 
