@@ -37,7 +37,10 @@ tools:
     destination: "cluster"
 
   - id: "bowtie_index_builder_data_manager"
-    destination: "gce_multicore"
+    destination: "local_env"
 
   - id: "retrieve_fasta_from_NCBI"
+    destination: "cluster"
+
+  - id: "samtools_view"
     destination: "cluster"

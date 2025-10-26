@@ -59,6 +59,15 @@
 
   post_tasks:
 
+    - name: Deploy environment-specific nginx.conf
+      ansible.builtin.template:
+        src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart nginx
+
     - name: Reload systemd units after Galaxy installation
       ansible.builtin.systemd:
         daemon_reload: yes
