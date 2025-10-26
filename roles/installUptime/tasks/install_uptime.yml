@@ -9,6 +9,7 @@
   ansible.builtin.file:
     path: "{{ galaxy_root }}"
     state: directory
+    mode: "{{ galaxy_config_perms }}"
 
 - name: Instantiate uptime templates
   become: true
@@ -24,6 +25,7 @@
   ansible.builtin.template:
     src: templates/uptime.service.j2
     dest: /lib/systemd/system/uptime.service
+    mode: "0644"
 
 - name: Start uptime service
   ansible.builtin.systemd:
