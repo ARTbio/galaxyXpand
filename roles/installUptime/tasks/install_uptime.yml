@@ -16,10 +16,10 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    force: yes
+    force: true
     mode: "{{ galaxy_config_perms }}"
   with_items: "{{ uptime_templates }}"
-  
+
 - name: Create uptime systemd service file
   ansible.builtin.template:
     src: templates/uptime.service.j2
