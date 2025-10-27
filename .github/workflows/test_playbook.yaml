@@ -64,7 +64,8 @@ jobs:
         
         echo "--- [MOST IMPORTANT] Gunicorn Logs (JournalCTL) ---"
         # C'est ici qu'on verra l'erreur Python/Gunicorn
-        sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
+        # ON AUGMENTE LE NOMBRE DE LIGNES À 200
+        sudo journalctl -u galaxy-gunicorn.service -n 200 --no-pager || echo "Could not get Gunicorn journal"
         
         echo "--- [CORRECT PATH] Permissions Check: /home/galaxy ---"
         sudo ls -ld /home/galaxy
