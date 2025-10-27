@@ -45,10 +45,13 @@ jobs:
 
     - name: Restart Galaxy and Nginx, then wait for API
       run: |
-        echo "--- Restarting Galaxy application servers ---"
-        sudo galaxyctl restart
+        echo "--- [CI-FIX] Ensuring www-data user is in the galaxy group ---"
+        sudo usermod -a -G galaxy www-data
+
         echo "--- Restarting Nginx web server ---"
         sudo systemctl restart nginx.service
+        
+        echo "--- Waiting for Galaxy API to be available ---"
         timeout 180s bash -c 'until curl --fail -s http://127.0.0.1/api/version > /dev/null; do echo -n "." && sleep 5; done'
         echo "Galaxy is up!"
         sudo galaxyctl status
