@@ -86,24 +86,25 @@
         state: restarted
         enabled: true
 
-    # 2 tasks for socket accessibility
+    # three tasks for socket accessibility
     - name: Add www-data user to galaxy group (for socket access)
       ansible.builtin.user:
         name: www-data
-        groups: "{{ galaxy_user.name | default('galaxy') }}" # Utilise la var du rôle galaxy
+        groups: "{{ galaxy_user.name | default('galaxy') }}"
         append: true
       become: true
 
     - name: Ensure Galaxy home directory is group-executable (for socket traversal)
       ansible.builtin.file:
-        path: "{{ galaxy_user.home | default('/home/galaxy') }}" # Utilise la var du rôle galaxy
-        mode: 'g+x'  # Ajoute la permission 'execute' pour le groupe
+        path: "{{ galaxy_user.home | default('/home/galaxy') }}"
+        mode: 'g+x'  # permission 'execute' for the group
       become: true
 
-    - name: Ensure Galaxy socket parent directory is group-executable
+    - name: Ensure Galaxy socket parent directory exists and has correct ownership
       ansible.builtin.file:
-        # Le rôle galaxy crée un dossier 'run' pour le socket
         path: "{{ galaxy_user.home | default('/home/galaxy') }}/run"
-        state: directory # S'assure aussi que le dossier existe
-        mode: 'g+x'      # La permission 'execute' pour le groupe
+        state: directory
+        owner: "{{ galaxy_user.name | default('galaxy') }}"
+        group: "{{ galaxy_user.name | default('galaxy') }}"
+        mode: '0750'  # rwx for galaxy, r-x for the group (nginx), none for others
       become: true
