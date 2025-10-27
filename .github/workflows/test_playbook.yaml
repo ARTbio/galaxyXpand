@@ -51,29 +51,36 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Run diagnostics before API wait
+    - name: Run complete diagnostics before API wait
       run: |
         echo "--- Nginx Status ---"
         sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
         
         echo "--- Nginx Error Log (Last 50 lines) ---"
         sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
+
+        echo "--- [IMPORTANT] Gunicorn Service Status ---"
+        # C'est ici qu'on verra s'il a planté
+        sudo systemctl status galaxy-gunicorn.service --no-pager || echo "Gunicorn service status FAILED"
         
-        echo "--- Galaxy Services Status ---"
-        sudo systemctl status galaxy.target --no-pager || echo "Galaxy target status failed"
+        echo "--- [MOST IMPORTANT] Gunicorn Logs (JournalCTL) ---"
+        # C'est ici qu'on verra l'erreur Python/Gunicorn
+        sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
         
-        echo "--- Permissions Check: /home/galaxy ---"
+        echo "--- [CORRECT PATH] Permissions Check: /home/galaxy ---"
         sudo ls -ld /home/galaxy
         
-        echo "--- Permissions Check: /home/galaxy/run ---"
-        sudo ls -ld /home/galaxy/run || echo "Directory /home/galaxy/run not found"
+        echo "--- [CORRECT PATH] Permissions Check: /home/galaxy/galaxy ---"
+        sudo ls -ld /home/galaxy/galaxy || echo "Directory /home/galaxy/galaxy not found"
+
+        echo "--- [CORRECT PATH] Permissions Check: /home/galaxy/galaxy/config ---"
+        sudo ls -ld /home/galaxy/galaxy/config || echo "Directory /home/galaxy/galaxy/config not found"
+
+        echo "--- [CORRECT PATH] Permissions Check: Socket File ---"
+        # C'est la vérification finale
+        sudo ls -l /home/galaxy/galaxy/config/gunicorn.sock || echo "Socket file not found"
         
-        echo "--- Permissions Check: Socket File ---"
-        sudo ls -l /home/galaxy/run/gunicorn.sock || echo "Socket file not found"
-        
-        echo "--- AppArmor/SELinux Status (if installed) ---"
-        sudo aa-status || echo "aa-status not found"
-      continue-on-error: true # Continue if the command fails
+      continue-on-error: true
 
     - name: Wait for API
       run: |

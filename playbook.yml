@@ -115,4 +115,3 @@
         group: "{{ galaxy_user.name | default('galaxy') }}"
         mode: '0750'  # rwx pour galaxy (écrire socket), r-x pour groupe (lire socket)
       become: true
-      
