@@ -43,7 +43,6 @@ jobs:
 
     - name: Run Ansible playbook to install Galaxy
       run: |
-        sudo apt-get -qq update -y
         sudo apt-get -qq --purge remove nginx* || true
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
