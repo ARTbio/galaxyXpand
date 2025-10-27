@@ -22,11 +22,6 @@
 
   pre_tasks:
 
-    - name: Debug effective environment for galaxy user
-      become: true
-      become_user: "{{ galaxy_user.name }}"
-      command: env | grep HOME
-
     - name: Add official Slurm-DRMAA PPA (Natefoo)
       ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
