@@ -50,29 +50,24 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Run complete diagnostics before API wait
+    - name: Run diagnostics before API wait
       run: |
         echo "--- Nginx Status ---"
         sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
         
         echo "--- Nginx Error Log (Last 50 lines) ---"
         sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
-
-        echo "--- Gunicorn Service Status ---"
-        # C'est ici qu'on verra s'il a planté
-        sudo systemctl status galaxy-gunicorn.service --no-pager || echo "Gunicorn service status FAILED"
-        
         echo "--- Gunicorn Logs (JournalCTL) ---"
-        sudo journalctl -u galaxy-gunicorn.service -n 200 --no-pager || echo "Could not get Gunicorn journal"
+        sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
         # test connections and ip resolutions
         sudo ss -tlnp | grep nginx
-        curl -v http://127.0.0.1:${GALAXY_NGINX_PORT}/api/version
+        curl -v http://127.0.0.1:8080/api/version
       continue-on-error: true
 
     - name: Wait for API
       run: |
         echo "--- Waiting for Galaxy API to be available ---"
-        timeout 180s bash -c 'until curl --fail -s http://127.0.0.1/api/version > /dev/null; do echo -n "." && sleep 5; done'
+        timeout 180s bash -c 'until curl --fail -s http://127.0.0.1:8080/api/version > /dev/null; do echo -n "." && sleep 5; done'
         echo "Galaxy is up!"
         sudo galaxyctl status
 
