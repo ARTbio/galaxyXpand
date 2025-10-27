@@ -54,12 +54,13 @@ jobs:
       run: |
         echo "--- Nginx Status ---"
         sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
-        
         echo "--- Nginx Error Log (Last 50 lines) ---"
         sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
         echo "--- Gunicorn Logs (JournalCTL) ---"
         sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
+        sudo systemctl cat galaxy-gunicorn.service | grep PrivateNetwork
         # test connections and ip resolutions
+        sudo ss -tlnp | grep 4000
         sudo ss -tlnp | grep nginx
         curl -v http://127.0.0.1:8080/api/version
       continue-on-error: true
