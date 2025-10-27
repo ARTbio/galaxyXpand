@@ -76,6 +76,11 @@ jobs:
         echo "--- [CORRECT PATH] Permissions Check: /home/galaxy/galaxy/config ---"
         sudo ls -ld /home/galaxy/galaxy/config || echo "Directory /home/galaxy/galaxy/config not found"
 
+        # --- AJOUTER CE SLEEP ---
+        echo "--- Waiting 5s for socket file to be created... ---"
+        sleep 10
+        # --- FIN DE L'AJOUT ---
+
         echo "--- [CORRECT PATH] Permissions Check: Socket File ---"
         # C'est la vérification finale
         sudo ls -l /home/galaxy/galaxy/config/gunicorn.sock || echo "Socket file not found"
