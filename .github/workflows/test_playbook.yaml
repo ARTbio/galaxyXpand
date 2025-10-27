@@ -71,6 +71,10 @@ jobs:
         sudo ss -tlnp | grep :80
         sudo curl -v http://127.0.0.1/
         sudo curl -v http://localhost/
+        sudo nginx -t
+        sudo nginx -T | grep server_name
+        sudo curl -v http://127.0.0.1/api/version
+        sudo curl -v http://localhost/api/version
       continue-on-error: true
 
     - name: Wait for API
