@@ -74,6 +74,26 @@
         mode: '0644'
       notify: Restart nginx
 
+# --- NOUVELLES TÂCHES CI-FIX ---
+    - name: "[CI-FIX] Remove all inherited ACLs from galaxy home"
+      ansible.builtin.command:
+        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}"
+      become: true
+      changed_when: false
+
+    - name: "[CI-FIX] Remove all inherited ACLs from galaxy app dir"
+      ansible.builtin.command:
+        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy"
+      become: true
+      changed_when: false
+
+    - name: "[CI-FIX] Remove all inherited ACLs from the config directory"
+      ansible.builtin.command:
+        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
+      become: true
+      changed_when: false
+    # --- FIN DES NOUVELLES TÂCHES ---
+
     # --- DÉPLACER LES TÂCHES DE PERMISSION ICI ---
     # Ces tâches doivent être exécutées AVANT le démarrage de Gunicorn/Nginx
 
