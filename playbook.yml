@@ -107,6 +107,13 @@
         mode: 'g+x'  # Ajoute 'execute' pour le groupe (www-data)
       become: true
 
+    - name: "[CI-FIX] Remove all inherited ACLs from the config directory"
+      ansible.builtin.command:
+        # 'setfacl -b' (remove-all) est la commande pour écraser les ACLs
+        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
+      become: true
+      changed_when: false # Cette commande n'est pas idempotente, on ignore son "changed"
+
     - name: Ensure Galaxy config directory has correct ownership and permissions
       ansible.builtin.file:
         path: "{{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
