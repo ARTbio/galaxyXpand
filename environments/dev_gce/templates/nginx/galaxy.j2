@@ -8,7 +8,8 @@ upstream galaxy {
 
 server {
     # Listen on port 80
-    listen        *:80 default_server;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     # The virtualhost is our domain name
     server_name   "{{ inventory_hostname }}";
     # Our log files will go here.

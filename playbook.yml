@@ -65,6 +65,12 @@
 
   post_tasks:
 
+    - name: Disable default nginx site (Ubuntu ≥22.04)
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+
     - name: Deploy environment-specific nginx.conf
       ansible.builtin.template:
         src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
