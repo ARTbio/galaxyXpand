@@ -22,13 +22,21 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install python3.12-full and Ansible from apt
+    - name: Install minimal Python/Ansible (with venv)
       run: |
-        sudo apt-get update -y
-        sudo apt-get install -y python3.12-full ansible
-        ansible --version
-        which 2to3 || echo "2to3 not found!"
+        # Configure dpkg to ignore man and doc
+        echo "path-exclude /usr/share/doc/*" | sudo tee /etc/dpkg/dpkg.cfg.d/01-nodoc
+        echo "path-exclude /usr/share/man/*" | sudo tee -a /etc/dpkg/dpkg.cfg.d/01-nodoc
 
+        sudo apt-get update -y
+
+        # install minimal dependencies including venv
+        sudo apt-get install -y --no-install-recommends \
+          ansible \
+          python3.12-venv \
+          python3-lib2to3
+        
+        ansible --version
 
     - name: Install Ansible roles
       run: ansible-galaxy install -r requirements.yml -p roles/

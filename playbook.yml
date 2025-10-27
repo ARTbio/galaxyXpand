@@ -86,7 +86,7 @@
         state: restarted
         enabled: true
 
-    # three tasks for socket accessibility
+    # Four tasks for socket accessibility
     - name: Add www-data user to galaxy group (for socket access)
       ansible.builtin.user:
         name: www-data
@@ -100,11 +100,19 @@
         mode: 'g+x'  # permission 'execute' for the group
       become: true
 
-    - name: Ensure Galaxy socket parent directory exists and has correct ownership
+    - name: Ensure Galaxy app directory is group-executable (for socket traversal)
       ansible.builtin.file:
-        path: "{{ galaxy_user.home | default('/home/galaxy') }}/run"
+        path: "{{ galaxy_user.home | default('/home/galaxy') }}/galaxy"
+        state: directory
+        mode: 'g+x'  # Ajoute 'execute' pour le groupe (www-data)
+      become: true
+
+    - name: Ensure Galaxy config directory has correct ownership and permissions
+      ansible.builtin.file:
+        path: "{{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
         state: directory
         owner: "{{ galaxy_user.name | default('galaxy') }}"
         group: "{{ galaxy_user.name | default('galaxy') }}"
-        mode: '0750'  # rwx for galaxy, r-x for the group (nginx), none for others
+        mode: '0750'  # rwx pour galaxy (écrire socket), r-x pour groupe (lire socket)
       become: true
+      
