@@ -43,7 +43,31 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Restart Nginx and wait for API
+    - name: Run diagnostics before API wait
+      run: |
+        echo "--- Nginx Status ---"
+        sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
+        
+        echo "--- Nginx Error Log (Last 50 lines) ---"
+        sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
+        
+        echo "--- Galaxy Services Status ---"
+        sudo systemctl status galaxy.target --no-pager || echo "Galaxy target status failed"
+        
+        echo "--- Permissions Check: /home/galaxy ---"
+        sudo ls -ld /home/galaxy
+        
+        echo "--- Permissions Check: /home/galaxy/run ---"
+        sudo ls -ld /home/galaxy/run || echo "Directory /home/galaxy/run not found"
+        
+        echo "--- Permissions Check: Socket File ---"
+        sudo ls -l /home/galaxy/run/gunicorn.sock || echo "Socket file not found"
+        
+        echo "--- AppArmor/SELinux Status (if installed) ---"
+        sudo aa-status || echo "aa-status not found"
+      continue-on-error: true # Continue if the command fails
+
+    - name: Wait for API
       run: |
         echo "--- Waiting for Galaxy API to be available ---"
         timeout 180s bash -c 'until curl --fail -s http://127.0.0.1/api/version > /dev/null; do echo -n "." && sleep 5; done'

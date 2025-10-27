@@ -91,11 +91,19 @@
       ansible.builtin.user:
         name: www-data
         groups: "{{ galaxy_user.name | default('galaxy') }}" # Utilise la var du rôle galaxy
-        append: yes
+        append: true
       become: true
 
     - name: Ensure Galaxy home directory is group-executable (for socket traversal)
       ansible.builtin.file:
         path: "{{ galaxy_user.home | default('/home/galaxy') }}" # Utilise la var du rôle galaxy
         mode: 'g+x'  # Ajoute la permission 'execute' pour le groupe
+      become: true
+
+    - name: Ensure Galaxy socket parent directory is group-executable
+      ansible.builtin.file:
+        # Le rôle galaxy crée un dossier 'run' pour le socket
+        path: "{{ galaxy_user.home | default('/home/galaxy') }}/run"
+        state: directory # S'assure aussi que le dossier existe
+        mode: 'g+x'      # La permission 'execute' pour le groupe
       become: true
