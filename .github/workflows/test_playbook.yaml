@@ -62,6 +62,8 @@ jobs:
         # test connections and ip resolutions
         sudo ss -tlnp | grep 4000
         sudo ss -tlnp | grep nginx
+        sudo ss -tlnp | grep gunicorn || echo "No socket bound by gunicorn"
+        sudo grep -i error /home/galaxy/galaxy/logs/gunicorn.log || echo "No errors in gunicorn.log"
         curl -v http://127.0.0.1:8080/api/version
       continue-on-error: true
 
