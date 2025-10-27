@@ -28,16 +28,6 @@
         state: present
         update_cache: true
 
-# --- TÂCHE AJOUTÉE POUR LE TEST CI ---
-    - name: "[CI-FIX] Stop and disable AppArmor to allow socket writing"
-      ansible.builtin.systemd:
-        name: apparmor
-        state: stopped
-        enabled: false
-      become: true
-      ignore_errors: true # Continue si apparmor n'est pas installé
-
-
     - name: Install required packages
       ansible.builtin.package:
         name:
@@ -83,67 +73,6 @@
         group: root
         mode: '0644'
       notify: Restart nginx
-
-# --- NOUVELLES TÂCHES CI-FIX ---
-    - name: "[CI-FIX] Remove all inherited ACLs from galaxy home"
-      ansible.builtin.command:
-        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}"
-      become: true
-      changed_when: false
-
-    - name: "[CI-FIX] Remove all inherited ACLs from galaxy app dir"
-      ansible.builtin.command:
-        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy"
-      become: true
-      changed_when: false
-
-    - name: "[CI-FIX] Remove all inherited ACLs from the config directory"
-      ansible.builtin.command:
-        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
-      become: true
-      changed_when: false
-    # --- FIN DES NOUVELLES TÂCHES ---
-
-    # --- DÉPLACER LES TÂCHES DE PERMISSION ICI ---
-    # Ces tâches doivent être exécutées AVANT le démarrage de Gunicorn/Nginx
-
-    - name: Add www-data user to galaxy group (for socket access)
-      ansible.builtin.user:
-        name: www-data
-        groups: "{{ galaxy_user.name | default('galaxy') }}"
-        append: true
-      become: true
-
-    - name: Ensure Galaxy home directory is group-executable (for socket traversal)
-      ansible.builtin.file:
-        path: "{{ galaxy_user.home | default('/home/galaxy') }}"
-        mode: 'g+x'  # permission 'execute' for the group
-      become: true
-
-    - name: Ensure Galaxy app directory is group-executable (for socket traversal)
-      ansible.builtin.file:
-        path: "{{ galaxy_user.home | default('/home/galaxy') }}/galaxy"
-        state: directory
-        mode: 'g+x'  # Ajoute 'execute' pour le groupe (www-data)
-      become: true
-
-    - name: "[CI-FIX] Remove all inherited ACLs from the config directory"
-      ansible.builtin.command:
-        # 'setfacl -b' (remove-all) est la commande pour écraser les ACLs
-        cmd: "setfacl -b {{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
-      become: true
-      changed_when: false # Cette commande n'est pas idempotente, on ignore son "changed"
-
-    - name: Ensure Galaxy config directory has correct ownership and permissions
-      ansible.builtin.file:
-        path: "{{ galaxy_user.home | default('/home/galaxy') }}/galaxy/config"
-        state: directory
-        owner: "{{ galaxy_user.name | default('galaxy') }}"
-        group: "{{ galaxy_user.name | default('galaxy') }}"
-        mode: '0750'  # rwx pour galaxy (écrire socket), r-x pour groupe (lire socket)
-      become: true
-
-    # --- DÉMARRER LES SERVICES SEULEMENT MAINTENANT ---
 
     - name: Create and start Galaxy systemd units via galaxyctl
       ansible.builtin.command:
