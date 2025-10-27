@@ -73,6 +73,7 @@
         group: root
         mode: '0644'
       notify: Restart nginx
+
     - name: Create and start Galaxy systemd units via galaxyctl
       ansible.builtin.command:
         cmd: galaxyctl restart
@@ -84,3 +85,17 @@
         name: galaxy.target
         state: restarted
         enabled: true
+
+    # 2 tasks for socket accessibility
+    - name: Add www-data user to galaxy group (for socket access)
+      ansible.builtin.user:
+        name: www-data
+        groups: "{{ galaxy_user.name | default('galaxy') }}" # Utilise la var du rôle galaxy
+        append: yes
+      become: true
+
+    - name: Ensure Galaxy home directory is group-executable (for socket traversal)
+      ansible.builtin.file:
+        path: "{{ galaxy_user.home | default('/home/galaxy') }}" # Utilise la var du rôle galaxy
+        mode: 'g+x'  # Ajoute la permission 'execute' pour le groupe
+      become: true

@@ -7,7 +7,7 @@ galaxy_commit_id: release_24.1
 galaxy_config:
   gravity:
     gunicorn:
-      bind: localhost:4000
+#      bind: localhost:4000 # switch on socket by default
       workers: 2         # deux workers web, idéal sur 2 CPU
     handlers:
       job_handlers:
