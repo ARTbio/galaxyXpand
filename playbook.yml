@@ -28,6 +28,16 @@
         state: present
         update_cache: true
 
+# --- TÂCHE AJOUTÉE POUR LE TEST CI ---
+    - name: "[CI-FIX] Stop and disable AppArmor to allow socket writing"
+      ansible.builtin.systemd:
+        name: apparmor
+        state: stopped
+        enabled: false
+      become: true
+      ignore_errors: true # Continue si apparmor n'est pas installé
+
+
     - name: Install required packages
       ansible.builtin.package:
         name:
