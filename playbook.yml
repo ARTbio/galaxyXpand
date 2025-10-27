@@ -74,19 +74,9 @@
         mode: '0644'
       notify: Restart nginx
 
-    - name: Create and start Galaxy systemd units via galaxyctl
-      ansible.builtin.command:
-        cmd: galaxyctl restart
-      become: true
-      changed_when: true
+    # --- DÉPLACER LES TÂCHES DE PERMISSION ICI ---
+    # Ces tâches doivent être exécutées AVANT le démarrage de Gunicorn/Nginx
 
-    - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
-      ansible.builtin.systemd:
-        name: galaxy.target
-        state: restarted
-        enabled: true
-
-    # Four tasks for socket accessibility
     - name: Add www-data user to galaxy group (for socket access)
       ansible.builtin.user:
         name: www-data
@@ -122,3 +112,17 @@
         group: "{{ galaxy_user.name | default('galaxy') }}"
         mode: '0750'  # rwx pour galaxy (écrire socket), r-x pour groupe (lire socket)
       become: true
+
+    # --- DÉMARRER LES SERVICES SEULEMENT MAINTENANT ---
+
+    - name: Create and start Galaxy systemd units via galaxyctl
+      ansible.builtin.command:
+        cmd: galaxyctl restart
+      become: true
+      changed_when: true
+
+    - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
+      ansible.builtin.systemd:
+        name: galaxy.target
+        state: restarted
+        enabled: true
