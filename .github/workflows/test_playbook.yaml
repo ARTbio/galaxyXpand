@@ -22,20 +22,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install minimal Python/Ansible (with venv)
+    - name: Install Ansible
       run: |
-        # Configure dpkg to ignore man and doc
-        echo "path-exclude /usr/share/doc/*" | sudo tee /etc/dpkg/dpkg.cfg.d/01-nodoc
-        echo "path-exclude /usr/share/man/*" | sudo tee -a /etc/dpkg/dpkg.cfg.d/01-nodoc
-
         sudo apt-get update -y
-
-        # install minimal dependencies including venv
-        sudo apt-get install -y --no-install-recommends \
-          ansible \
-          python3.12-venv \
-          python3-lib2to3
-        
+        sudo apt-get install -y ansible
         ansible --version
 
     - name: Disable AppArmor on the GitHub runner
