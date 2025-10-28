@@ -1,0 +1,108 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - readthedocs
+  pull_request:
+    branches:
+      - main
+
+env:
+  # Global Variables for all jobs
+  BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
+  BIOBLEND_TEST_JOB_TIMEOUT: "240"
+  GALAXY_USER: tooladmin@galaxy.org
+  GALAXY_USER_PASSWD: artbio2024
+
+jobs:
+  ########################################
+  # Job 1: Ansible Lint
+  ########################################
+  lint:
+    name: Ansible Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python and install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install ansible==9.4.0 ansible-lint==6.22.2
+      - name: Run ansible-lint
+        run: ansible-lint playbook.yml install_tools.yml
+
+  ########################################
+  # Job 2: Test Playbook Deployment
+  ########################################
+  test:
+    name: Test GalaxyXpand on Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    # needs: lint # to linearize the workflow
+    if: github.event_name == 'push' # <- run only on pushes
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Ansible
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ansible
+        ansible --version
+
+    - name: Install Ansible roles
+      run: ansible-galaxy install -r requirements.yml -p roles/
+
+    - name: Run Ansible playbook to install Galaxy
+      run: |
+        sudo apt-get -qq --purge remove nginx* || true
+        ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
+                         -e ansible_user="runner" \
+                         -e allow_world_readable_tmpfiles="true" \
+                         --skip-tags galaxy_build_client \
+                         playbook.yml
+
+    - name: Run diagnostics before API wait
+      run: |
+        galaxyctl restart
+        sleep 10
+        curl -v http://127.0.0.1/api/version
+      continue-on-error: true
+
+    - name: Wait for API
+      run: |
+        echo "--- Waiting for Galaxy API to be available ---"
+        timeout 180s bash -c 'until curl --fail -s http://127.0.0.1/api/version > /dev/null; do echo -n "." && sleep 5; done'
+        echo "Galaxy is up!"
+        sudo galaxyctl status
+
+    - name: Run Ansible playbook to install Galaxy tools
+      run: ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" -e ansible_user="runner" install_tools.yml
+
+    - name: Create virtual environment for Bioblend tests
+      run: |
+        python3 -m venv venv
+        source vVenv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip show bioblend pytest
+
+    - name: Run Bioblend tests
+      run: |
+        source venv/bin/activate
+        export BIOBLEND_GALAXY_API_KEY=$(cat ./apikey.txt)
+        
+        BIOBLEND_PATH=$(python -c "import bioblend; import os; print(os.path.dirname(bioblend.__file__))")
+        echo "Bioblend package found at: $BIOBLEND_PATH"
+        
+        TEST_HISTORIES_PATH="$BIOBLEND_PATH/_tests/TestGalaxyHistories.py"
+        TEST_TOOLS_PATH="$BIOBLEND_PATH/_tests/TestGalaxyTools.py"
+
+        echo "Testing file: $TEST_HISTORIES_PATH"
+        echo "Testing file: $TEST_TOOLS_PATH"
+
+        bioblend-galaxy-tests --color=yes -v \
+            "$TEST_HISTORIES_PATH" \
+            "$TEST_TOOLS_PATH" \
+            --no-summary  || true
