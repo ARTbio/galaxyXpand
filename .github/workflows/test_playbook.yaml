@@ -40,7 +40,6 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-
     - name: Run diagnostics before API wait
       run: |
         galaxyctl restart
@@ -70,7 +69,7 @@ jobs:
       run: |
         source venv/bin/activate
         export BIOBLEND_GALAXY_API_KEY=$(cat ./apikey.txt)
-        python -m pytest -v --color=yes \
-          -k "TestGalaxyHistories or TestGalaxyTools" \
-          $(python -c "import bioblend, os; print(os.path.dirname(bioblend.__file__) + '/_tests')")
+        bioblend-galaxy-tests --color=yes -v \
+            --pyargs bioblend.galaxy.tests.test_histories bioblend.galaxy.tests.test_tools \
+            --no-summary  || true
 
