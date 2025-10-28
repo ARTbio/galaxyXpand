@@ -9,7 +9,6 @@ galaxy_config:
     gunicorn:
       bind: "0.0.0.0:4000"
       workers: 2
-      preload: false
     handlers:
       job_handlers:
         pools:
@@ -34,6 +33,8 @@ galaxy_config:
     expose_dataset_path: true
     expose_potentially_sensitive_job_metrics: true
     job_handler_monitor_sleep: 0.05 # test de performance
+    # don't let galaxyproject.galaxy role injecting this variable, unless bug
+    themes_config_file: "{{ galaxy_server_dir }}/themes_conf.yml"
 
 # deploy galaxy static files
 
