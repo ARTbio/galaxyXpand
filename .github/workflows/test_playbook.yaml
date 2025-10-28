@@ -65,6 +65,14 @@ jobs:
         sudo ss -tlnp | grep gunicorn || echo "No socket bound by gunicorn"
         sudo grep -i error /home/galaxy/galaxy/logs/gunicorn.log || echo "No errors in gunicorn.log"
         curl -v http://127.0.0.1:8080/api/version
+        # Audit Apparmor
+        sudo apt-get install -y apparmor-utils
+        echo "--- AppArmor Status ---"
+        sudo aa-status
+        echo "--- AppArmor DENIED Logs ---"
+        sudo journalctl -n 200 -t audit | grep 'apparmor="DENIED"' | grep 'nginx' || echo "Aucun log AppArmor 'DENIED' trouvé pour Nginx."
+        echo "--- Nginx Error Log (re-check) ---"
+        sudo grep 'connect.*failed' /var/log/nginx/error.log || echo "Aucune erreur 'connect failed' dans les logs Nginx."
       continue-on-error: true
 
     - name: Wait for API
