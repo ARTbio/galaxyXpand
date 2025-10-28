@@ -40,7 +40,7 @@ miniconda_channels:
   - bioconda
   - default
 # galaxy themes (role galaxyproject.galaxy)
-galaxy_manage_themes: false
+# galaxy_manage_themes: false
 
 common_galaxy_config:
   galaxy:
