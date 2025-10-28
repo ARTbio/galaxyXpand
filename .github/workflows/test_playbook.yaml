@@ -75,14 +75,14 @@ jobs:
         echo "Bioblend package found at: $BIOBLEND_PATH"
         
         # 2. Construire les chemins complets vers les fichiers de test
-        # (Basé sur l'erreur "module or package not found: bioblend.galaxy.tests.test_histories")
-        TEST_HISTORIES_PATH="$BIOBLEND_PATH/galaxy/tests/test_histories.py"
-        TEST_TOOLS_PATH="$BIOBLEND_PATH/galaxy/tests/test_tools.py"
+        #    en utilisant le bon dossier "_tests"
+        TEST_HISTORIES_PATH="$BIOBLEND_PATH/_tests/TestGalaxyHistories.py"
+        TEST_TOOLS_PATH="$BIOBLEND_PATH/_tests/TestGalaxyTools.py"
 
         echo "Testing file: $TEST_HISTORIES_PATH"
         echo "Testing file: $TEST_TOOLS_PATH"
 
-        # 3. Exécuter les tests en passant les CHEMINS DE FICHIERS (sans --pyargs)
+        # 3. Exécuter les tests en passant les bons CHEMINS DE FICHIERS
         bioblend-galaxy-tests --color=yes -v \
             "$TEST_HISTORIES_PATH" \
             "$TEST_TOOLS_PATH" \
