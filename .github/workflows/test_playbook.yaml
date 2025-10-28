@@ -28,9 +28,6 @@ jobs:
         sudo apt-get install -y ansible
         ansible --version
 
-    - name: Disable AppArmor on the GitHub runner
-      uses: cisagov/action-disable-apparmor@v1.0.0
-
     - name: Install Ansible roles
       run: ansible-galaxy install -r requirements.yml -p roles/
 
@@ -43,8 +40,13 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
+    - name: Disable AppArmor on the GitHub runner
+      uses: cisagov/action-disable-apparmor@v1.0.0
+
     - name: Run diagnostics before API wait
       run: |
+        galaxyctl restart
+        sleep 10
         echo "--- Nginx Status ---"
         sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
         echo "--- Nginx Error Log (Last 50 lines) ---"
