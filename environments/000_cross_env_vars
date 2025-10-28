@@ -75,6 +75,8 @@ common_galaxy_config:
     # Tool security
     outputs_to_working_directory: true
     new_user_dataset_access_role_default_private: true # Make datasets private by default
+    # don't let galaxyproject.galaxy role injecting this variable, unless bug
+    themes_config_file: "{{ galaxy_server_dir }}/themes_conf.yml"
   gravity:
     process_manager: systemd
     galaxy_root: "{{ galaxy_server_dir }}"
