@@ -8,7 +8,7 @@ galaxy_config:
   gravity:
     gunicorn:
       bind: "0.0.0.0:4000"
-      workers: 2         # deux workers web, idéal sur 2 CPU
+      workers: 1
     handlers:
       job_handlers:
         pools:
