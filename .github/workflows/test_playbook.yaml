@@ -38,6 +38,9 @@ jobs:
         
         ansible --version
 
+    - name: Disable AppArmor on the GitHub runner
+      uses: cisagov/action-disable-apparmor@v1.0.0
+
     - name: Install Ansible roles
       run: ansible-galaxy install -r requirements.yml -p roles/
 
