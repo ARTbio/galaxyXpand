@@ -51,6 +51,7 @@ jobs:
         sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
         echo "--- Nginx Error Log (Last 50 lines) ---"
         sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
+        cat /home/galaxy/galaxy/galaxy.yml | grep themes_config_file_by_host || echo "themes_config_file_by_host not present in galaxy.yml"
         echo "--- Gunicorn Logs (JournalCTL) ---"
         sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
         sudo systemctl cat galaxy-gunicorn.service | grep PrivateNetwork
