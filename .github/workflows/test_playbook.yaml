@@ -7,7 +7,7 @@ on:
       - main
 env:
   # Global environment variables for the entire job
-  BIOBLEND_GALAXY_URL: "http://127.0.0.1:8080"
+  BIOBLEND_GALAXY_URL: "http://127.0.0.1:80"
   BIOBLEND_TEST_JOB_TIMEOUT: "240"
   GALAXY_USER: tooladmin@galaxy.org
   # NOTE: The password is intentionally in plaintext for this demo version.
@@ -40,41 +40,18 @@ jobs:
                          --skip-tags galaxy_build_client \
                          playbook.yml
 
-    - name: Disable AppArmor on the GitHub runner
-      uses: cisagov/action-disable-apparmor@v1.0.0
 
     - name: Run diagnostics before API wait
       run: |
         galaxyctl restart
         sleep 10
-        echo "--- Nginx Status ---"
-        sudo systemctl status nginx.service --no-pager || echo "Nginx status failed"
-        echo "--- Nginx Error Log (Last 50 lines) ---"
-        sudo tail -n 50 /var/log/nginx/error.log || echo "Could not read Nginx error log"
-        cat /home/galaxy/galaxy/config/galaxy.yml | grep themes_config_file_by_host || echo "themes_config_file_by_host not present in galaxy.yml"
-        echo "--- Gunicorn Logs (JournalCTL) ---"
-        sudo journalctl -u galaxy-gunicorn.service -n 50 --no-pager || echo "Could not get Gunicorn journal"
-        sudo systemctl cat galaxy-gunicorn.service | grep PrivateNetwork
-        # test connections and ip resolutions
-        sudo ss -tlnp | grep 4000
-        sudo ss -tlnp | grep nginx
-        sudo ss -tlnp | grep gunicorn || echo "No socket bound by gunicorn"
-        sudo grep -i error /home/galaxy/galaxy/logs/gunicorn.log || echo "No errors in gunicorn.log"
-        curl -v http://127.0.0.1:8080/api/version
-        # Audit Apparmor
-        sudo apt-get install -y apparmor-utils
-        echo "--- AppArmor Status ---"
-        sudo aa-status
-        echo "--- AppArmor DENIED Logs ---"
-        sudo journalctl -n 200 -t audit | grep 'apparmor="DENIED"' | grep 'nginx' || echo "Aucun log AppArmor 'DENIED' trouvé pour Nginx."
-        echo "--- Nginx Error Log (re-check) ---"
-        sudo grep 'connect.*failed' /var/log/nginx/error.log || echo "Aucune erreur 'connect failed' dans les logs Nginx."
+        curl -v http://127.0.0.1/api/version
       continue-on-error: true
 
     - name: Wait for API
       run: |
         echo "--- Waiting for Galaxy API to be available ---"
-        timeout 180s bash -c 'until curl --fail -s http://127.0.0.1:8080/api/version > /dev/null; do echo -n "." && sleep 5; done'
+        timeout 180s bash -c 'until curl --fail -s http://127.0.0.1/api/version > /dev/null; do echo -n "." && sleep 5; done'
         echo "Galaxy is up!"
         sudo galaxyctl status
 

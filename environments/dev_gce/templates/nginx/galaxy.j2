@@ -1,3 +1,5 @@
+# Do not edit. Changes will be overwritten by Ansible.
+
 upstream galaxy {
     server 127.0.0.1:4000 fail_timeout=0;
 
@@ -8,8 +10,8 @@ upstream galaxy {
 
 server {
     # Listen on available port
-    listen 8080 default_server;
-    listen [::]:8080 default_server;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     # The virtualhost is our domain name
     server_name   _ localhost 127.0.0.1 {{ inventory_hostname }};
     # Our log files will go here.

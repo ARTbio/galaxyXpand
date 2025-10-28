@@ -39,8 +39,6 @@ miniconda_channels:
   - conda-forge
   - bioconda
   - default
-# galaxy themes (role galaxyproject.galaxy)
-# galaxy_manage_themes: false
 
 common_galaxy_config:
   galaxy:

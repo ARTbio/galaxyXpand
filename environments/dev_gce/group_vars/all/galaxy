@@ -34,7 +34,7 @@ galaxy_config:
     expose_potentially_sensitive_job_metrics: true
     job_handler_monitor_sleep: 0.05 # test de performance
     # don't let galaxyproject.galaxy role injecting this variable, unless bug
-    themes_config_file_by_host: {}
+    themes_config_file_by_host: {}  # GitHub CI fix
 
 # deploy galaxy static files
 

@@ -66,7 +66,7 @@
 
   post_tasks:
 
-    - name: Deploy environment-specific nginx.conf
+    - name: Overwrite nginx.conf
       ansible.builtin.template:
         src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
         dest: /etc/nginx/nginx.conf
