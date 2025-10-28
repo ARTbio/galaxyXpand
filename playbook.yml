@@ -35,7 +35,7 @@
           - git
           - make
           - tar
-          - python3-env
+          - python3-venv
           - python3-lib2to3
           - slurm-wlm
           - slurm-drmaa1
