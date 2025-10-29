@@ -1,7 +1,6 @@
 ---
 # Galaxy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
-galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
 galaxy_config:
   galaxy:
@@ -53,11 +52,7 @@ galaxy_config:
           6264376664373139646366656434303766353836353436613439
     require_login: true
     # Miscellaneous
-    ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.185.153
-    # default len_file_path: shared/ucsc/chrom
-    len_file_path: /home/galaxy/galaxy/config/len
-    tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
 
   gravity:
     gunicorn:
@@ -82,11 +77,11 @@ artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/ARTbio/files/galaxy/config/job_conf.yml
+  - src: "{{ inventory_dir }}/files/galaxy/config/job_conf.yml"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
-  - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.png
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/artbio_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.png"
 
 galaxy_config_templates:
-  - src: environments/ARTbio/templates/html/welcome.html.j2
+  - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"

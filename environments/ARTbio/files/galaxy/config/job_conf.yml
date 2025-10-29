@@ -4,10 +4,9 @@
 runners:
   local_runner:
     load: galaxy.jobs.runners.local:LocalJobRunner
-    workers: 8
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so.1
 
 handling:
   assign:
