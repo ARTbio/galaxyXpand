@@ -1,0 +1,24 @@
+---
+# ansible-slurm
+slurm_roles: ['controller', 'exec']
+slurm_user: galaxy
+slurm_config:
+  SlurmUser: galaxy
+  SlurmctldLogFile: /home/galaxy/slurmctld.log
+  SlurmdLogFile: /home/galaxy/slurmd.log
+  SlurmdSpoolDir: /tmp/slurmd
+  StateSaveLocation: /tmp/slurm
+  SelectType: select/cons_res
+  SelectTypeParameters: CR_Core_Memory
+
+slurm_nodes:
+  - name: "localhost"
+    CPUs: 72
+    RealMemory: 773926
+
+slurm_partitions:
+  - name: debug
+    Default: YES
+    DefMemPerCPU: 10749
+    Nodes: "localhost"
+
