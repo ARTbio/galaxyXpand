@@ -1,3 +1,5 @@
+# Do not edit. Changes will be overwritten by Ansible.
+
 upstream galaxy {
     server unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock;
 
@@ -8,7 +10,7 @@ upstream galaxy {
 
 server {
     # Listen on port 443
-    listen        *:443 ssl default_server;
+    listen   443 ssl default_server;
     # The virtualhost is our domain name
     server_name   "{{ inventory_hostname }}";
 
@@ -73,5 +75,5 @@ server {
         proxy_pass https://training.galaxyproject.org/training-material/;
     }
 
-    include /etc/nginx/phpmyadmin.d/phpmyadmin.conf;
+#    include /etc/nginx/phpmyadmin.d/phpmyadmin.conf;
 }
