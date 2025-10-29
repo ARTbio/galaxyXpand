@@ -4,14 +4,11 @@
 runners:
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so.1
 
 handling:
   assign:
     - db-skip-locked
-  processes:
-    handler0:
-    handler1:
 
 execution:
   default: cluster_1
