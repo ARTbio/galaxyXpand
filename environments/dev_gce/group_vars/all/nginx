@@ -1,6 +1,6 @@
 ---
 # NGINX
-nginx_server_src_dir: environments/dev_gce/templates/nginx/
+nginx_server_src_dir: "{{ inventory_dir }}/templates/nginx/"
 nginx_selinux_allow_local_connections: true
 nginx_servers:
   - galaxy
