@@ -28,6 +28,13 @@
         state: present
         update_cache: true
 
+    - name: Install Slurm-DRMAA from the correct PPA release
+      ansible.builtin.apt:
+        name: slurm-drmaa1
+        state: present
+        default_release: '{{ ansible_distribution_release }}'
+        update_cache: yes
+
     - name: Install required packages
       ansible.builtin.package:
         name:
@@ -38,10 +45,9 @@
           - python3-venv
           - python3-lib2to3
           - slurm-wlm
-          - slurm-drmaa1
         state: present
 
-    - name: Merge common and specific Galaxy configuration
+    - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
         galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
 
