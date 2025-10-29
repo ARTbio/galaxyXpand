@@ -244,6 +244,11 @@ tools:
   tool_panel_section_id: picardtools
   tool_panel_section_label: PICARD tools
   tool_shed_url: toolshed.g2.bx.psu.edu
+- name: fastqc
+  owner: devteam
+  tool_panel_section_id: ngs:_qc_and_manipulation
+  tool_panel_section_label: 'NGS: QC and manipulation'
+  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: tabular_to_fastq
   owner: devteam
   tool_panel_section_id: ngs:_qc_and_manipulation
@@ -309,22 +314,17 @@ tools:
   tool_panel_section_id: ngs:_qc_and_manipulation
   tool_panel_section_label: 'NGS: QC and manipulation'
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: fastqc
-  owner: devteam
-  tool_panel_section_id: ngs:_qc_and_manipulation
-  tool_panel_section_label: 'NGS: QC and manipulation'
-  tool_shed_url: toolshed.g2.bx.psu.edu
 - name: fastq_paired_end_deinterlacer
   owner: devteam
   tool_panel_section_id: ngs:_qc_and_manipulation
   tool_panel_section_label: 'NGS: QC and manipulation'
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: hgvsparser
+- name: ensembl_vep
   owner: iuc
   tool_panel_section_id: variant
   tool_panel_section_label: Variant Analyses
   tool_shed_url: toolshed.g2.bx.psu.edu
-- name: ensembl_vep
+- name: hgvsparser
   owner: iuc
   tool_panel_section_id: variant
   tool_panel_section_label: Variant Analyses
@@ -923,6 +923,7 @@ tools:
   owner: iuc
   tool_panel_section_id: bcftools
   tool_panel_section_label: BCFtools
+
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: bcftools_plugin_color_chrs
   owner: iuc
@@ -1173,6 +1174,11 @@ tools:
   owner: artbio
   tool_panel_section_id: ngs:_assembly
   tool_panel_section_label: 'NGS: Assembly'
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cnv_facets
+  owner: artbio
+  tool_panel_section_id: genomic_variants
+  tool_panel_section_label: Genomic Variants
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: lumpy_smoove
   owner: artbio

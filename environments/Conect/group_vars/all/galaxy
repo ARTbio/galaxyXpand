@@ -4,6 +4,18 @@ galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework an
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
 galaxy_config:
+  gravity:
+    gunicorn:
+      # performance options
+      workers: 4 # web traffic. likely enough for conect
+    handlers:
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 4 # likely enough for conect
+    celery:
+      workers: 2  # eg workflow scheduling
+
   galaxy:
     brand: "🧬 CONECT-AML"
     admin_users: !vault |
@@ -63,17 +75,6 @@ galaxy_config:
     len_file_path: /home/galaxy/galaxy/config/len
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
 
-  gravity:
-    gunicorn:
-      # performance options
-      workers: 4 # web traffic. likely enough for conect
-    handlers:
-      job_handlers:
-        pools:
-          - job-handlers
-        processes: 4 # likely enough for conect
-    celery:
-      workers: 2  # eg workflow scheduling
 
 # Welcome html page variables
 _conect_info: |
@@ -84,15 +85,15 @@ conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/Conect/files/galaxy/config/job_conf.yml
+  - src: "{{ inventory_dir }}/files/galaxy/config/job_conf.yml"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
-  - src: environments/Conect/files/galaxy/html/images/ARTbio_logo.jpg
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/ARTbio_logo.jpg"
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_logo.jpg"
-  - src: environments/Conect/files/galaxy/html/images/IBPS_logo.jpg
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/IBPS_logo.jpg"
     dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
-  - src: environments/Conect/files/galaxy/html/images/conect_logo.png
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/conect_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/conect_logo.png"
 
 galaxy_config_templates:
-  - src: environments/Conect/templates/html/welcome.html.j2
+  - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
