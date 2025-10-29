@@ -33,7 +33,7 @@
         name: slurm-drmaa1
         state: present
         default_release: '{{ ansible_distribution_release }}'
-        update_cache: yes
+        update_cache: true
 
     - name: Install required packages
       ansible.builtin.package:
