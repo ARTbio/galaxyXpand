@@ -47,6 +47,15 @@
           - slurm-wlm
         state: present
 
+    - name: Ensure munge runtime dir exists
+      ansible.builtin.file:
+        path: /run/munge
+        owner: munge
+        group: munge
+        mode: '0755'
+        state: directory
+
+
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
         galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
