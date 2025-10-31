@@ -78,9 +78,9 @@ galaxy_config:
 
 # Welcome html page variables
 _conect_info: |
-  <strong>Galaxy software was upgraded to
+  <strong>Ubuntu system was upgraded to
   <br>
-  release_24.1 (2024-07-17)</strong>
+  version 24.04 LTS Noble (2025-10-31)</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
