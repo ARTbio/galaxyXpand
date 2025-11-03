@@ -4,6 +4,18 @@ galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework an
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
 galaxy_config:
+  gravity:
+    gunicorn:
+      # performance options
+      workers: 4 # web traffic. likely enough for ARTbio
+    handlers:
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 4 # likely enough for ARTbio
+    celery:
+      workers: 2  # eg workflow scheduling
+
   galaxy:
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -59,34 +71,22 @@ galaxy_config:
     len_file_path: /home/galaxy/galaxy/config/len
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
 
-  gravity:
-    gunicorn:
-      # performance options
-      workers: 4 # web traffic. likely enough for ARTbio
-    handlers:
-      job_handlers:
-        pools:
-          - job-handlers
-        processes: 4 # likely enough for ARTbio
-    celery:
-      workers: 2  # eg workflow scheduling
-
 # Welcome html page variables
 _artbio_info: |
   <h4>
-  <strong> ARTbio server recently upgraded to release 24.1 (2024-07-17)
+  <strong>Ubuntu system was upgraded to
   <br>
-  Please report any unusual bugs</strong>
+  version 24.04 LTS Noble</strong>
   </h4>
 artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: environments/ARTbio/files/galaxy/config/job_conf.yml
+  - src: "{{ inventory_dir }}/files/galaxy/config/job_conf.yml"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
-  - src: environments/ARTbio/files/galaxy/html/images/artbio_logo.png
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/artbio_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/artbio_logo.png"
 
 galaxy_config_templates:
-  - src: environments/ARTbio/templates/html/welcome.html.j2
+  - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
