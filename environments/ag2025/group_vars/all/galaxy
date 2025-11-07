@@ -19,7 +19,7 @@ galaxy_config:
       workers: 1
 
   galaxy:
-    admin_users: admin@galaxy.org,tooladmin@galaxy.org
+    admin_users: admin@galaxy.org,tooladmin@galaxy.org,drosofff@gmail.com
     brand: "🧬🔬🚀"
     enable_quotas: false
     job_handler_monitor_sleep: 0.1 # test de performance
