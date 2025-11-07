@@ -41,4 +41,4 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/images/ag_logo.png"
 
 galaxy_tools_tool_list_files:
-  - "environments/ag2024/files/ag2024_tools.yaml"
+  - "environments/ag2024/files/ag2025_tools.yaml"
