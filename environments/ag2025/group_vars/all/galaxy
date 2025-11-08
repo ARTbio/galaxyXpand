@@ -22,7 +22,7 @@ galaxy_config:
     admin_users: admin@galaxy.org,tooladmin@galaxy.org,drosofff@gmail.com
     brand: "🧬🔬🚀"
     enable_quotas: false
-    job_handler_monitor_sleep: 0.1 # test de performance
+    job_handler_monitor_sleep: 0.05 # test de performance
     # don't let galaxy role injecting this variable, unless galaxy startup crash
     themes_config_file_by_host: {}  # GitHub CI fix
 
