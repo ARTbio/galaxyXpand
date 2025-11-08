@@ -6,6 +6,7 @@ slurm_user: galaxy
 slurm_config:
   ControlMachine: "{{ ansible_hostname }}"
   AccountingStorageType: accounting_storage/none
+  SchedulerParameters: bf_interval=2
   SlurmUser: slurm
   SlurmctldLogFile: /var/log/slurm/slurmctld.log
   SlurmdLogFile: /var/log/slurm/slurmd.log
