@@ -11,7 +11,7 @@ slurm_config:
   CommunicationParameters: DisableIPv6
 
 # --- Cluster and controller ---
-  ClusterName: "{{ ansible_hostname | replace('-', '') }}"
+  ClusterName: ag2025
   ControlMachine: "{{ ansible_hostname }}"
   StateSaveLocation: /tmp/slurm
   SlurmdSpoolDir: /tmp/slurmd

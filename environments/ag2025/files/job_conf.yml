@@ -53,7 +53,7 @@ tools:
     destination: "cluster_3"
 
   - id: "fastqc"
-    destination: "cluster_2"
+    destination: "cluster_1"
 
   - id: "seqtk"
     destination: "cluster_3"
