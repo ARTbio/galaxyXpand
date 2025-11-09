@@ -55,6 +55,22 @@
         mode: '0755'
         state: directory
 
+    - name: Ensure Slurm state directories exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: slurm
+        group: slurm # ou galaxy si c'est l'utilisateur slurm
+        mode: '0755'
+      loop:
+        - "{{ slurm_config.StateSaveLocation }}"  # /tmp/slurm
+        - "{{ slurm_config.SlurmdSpoolDir }}"   # /tmp/slurmd
+
+    - name: (Démarrage) Vider les répertoires d'état Slurm
+      ansible.builtin.shell: "rm -rf {{ item }}/*"
+      loop:
+        - "{{ slurm_config.StateSaveLocation }}"
+        - "{{ slurm_config.SlurmdSpoolDir }}"
 
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:

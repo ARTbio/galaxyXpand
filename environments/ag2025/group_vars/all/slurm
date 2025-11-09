@@ -1,7 +1,7 @@
 ---
 # ansible-slurm
 slurm_roles: ['controller', 'exec']
-slurm_user: galaxy
+slurm_user: slurm
 
 slurm_config:
 # --- Authentication and security ---
