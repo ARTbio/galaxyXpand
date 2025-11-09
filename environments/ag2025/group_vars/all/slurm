@@ -4,21 +4,46 @@ slurm_roles: ['controller', 'exec']
 slurm_user: galaxy
 
 slurm_config:
-  ControlMachine: "{{ ansible_hostname }}"
-  AccountingStorageType: accounting_storage/none
-  SchedulerParameters: bf_interval=2
-  SlurmUser: slurm
-  SlurmctldLogFile: /var/log/slurm/slurmctld.log
-  SlurmdLogFile: /var/log/slurm/slurmd.log
-  SlurmdSpoolDir: /tmp/slurmd
-  StateSaveLocation: /tmp/slurm
-  SelectType: select/cons_tres
-  SelectTypeParameters: CR_Core_Memory
+# --- Authentication and security ---
   AuthType: auth/munge
   CryptoType: crypto/munge
+  SlurmUser: slurm
   CommunicationParameters: DisableIPv6
+
+# --- Cluster and controller ---
+  ClusterName: "{{ ansible_hostname | replace('-', '') }}"
+  ControlMachine: "{{ ansible_hostname }}"
+  StateSaveLocation: /tmp/slurm
+  SlurmdSpoolDir: /tmp/slurmd
+  SlurmctldPidFile: /run/slurmctld.pid
+  SlurmdPidFile: /run/slurmd.pid
+  SlurmctldPort: 6817
+  SlurmdPort: 6818
+
+# --- Logs ---
+  SlurmctldLogFile: /var/log/slurm/slurmctld.log
+  SlurmdLogFile: /var/log/slurm/slurmd.log
+  SlurmctldDebug: info
+  SlurmdDebug: info
+
+# --- Plugins and collecting ---
+  ProctrackType: proctrack/pgid
+  JobAcctGatherType: jobacct_gather/none
+  AccountingStorageType: accounting_storage/none
+
+# --- Selection and resources ---
+  SelectType: select/cons_tres
+  SelectTypeParameters: CR_Core_Memory
+
+# --- Planification (optimized for Galaxy) ---
+  SchedulerType: sched/backfill
+  SchedulerParameters: bf_interval=2
+  FastSchedule: 1
+
+# --- MPI et mail ---
   MailProg: /bin/true
   MpiDefault: none
+
 
 slurm_nodes:
   - name: "{{ ansible_hostname }}"
