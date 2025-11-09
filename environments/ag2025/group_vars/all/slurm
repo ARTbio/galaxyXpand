@@ -30,6 +30,8 @@ slurm_config:
   ProctrackType: proctrack/pgid
   JobAcctGatherType: jobacct_gather/none
   AccountingStorageType: accounting_storage/none
+  PriorityType: priority/null
+  DebugFlags: NO_ASSOCS,NO_QOS
 
 # --- Selection and resources ---
   SelectType: select/cons_tres
@@ -38,12 +40,11 @@ slurm_config:
 # --- Planification (optimized for Galaxy) ---
   SchedulerType: sched/backfill
   SchedulerParameters: bf_interval=2
-  FastSchedule: 1
 
 # --- MPI et mail ---
   MailProg: /bin/true
   MpiDefault: none
-
+  MpiParams: ports=none
 
 slurm_nodes:
   - name: "{{ ansible_hostname }}"
