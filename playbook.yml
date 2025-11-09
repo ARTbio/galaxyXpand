@@ -62,7 +62,7 @@
       loop:
         - "{{ slurm_config.StateSaveLocation }}"  # /tmp/slurm
         - "{{ slurm_config.SlurmdSpoolDir }}"   # /tmp/slurmd
-    
+
     - name: Recreate slurm state directories
       ansible.builtin.file:
         path: "{{ item }}"
