@@ -55,25 +55,6 @@
         mode: '0755'
         state: directory
 
-    - name: Reset slurm state directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - "{{ slurm_config.StateSaveLocation }}"  # /tmp/slurm
-        - "{{ slurm_config.SlurmdSpoolDir }}"   # /tmp/slurmd
-
-    - name: Recreate slurm state directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ slurm_user }}"
-        group: "{{ slurm_user }}"
-        mode: '0755'
-      loop:
-        - "{{ slurm_config.StateSaveLocation }}"
-        - "{{ slurm_config.SlurmdSpoolDir }}"
-
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
         galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
