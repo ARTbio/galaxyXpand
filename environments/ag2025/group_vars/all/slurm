@@ -30,8 +30,7 @@ slurm_config:
   ProctrackType: proctrack/pgid
   JobAcctGatherType: jobacct_gather/none
   AccountingStorageType: accounting_storage/none
-  PriorityType: priority/null
-  DebugFlags: NO_ASSOCS,NO_QOS
+  PriorityType: priority/basic
 
 # --- Selection and resources ---
   SelectType: select/cons_tres
