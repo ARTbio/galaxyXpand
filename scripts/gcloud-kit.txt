@@ -1,0 +1,30 @@
+# Créer une image à partir d'un disque (instance arrêtée)
+gcloud compute images create galaxy-image \
+    --source-disk=NOM_DISQUE \
+    --source-disk-zone=europe-west9-a
+
+gcloud compute images create galaxy-image-2 \
+    --source-disk=image-ag2025 \
+    --source-disk-zone=europe-west9-a
+    --family=galaxy-images
+
+## Crée une nouvelle VM à partir d'image
+gcloud compute instances create galaxy-zurich \
+    --zone=europe-west6-a \
+    --image=galaxy-image \
+    --machine-type=e2-standard-8
+    
+# Avec http autorisé:
+gcloud compute instances create galaxy-london \
+     --zone=europe-west2-a \
+     --image=galaxy-image \
+     --machine-type=e2-standard-8 \
+     --tags=http-server
+
+# pour les étudiants avec une famille utilisée
+gcloud compute instances create mon-instance-galaxy \
+    --image-family=galaxy-images \
+    --image-project=ag2025-25-10-01-1 \
+    --zone=europe-west6-a \
+    --machine-type=e2-standard-8 \
+    --tags=http-server

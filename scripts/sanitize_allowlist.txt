@@ -1,0 +1,2 @@
+toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.74+galaxy1
+toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.27+galaxy4
