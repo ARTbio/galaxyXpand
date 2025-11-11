@@ -8,6 +8,26 @@ gcloud compute images create galaxy-image-2 \
     --source-disk-zone=europe-west9-a
     --family=galaxy-images
 
+## A faire d'abord pour que le reste fonctionne
+# donner le role de viewer au **projet** !!
+gcloud projects add-iam-policy-binding ag2025-25-10-01-1 \
+  --member="user:lecrom@gmail.com" \
+  --role="roles/viewer"
+
+# et partager l'image (ceci est normalement fait avec le script share_galaxy_image.sh)
+gcloud compute images add-iam-policy-binding "$IMAGE_NAME" \
+      --project="$PROJECT_ID" \
+      --member="user:$email" \
+      --role="roles/compute.imageUser" \
+      --quiet
+# ou en dur:
+gcloud compute images add-iam-policy-binding "galaxy-image-5" \
+      --project="ag2025-25-10-01-1" \
+      --member="user:christophe.antoniewski@gmail.com" \
+      --role="roles/compute.imageUser" \
+      --quiet
+
+
 ## Crée une nouvelle VM à partir d'image
 gcloud compute instances create galaxy-zurich \
     --zone=europe-west6-a \
@@ -23,6 +43,14 @@ gcloud compute instances create galaxy-london \
 
 # pour les étudiants avec une famille utilisée
 gcloud compute instances create mon-instance-galaxy \
+    --image-family=galaxy-images \
+    --image-project=ag2025-25-10-01-1 \
+    --zone=europe-west6-a \
+    --machine-type=e2-standard-8 \
+    --tags=http-server
+    
+########## Test ############
+gcloud compute instances create test-galaxy-chris \
     --image-family=galaxy-images \
     --image-project=ag2025-25-10-01-1 \
     --zone=europe-west6-a \
