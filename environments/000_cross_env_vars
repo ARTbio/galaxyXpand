@@ -46,6 +46,7 @@ common_galaxy_config:
     builds_file_path: shared/ucsc/builds.txt
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
+    dependency_resolvers_config_file: null
     file_path: datasets
     object_store_store_by: id
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
