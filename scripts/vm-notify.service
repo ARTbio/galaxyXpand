@@ -1,0 +1,16 @@
+[Unit]
+Description=Notifier l'administrateur du démarrage et de l'arrêt de la VM
+# Le script a besoin du réseau pour curl
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Appel au démarrage
+ExecStart=/usr/local/bin/notify-admin.sh start
+# Appel à l'arrêt (shutdown, reboot, gcloud instances stop)
+ExecStop=/usr/local/bin/notify-admin.sh stop
+
+[Install]
+WantedBy=multi-user.target
