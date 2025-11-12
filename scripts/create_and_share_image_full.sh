@@ -20,7 +20,7 @@ ZONE="$2"
 PROJECT_ID="$3"
 EMAIL_FILE="$4"
 DATE_TAG=$(date +%Y%m%d)
-IMAGE_NAME="${VM_NAME}-image-${DATE_TAG}"
+IMAGE_NAME="${VM_NAME}v${DATE_TAG}"
 
 if [[ ! -f "$EMAIL_FILE" ]]; then
   echo "❌ Fichier d'adresses introuvable : $EMAIL_FILE"
@@ -29,6 +29,7 @@ fi
 
 echo "⏳ Création de l'image '${IMAGE_NAME}' à partir de la VM '${VM_NAME}'..."
 gcloud compute images create "$IMAGE_NAME" \
+  --family=galaxy-images \
   --source-disk="$VM_NAME" \
   --source-disk-zone="$ZONE" \
   --project="$PROJECT_ID" \
@@ -58,23 +59,31 @@ while IFS= read -r email; do
     echo "   🟢 Accès image OK"
   else
     if grep -q "does not exist" /tmp/share_errors.log; then
-      echo "   ⚠️  Compte non encore activé (coupon inactif)"
+      echo "   ⚠️  Accès image : Compte non encore activé (coupon inactif)"
     else
-      echo "   ⚠️  Erreur lors de l'ajout du rôle imageUser"
+      echo "   ⚠️  Accès image : Erreur lors de l'ajout du rôle imageUser"
     fi
   fi
 
+  # --- BLOC CORRIGÉ ---
   # 2. Donne un rôle Viewer sur le projet (pour visibilité)
+  #    Capture les erreurs dans /tmp/share_errors.log au lieu de /dev/null
   if gcloud projects add-iam-policy-binding "$PROJECT_ID" \
         --member="user:$email" \
         --role="roles/viewer" \
-        --quiet >/dev/null 2>&1; then
+        --quiet 2>/tmp/share_errors.log; then
     echo "   🟢 Rôle Viewer projet OK"
     ((SUCCESS_COUNT++))
   else
-    echo "   ⚠️  Impossible d'ajouter le rôle Viewer (peut déjà exister)"
+    # Analyse le fichier d'erreurs pour détecter les comptes inactifs
+    if grep -q "does not exist" /tmp/share_errors.log; then
+      echo "   ⚠️  Rôle Viewer : Compte non encore activé (coupon inactif)"
+    else
+      echo "   ⚠️  Rôle Viewer : Impossible d'ajouter le rôle (peut déjà exister)"
+    fi
     ((FAIL_COUNT++))
   fi
+  # --- FIN DU BLOC CORRIGÉ ---
 
 done < "$EMAIL_FILE"
 
