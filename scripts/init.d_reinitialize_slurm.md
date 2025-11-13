@@ -19,11 +19,11 @@ sont présents sur le disque (dans /root/galaxyXpand).
 ```
 systemctl disable slurmd.service slurmctld.service
 ```
-2. Créer le service systemd "one-shot"
+2. Créer le service systemd
 ```
 # /etc/systemd/system/ansible-first-boot.service
 [Unit]
-Description=Configuration Ansible au premier demarrage (Slurm, Galaxy)
+Description=Configuration Ansible au demarrage (Slurm, Galaxy)
 Wants=network-online.target
 After=network-online.target
 
@@ -31,15 +31,12 @@ After=network-online.target
 Type=oneshot
 RemainAfterExit=no
 
-# Le chemin est maintenant /root/galaxyXpand
 WorkingDirectory=/root/galaxyXpand
-
-# La commande est lancée depuis ce répertoire
 ExecStart=/usr/bin/ansible-playbook -i environments/ag2025/hosts reinitialize_slurm.yml
 
-# --- Auto-destruction après succès ---
-ExecStartPost=/bin/rm /etc/systemd/system/ansible-first-boot.service
-ExecStartPost=/bin/systemctl daemon-reload
+# --- SUPPRIMEZ LES LIGNES SUIVANTES ---
+# ExecStartPost=/bin/rm /etc/systemd/system/ansible-first-boot.service
+# ExecStartPost=/bin/systemctl daemon-reload
 
 [Install]
 WantedBy=multi-user.target
@@ -71,8 +68,7 @@ par exemple avec la commande gcloud.
 1. VM démarre.
 - systemd lance ansible-first-boot.service.
 - Le service exécute le playbook reinitialize_slurm.yml.
-- Le playbook nettoie les /tmp, reconfigure slurm.conf (via le rôle), reconfigure Nginx et redémarre Galaxy.
+- Le playbook reconfigure slurm.conf (via le rôle), reconfigure Nginx et redémarre Galaxy.
 - Les handlers de Slurm démarrent et activent slurmctld et slurmd (qui sont maintenant valides).
 - Le playbook se termine.
-- Le service ansible-first-boot se supprime.
 - L'étudiant accède à son serveur, qui est 100% opérationnel.
