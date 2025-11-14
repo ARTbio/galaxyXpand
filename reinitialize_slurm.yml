@@ -28,6 +28,13 @@
         - "{{ slurm_config.StateSaveLocation }}"
         - "{{ slurm_config.SlurmdSpoolDir }}"
 
+    - name: Ensure /etc/hosts can resolve the hostname
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ ansible_default_ipv4.address }} "
+        line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
+        state: present
+
   roles:
     - galaxyproject.nginx
     - role: galaxyproject.slurm
