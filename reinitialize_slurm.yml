@@ -35,6 +35,10 @@
         line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
         state: present
 
+    - name: Ensure kernel hostname is set correctly
+      ansible.builtin.hostname:
+        name: "{{ ansible_hostname }}"
+
   roles:
     - galaxyproject.nginx
     - role: galaxyproject.slurm
