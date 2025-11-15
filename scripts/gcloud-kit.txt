@@ -49,10 +49,12 @@ gcloud compute instances create mon-instance-galaxy \
     --machine-type=e2-standard-8 \
     --tags=http-server
     
-########## Test ############
-gcloud compute instances create test-galaxy-chris \
+# -- en ciblant un autre projet -- #
+gcloud compute instances create chris-galaxy-1 \
+    --project=chris-as-student-ag2025 \
     --image-family=galaxy-images \
     --image-project=ag2025-25-10-01-1 \
-    --zone=europe-west6-a \
+    --zone=europe-west3-b \
     --machine-type=e2-standard-8 \
-    --tags=http-server
+    --tags=http-server \
+    --boot-disk-size=200G

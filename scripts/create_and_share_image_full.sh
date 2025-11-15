@@ -19,7 +19,7 @@ VM_NAME="$1"
 ZONE="$2"
 PROJECT_ID="$3"
 EMAIL_FILE="$4"
-DATE_TAG=$(date +%Y%m%d)
+DATE_TAG=$(date +%Y%m%d-%H%M)
 IMAGE_NAME="${VM_NAME}v${DATE_TAG}"
 
 if [[ ! -f "$EMAIL_FILE" ]]; then
