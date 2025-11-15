@@ -39,6 +39,11 @@
       ansible.builtin.hostname:
         name: "{{ ansible_hostname }}"
 
+    - name: Clean up stale conda lock file (Galaxy)
+      ansible.builtin.file:
+        path: /home/galaxy/galaxy/database/dependencies/conda.lock
+        state: absent
+
   roles:
     - galaxyproject.nginx
     - role: galaxyproject.slurm

@@ -136,3 +136,39 @@ sudo systemctl enable ansible-boot.service
 sudo systemctl enable vm-notify-start.service
 sudo systemctl enable vm-notify-resume.service
 ```
+
+---
+Checklist finale (avant le shutdown)
+
+Juste avant de créer votre image, votre état final doit être :
+
+Vérifier les services personnalisés :
+
+```bash
+
+systemctl is-enabled ansible-boot.service
+systemctl is-enabled vm-notify-start.service
+systemctl is-enabled vm-notify-resume.service
+```
+
+(Ils doivent tous répondre enabled)
+
+Arrêter et désactiver Slurm :
+
+```bash
+sudo systemctl stop slurmctld slurmd
+sudo systemctl disable slurmctld.service slurmd.service
+```
+(Optionnel) Nettoyer les logs :
+
+```bash
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
+history -c && history -w
+```
+
+Éteindre :
+
+````
+sudo shutdown -h now
+```
