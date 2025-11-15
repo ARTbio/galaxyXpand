@@ -72,3 +72,67 @@ par exemple avec la commande gcloud.
 - Les handlers de Slurm démarrent et activent slurmctld et slurmd (qui sont maintenant valides).
 - Le playbook se termine.
 - L'étudiant accède à son serveur, qui est 100% opérationnel.
+
+---
+## Récapitulatif détaillé après long travail d'optimisation
+
+**configuration finale**
+
+### Service 1 : Ansible (Au boot/reboot uniquement)
+Il s'exécute à chaque démarrage pour s'assurer que Slurm est propre et configuré avec le bon nom d'hôte. Fichier : `/etc/systemd/system/ansible-boot.service` (changement de nom pour plus de clarté)
+
+```
+[Unit]
+Description=Configuration Ansible au demarrage (Slurm, Galaxy)
+Wants=network-online.target
+After=network-online.target
+Before=slurmctld.service slurmd.service
+Conflicts=slurmctld.service slurmd.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root/galaxyXpand
+ExecStart=/usr/bin/ansible-playbook -i environments/ag2025/hosts reinitialize_slurm.yml
+
+[Install]
+WantedBy=multi-user.target
+```
+### Service 2 : Notification de Démarrage (Au boot/reboot uniquement)
+Il s'exécute à chaque démarrage pour vous envoyer la nouvelle IP. Fichier : `/etc/systemd/system/vm-notify-start.service`
+```
+[Unit]
+Description=Notifier l'administrateur du démarrage de la VM
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/notify-admin.sh start
+
+[Install]
+WantedBy=multi-user.target
+```
+### Service 3 : Notification de Reprise (Au "resume" uniquement)
+C'est celui qui résout votre nouveau problème. Il s'exécute uniquement à la reprise pour vous envoyer la nouvelle IP (sans toucher à Slurm). Fichier : `/etc/systemd/system/vm-notify-resume.service`
+```
+[Unit]
+Description=Notifier l'administrateur apres la reprise de la VM
+After=suspend.target
+
+[Service]
+Type=oneshot
+# On réutilise le même script, mais avec un argument "resume"
+ExecStart=/usr/local/bin/notify-admin.sh resume
+    
+[Install]
+WantedBy=suspend.target
+```
+
+## Avant l'extinction de la machine "Image"
+
+Activer les 3 services:
+```
+sudo systemctl enable ansible-boot.service
+sudo systemctl enable vm-notify-start.service
+sudo systemctl enable vm-notify-resume.service
+```

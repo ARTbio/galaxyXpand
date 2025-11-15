@@ -56,12 +56,6 @@
         mode: '0644'
       notify: Restart nginx
 
-    - name: Create and start Galaxy systemd units via galaxyctl
-      ansible.builtin.command:
-        cmd: galaxyctl restart
-      become: true
-      changed_when: true
-
     - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
       ansible.builtin.systemd:
         name: galaxy.target
