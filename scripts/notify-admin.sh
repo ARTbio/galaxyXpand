@@ -29,6 +29,16 @@ VM_NAME=$(curl -sf -H "$HEADERS" "$METADATA_URL/instance/name")
 VM_IP=$(curl -sf -H "$HEADERS" "$METADATA_URL/instance/network-interfaces/0/access-configs/0/external-ip" || echo "N/A")
 PROJECT_ID=$(curl -sf -H "$HEADERS" "$METADATA_URL/project/project-id")
 
+# Si l'événement est une reprise, on force Slurm à reprendre le nœud
+if [ "$EVENT_TYPE" = "resume" ]; then
+    echo "Forçage de la reprise (Resume) du nœud Slurm..."
+    # Exécute votre commande. Le "|| true" garantit que si scontrol
+    # échoue (parce que le nœud est déjà OK), le script ne plantera
+    # pas et l'email sera quand même envoyé.
+    /usr/bin/scontrol update NodeName="$VM_NAME" State=Resume || true
+fi
+
+
 echo "Préparation du message..."
 SUBJECT="[Galaxy VM] $VM_NAME ($EVENT_TYPE_DISPLAY)"
 BODY_TEXT="La VM de l'étudiant est opérationnelle.
