@@ -128,13 +128,68 @@ ExecStart=/usr/local/bin/notify-admin.sh resume
 WantedBy=suspend.target
 ```
 
+### Service 4: petit service "One-Shot" qui ne fait qu'une chose : attendre que slurmd soit lancé, puis forcer le RESUME
+Fichier : `/etc/systemd/system/slurm-force-resume.service`
+```
+[Unit]
+Description=Force Slurm Node Resume after suspend
+# Ce service ne démarre que si slurmd a réussi à démarrer
+Requires=slurmd.service
+# Il s'exécute APRES slurmd
+After=slurmd.service google-startup-scripts.service
+
+[Service]
+Type=oneshot
+# check every 10 sec for 2 min whether slurm cluster est maked DOWN or DRAIN
+ExecStart=/usr/local/bin/check_and_resume.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+Fichier : `/usr/local/bin/check_and_resume.sh`
+```
+#!/bin/bash
+# Attendre que le noeud soit DOWN ou DRAIN, puis le remettre en ligne.
+
+NODE_NAME=$(hostname -s)
+MAX_WAIT_TIME=120  # Max 120 secondes (2 minutes)
+SLEEP_INTERVAL=10  # Vérifie toutes les 10 secondes
+
+echo "$(date) - Démarrage du check de l'état du noeud $NODE_NAME."
+
+for (( i=0; i<$MAX_WAIT_TIME; i+=$SLEEP_INTERVAL )); do
+    # Récupère l'info du noeud
+    INFO=$(/usr/bin/scontrol show node $NODE_NAME 2>/dev/null || true)
+    
+    # La solution la plus robuste et la plus simple : chercher si l'état contient DOWN ou DRAIN.
+    # L'opérateur | (OU) fonctionne avec grep -E (Extended Regex).
+    if echo "$INFO" | grep -qE 'State=[^ ]*(DOWN|DRAIN)' ; then
+        echo "$(date) - État requis (DOWN/DRAIN) détecté. Tentative de RESUME."
+        /usr/bin/scontrol update node=$NODE_NAME state=RESUME
+        exit 0
+    fi
+
+    /bin/sleep $SLEEP_INTERVAL
+done
+
+echo "$(date) - Avertissement : $NODE_NAME n'a pas atteint l'état DOWN/DRAIN dans les $MAX_WAIT_TIME secondes."
+exit 0
+```
+
+
+
+
+
 ## Avant l'extinction de la machine "Image"
 
-Activer les 3 services:
+Activer les 4 services:
 ```
+sudo systemctl daemon-reload
 sudo systemctl enable ansible-boot.service
 sudo systemctl enable vm-notify-start.service
 sudo systemctl enable vm-notify-resume.service
+sudo systemctl enable slurm-force-resume.service
 ```
 
 ---
@@ -149,6 +204,7 @@ Vérifier les services personnalisés :
 systemctl is-enabled ansible-boot.service
 systemctl is-enabled vm-notify-start.service
 systemctl is-enabled vm-notify-resume.service
+systemctl is-enabled slurm-force-resume.service
 ```
 
 (Ils doivent tous répondre enabled)

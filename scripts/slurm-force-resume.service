@@ -1,0 +1,15 @@
+[Unit]
+Description=Force Slurm Node Resume after suspend
+# Ce service ne démarre que si slurmd a réussi à démarrer
+Requires=slurmd.service
+# Il s'exécute APRES slurmd
+After=slurmd.service google-startup-scripts.service
+
+[Service]
+Type=oneshot
+# check every 10 sec for 2 min whether slurm cluster est maked DOWN or DRAIN
+ExecStart=/usr/local/bin/check_and_resume.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
