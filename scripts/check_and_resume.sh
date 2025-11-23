@@ -2,7 +2,7 @@
 # Attendre que le noeud soit DOWN ou DRAIN, puis le remettre en ligne.
 
 NODE_NAME=$(hostname -s)
-MAX_WAIT_TIME=120  # Max 120 secondes (2 minutes)
+MAX_WAIT_TIME=180  # Max 180 secondes (3 minutes)
 SLEEP_INTERVAL=10  # Vérifie toutes les 10 secondes
 
 echo "$(date) - Démarrage du check de l'état du noeud $NODE_NAME."
