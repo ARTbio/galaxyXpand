@@ -236,6 +236,9 @@ tools:
   - id: "samtools_slice_bam"
     destination: "cluster_8"
 
+  - id: "snp_pileup_for_facets"
+    destination: "cluster_16"
+
   - id: "snpEff"
     destination: "cluster_2"
 
