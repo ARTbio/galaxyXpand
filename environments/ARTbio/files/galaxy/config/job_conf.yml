@@ -202,6 +202,9 @@ tools:
   - id: "nanopolish_eventalign"
     destination: "cluster_16"
 
+  - id: "nanopolish_polya"
+    destination: "cluster_16"
+
   - id: "ncbi_blastn_wrapper"
     destination: "cluster_16"
 
