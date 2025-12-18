@@ -1,5 +1,5 @@
 - src: galaxyproject.galaxy
-  version: 0.12.0     # meilleure compatibilité Gravity et handlers
+  version: 0.12.1     # meilleure compatibilité Gravity et handlers
 - src: galaxyproject.nginx
   version: 1.0.0
 - src: galaxyproject.postgresql
