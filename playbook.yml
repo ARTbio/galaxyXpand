@@ -54,7 +54,7 @@
         state: directory
 
     - name: "FIX: Clean out existing Node.js binaries from the venv to avoid nodeenv errors during Galaxy upgrade"
-      file:
+      ansible.builtin.file:
         path: "/home/galaxy/galaxy/.venv/{{ item }}"
         state: absent
       loop:
