@@ -74,9 +74,9 @@ galaxy_config:
 
 # Welcome html page variables
 _Mississippi_info: |
-  <strong>Ubuntu system was upgraded to
+  <strong>Galaxy is now running
   <br>
-  version 24.04 LTS Noble (Nov 2025)</strong>
+  release_25.1 (Dec 2025)</strong>
 Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
 # deploy galaxy configuration files

@@ -1,8 +1,6 @@
 ---
-# playbook.yml — installation Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
-# Version simplifiée — utilise le PPA Natefoo officiel pour slurm-drmaa
-# Auteur : Christophe Antoniewski / ARTbio
-# Date   : 2025-10-25
+# Instal Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
+# Use Natefoo PPA for slurm-drmaa
 
 - name: Install PostgreSQL objects
   hosts: dbservers
