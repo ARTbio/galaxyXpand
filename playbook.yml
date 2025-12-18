@@ -53,6 +53,19 @@
         mode: '0755'
         state: directory
 
+    - name: "FIX: Clean out existing Node.js binaries from the venv to avoid nodeenv errors during Galaxy upgrade"
+      file:
+        path: "/home/galaxy/galaxy/.venv/{{ item }}"
+        state: absent
+      loop:
+        - "lib/node_modules"
+        - "bin/node"
+        - "bin/npm"
+        - "bin/npx"
+        - "bin/corepack"
+      tags:
+        - galaxy_upgrade_fix
+
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
         galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
