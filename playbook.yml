@@ -63,6 +63,7 @@
         - "bin/npm"
         - "bin/npx"
         - "bin/corepack"
+      become: true
       tags:
         - galaxy_upgrade_fix
 
