@@ -14,7 +14,7 @@ install_slurm: true
 nginx_conf_user: "www-data galaxy"
 
 # Galaxy common to all hosts
-galaxy_commit_id: release_24.1
+galaxy_commit_id: release_25.1
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
