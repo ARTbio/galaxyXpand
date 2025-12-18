@@ -1,0 +1,68 @@
+---
+# Reinitialization of Slurm
+# Useful for VM started from VMI
+
+- name: Reinitialize Slurm
+  hosts: all
+  become: true
+  become_user: root
+
+  pre_tasks:
+
+    - name: Reset slurm state directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ slurm_config.StateSaveLocation }}"  # /tmp/slurm
+        - "{{ slurm_config.SlurmdSpoolDir }}"   # /tmp/slurmd
+
+    - name: Recreate slurm state directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ slurm_user }}"
+        group: "{{ slurm_user }}"
+        mode: '0755'
+      loop:
+        - "{{ slurm_config.StateSaveLocation }}"
+        - "{{ slurm_config.SlurmdSpoolDir }}"
+
+    - name: Ensure /etc/hosts can resolve the hostname
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ ansible_default_ipv4.address }} "
+        line: "{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}"
+        state: present
+
+    - name: Ensure kernel hostname is set correctly
+      ansible.builtin.hostname:
+        name: "{{ ansible_hostname }}"
+
+    - name: Clean up stale conda lock file (Galaxy)
+      ansible.builtin.file:
+        path: /home/galaxy/galaxy/database/dependencies/conda.lock
+        state: absent
+
+  roles:
+    - galaxyproject.nginx
+    - role: galaxyproject.slurm
+      become: true
+      when: install_slurm
+
+  post_tasks:
+
+    - name: Overwrite nginx.conf
+      ansible.builtin.template:
+        src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart nginx
+
+    - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
+      ansible.builtin.systemd:
+        name: galaxy.target
+        state: restarted
+        enabled: true

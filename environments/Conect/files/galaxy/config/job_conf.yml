@@ -4,7 +4,7 @@
 runners:
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so.1
 
 handling:
   assign:
@@ -235,6 +235,9 @@ tools:
 
   - id: "samtools_slice_bam"
     destination: "cluster_8"
+
+  - id: "snp_pileup_for_facets"
+    destination: "cluster_16"
 
   - id: "snpEff"
     destination: "cluster_2"

@@ -1,0 +1,59 @@
+---
+# ansible-slurm
+slurm_roles: ['controller', 'exec']
+slurm_user: slurm
+
+slurm_config:
+# --- Authentication and security ---
+  AuthType: auth/munge
+  CryptoType: crypto/munge
+  SlurmUser: slurm
+  CommunicationParameters: DisableIPv6
+
+# --- Cluster and controller ---
+  ClusterName: ag2025
+  ControlMachine: "{{ ansible_hostname }}"
+  StateSaveLocation: /tmp/slurm
+  SlurmdSpoolDir: /tmp/slurmd
+  SlurmctldPidFile: /run/slurmctld.pid
+  SlurmdPidFile: /run/slurmd.pid
+  SlurmctldPort: 6817
+  SlurmdPort: 6818
+
+# --- Logs ---
+  SlurmctldLogFile: /var/log/slurm/slurmctld.log
+  SlurmdLogFile: /var/log/slurm/slurmd.log
+  SlurmctldDebug: info
+  SlurmdDebug: info
+
+# --- Plugins and collecting ---
+  ProctrackType: proctrack/pgid
+  JobAcctGatherType: jobacct_gather/none
+  AccountingStorageType: accounting_storage/none
+  PriorityType: priority/basic
+
+# --- Selection and resources ---
+  SelectType: select/cons_tres
+  SelectTypeParameters: CR_Core_Memory
+
+# --- Planification (optimized for Galaxy) ---
+  SchedulerType: sched/backfill
+  SchedulerParameters: bf_interval=2
+
+# --- MPI et mail ---
+  MailProg: /bin/true
+  MpiDefault: none
+  MpiParams: ports=none
+
+slurm_nodes:
+  - name: "{{ ansible_hostname }}"
+    CPUs: "{{ ansible_processor_vcpus }}"
+    RealMemory: "{{ (ansible_memtotal_mb | int * 0.95) | round(0, 'floor') | int }}"
+    State: UNKNOWN
+
+slurm_partitions:
+  - name: debug
+    Default: YES
+    Nodes: "{{ ansible_hostname }}"
+    State: UP
+    DefMemPerCPU: "{{ ((ansible_memtotal_mb | int) * 0.9 / (ansible_processor_vcpus | int)) | round(0, 'floor') | int }}"

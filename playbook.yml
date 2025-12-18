@@ -1,54 +1,102 @@
 ---
-- hosts: dbservers
+# playbook.yml — installation Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
+# Version simplifiée — utilise le PPA Natefoo officiel pour slurm-drmaa
+# Auteur : Christophe Antoniewski / ARTbio
+# Date   : 2025-10-25
+
+- name: Install PostgreSQL objects
+  hosts: dbservers
   become: true
   become_user: root
-  pre_tasks:
-    - name: Install Dependencies
-      package:
-        name: 'acl'
+
   roles:
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
       become: true
       become_user: postgres
 
-- hosts: all
+- name: Install/Expand Galaxy
+  hosts: all
   become: true
   become_user: root
 
   pre_tasks:
-    - name: Add custom slurm PPA (used for Slurm DRMAA package)
-      apt_repository:
+
+    - name: Add official Slurm-DRMAA PPA (Natefoo)
+      ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
         state: present
-        update_cache: yes
-      when: install_slurm
+        update_cache: true
 
-    - name: Install Dependencies
-      package:
+    - name: Install Slurm-DRMAA from the correct PPA release
+      ansible.builtin.apt:
+        name: slurm-drmaa1
+        state: present
+        default_release: '{{ ansible_distribution_release }}'
+        update_cache: true
+
+    - name: Install required packages
+      ansible.builtin.package:
         name:
-          - 'acl'
-          - 'bzip2'
-          - 'git'
-          - 'make'
-          -  'tar'
-          - 'python3-venv'
-          - 'python3-setuptools'
+          - bzip2
+          - git
+          - make
+          - tar
+          - python3-venv
+          - python3-lib2to3
           - slurm-wlm
-          - slurm-drmaa-dev
-    - name: merge common and specific galaxy_config dictionary
-      set_fact:
-        galaxy_config: "{{ common_galaxy_config|ansible.builtin.combine(galaxy_config, recursive=true) }}"
+        state: present
+
+    - name: Ensure munge runtime dir exists
+      ansible.builtin.file:
+        path: /run/munge
+        owner: munge
+        group: munge
+        mode: '0755'
+        state: directory
+
+    - name: Merge common and specific Galaxy configurations
+      ansible.builtin.set_fact:
+        galaxy_config: "{{ common_galaxy_config | ansible.builtin.combine(galaxy_config, recursive=true) }}"
 
   roles:
     - galaxyproject.galaxy
     - role: galaxyproject.miniconda
-      tags: [miniconda]
       become: true
       become_user: "{{ galaxy_user.name }}"
+      environment:
+        HOME: "/home/galaxy"
+        XDG_CONFIG_HOME: "/home/galaxy/.config"
+      vars:
+        ansible_become_user: galaxy
+      tags: [miniconda]
     - galaxyproject.nginx
     - role: galaxyproject.slurm
       become: true
       when: install_slurm
     - role: installUptime
       when: install_uptime
+
+
+  post_tasks:
+
+    - name: Overwrite nginx.conf
+      ansible.builtin.template:
+        src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart nginx
+
+    - name: Create and start Galaxy systemd units via galaxyctl
+      ansible.builtin.command:
+        cmd: galaxyctl restart
+      become: true
+      changed_when: true
+
+    - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
+      ansible.builtin.systemd:
+        name: galaxy.target
+        state: restarted
+        enabled: true

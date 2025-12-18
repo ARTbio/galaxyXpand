@@ -1,0 +1,44 @@
+---
+# Galaxy
+
+# development branch
+galaxy_commit_id: release_24.1
+
+galaxy_config:
+  gravity:
+    gunicorn:
+      # listening option on port 4000 for google cloud
+      bind: "0.0.0.0:4000"
+      workers: 2
+    handlers:
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 2
+    celery:
+      workers: 1
+
+  galaxy:
+    admin_users: admin@galaxy.org,tooladmin@galaxy.org,drosofff@gmail.com
+    brand: "🧬🔬🚀"
+    enable_quotas: false
+    job_handler_monitor_sleep: 0.05 # test de performance
+    # don't let galaxy role injecting this variable, unless galaxy startup crash
+    themes_config_file_by_host: {}  # GitHub CI fix
+
+# deploy galaxy configuration files
+galaxy_config_templates:
+  - src: "{{ inventory_dir }}/templates/galaxyXpand_welcome.html.j2"
+    dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
+
+# deploy png galaxyXpand logo
+galaxy_config_files:
+  - src: "{{ inventory_dir }}//files/job_conf.yml"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
+  - src: "{{ inventory_dir }}//files/galaxyXpand_logo.png"
+    dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
+  - src: "{{ inventory_dir }}//files/ag_logo.png"
+    dest: "{{ galaxy_server_dir }}/static/images/ag_logo.png"
+
+galaxy_tools_tool_list_files:
+  - "environments/ag2025/files/ag2025_tools.yaml"

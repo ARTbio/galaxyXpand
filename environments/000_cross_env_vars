@@ -1,12 +1,14 @@
 ---
+slurm_upgrade: true
+
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m venv
 
-# to install uptime set to 'yes'
-install_uptime: no
+# to install uptime set to 'true'
+install_uptime: false
 
-# to install slurm set to 'yes'
-install_slurm: yes
+# to install slurm set to 'true'
+install_slurm: true
 
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
@@ -44,6 +46,7 @@ common_galaxy_config:
     builds_file_path: shared/ucsc/builds.txt
     database_connection: "postgresql:///galaxy?host=/var/run/postgresql"
     display_servers: hgw1.cse.ucsc.edu,hgw2.cse.ucsc.edu,hgw3.cse.ucsc.edu,hgw4.cse.ucsc.edu,hgw5.cse.ucsc.edu,hgw6.cse.ucsc.edu,hgw7.cse.ucsc.edu,hgw8.cse.ucsc.edu,lowepub.cse.ucsc.edu
+    dependency_resolvers_config_file: null
     file_path: datasets
     object_store_store_by: id
     tool_data_path: "{{ galaxy_server_dir }}/tool-data"
@@ -56,7 +59,7 @@ common_galaxy_config:
     # Automation / Ease of Use / User-facing features
     watch_job_rules: 'auto'
     watch_tool_data_dir: true
-    watch_tools: 'true'
+    watch_tools: true
     allow_path_paste: true
     enable_quotas: true
     allow_user_dataset_purge: true

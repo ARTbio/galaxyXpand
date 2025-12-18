@@ -1,0 +1,13 @@
+[Unit]
+Description=Force Slurm Node Resume after suspend (Check and Wait)
+Requires=slurmd.service
+After=slurmd.service google-startup-scripts.service network-online.target
+
+[Service]
+Type=oneshot
+# La commande d'attente/check est maintenant dans le script lui-même
+ExecStart=/usr/local/bin/check_and_resume.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

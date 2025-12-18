@@ -1,4 +1,3 @@
-ansible==3.0.0
 # pinned bioblend from GitHub
-https://github.com/galaxyproject/bioblend/archive/refs/tags/v1.3.0.zip
+bioblend>=1.6.0
 pytest

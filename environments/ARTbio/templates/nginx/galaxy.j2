@@ -1,3 +1,6 @@
+# Do not edit. Changes will be overwritten by Ansible.
+
+# because here nginx is reverse proxy for 4 different services
 map $http_upgrade $connection_upgrade {
         default upgrade;
         '' close;
@@ -13,7 +16,7 @@ upstream galaxy {
 
 server {
     # Listen on port 443
-    listen        *:443 ssl default_server;
+    listen   :443 ssl default_server;
     # The virtualhost is our domain name
     server_name   "{{ inventory_hostname }}";
 

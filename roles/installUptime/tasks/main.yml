@@ -1,4 +1,4 @@
-- name: include uptime appli when asked
-  import_tasks:
+- name: Include uptime appli when asked
+  ansible.builtin.import_tasks:
     file: install_uptime.yml
   when: install_uptime

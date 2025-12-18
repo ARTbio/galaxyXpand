@@ -7,7 +7,7 @@ runners:
     load: galaxy.jobs.runners.local:LocalJobRunner
   slurm:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so.1
 
 handling:
   assign:
@@ -37,7 +37,10 @@ tools:
     destination: "cluster"
 
   - id: "bowtie_index_builder_data_manager"
-    destination: "gce_multicore"
+    destination: "local_env"
 
   - id: "retrieve_fasta_from_NCBI"
+    destination: "cluster"
+
+  - id: "samtools_view"
     destination: "cluster"

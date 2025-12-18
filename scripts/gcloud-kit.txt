@@ -1,0 +1,60 @@
+# Créer une image à partir d'un disque (instance arrêtée)
+gcloud compute images create galaxy-image \
+    --source-disk=NOM_DISQUE \
+    --source-disk-zone=europe-west9-a
+
+gcloud compute images create galaxy-image-2 \
+    --source-disk=image-ag2025 \
+    --source-disk-zone=europe-west9-a
+    --family=galaxy-images
+
+## A faire d'abord pour que le reste fonctionne
+# donner le role de viewer au **projet** !!
+gcloud projects add-iam-policy-binding ag2025-25-10-01-1 \
+  --member="user:lecrom@gmail.com" \
+  --role="roles/viewer"
+
+# et partager l'image (ceci est normalement fait avec le script share_galaxy_image.sh)
+gcloud compute images add-iam-policy-binding "$IMAGE_NAME" \
+      --project="$PROJECT_ID" \
+      --member="user:$email" \
+      --role="roles/compute.imageUser" \
+      --quiet
+# ou en dur:
+gcloud compute images add-iam-policy-binding "galaxy-image-5" \
+      --project="ag2025-25-10-01-1" \
+      --member="user:christophe.antoniewski@gmail.com" \
+      --role="roles/compute.imageUser" \
+      --quiet
+
+
+## Crée une nouvelle VM à partir d'image
+gcloud compute instances create galaxy-zurich \
+    --zone=europe-west6-a \
+    --image=galaxy-image \
+    --machine-type=e2-standard-8
+    
+# Avec http autorisé:
+gcloud compute instances create galaxy-london \
+     --zone=europe-west2-a \
+     --image=galaxy-image \
+     --machine-type=e2-standard-8 \
+     --tags=http-server
+
+# pour les étudiants avec une famille utilisée
+gcloud compute instances create mon-instance-galaxy \
+    --image-family=galaxy-images \
+    --image-project=ag2025-25-10-01-1 \
+    --zone=europe-west6-a \
+    --machine-type=e2-standard-8 \
+    --tags=http-server
+    
+# -- en ciblant un autre projet -- #
+gcloud compute instances create chris-galaxy-1 \
+    --project=chris-as-student-ag2025 \
+    --image-family=galaxy-images \
+    --image-project=ag2025-25-10-01-1 \
+    --zone=europe-west3-b \
+    --machine-type=e2-standard-8 \
+    --tags=http-server \
+    --boot-disk-size=200G

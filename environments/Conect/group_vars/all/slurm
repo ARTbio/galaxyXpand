@@ -1,24 +1,33 @@
 ---
 # ansible-slurm
+
 slurm_roles: ['controller', 'exec']
-slurm_user: galaxy
+slurm_user: slurm
+
 slurm_config:
-  SlurmUser: galaxy
-  SlurmctldLogFile: /home/galaxy/slurmctld.log
-  SlurmdLogFile: /home/galaxy/slurmd.log
+  ControlMachine: "{{ ansible_hostname }}"
+  SlurmUser: slurm
+  SlurmctldLogFile: /var/log/slurm/slurmctld.log
+  SlurmdLogFile: /var/log/slurm/slurmd.log
   SlurmdSpoolDir: /tmp/slurmd
   StateSaveLocation: /tmp/slurm
-  SelectType: select/cons_res
+  SelectType: select/cons_tres
   SelectTypeParameters: CR_Core_Memory
+  AuthType: auth/munge
+  CryptoType: crypto/munge
+  CommunicationParameters: DisableIPv6
+  MailProg: /bin/true
+  MpiDefault: none
 
 slurm_nodes:
-  - name: "localhost"
-    CPUs: 80
-    RealMemory: 385600
+  - name: "{{ ansible_hostname }}"
+    CPUs: "{{ ansible_processor_vcpus }}"
+    RealMemory: "{{ (ansible_memtotal_mb | int * 0.95) | round(0, 'floor') | int }}"
+    State: UNKNOWN
 
 slurm_partitions:
   - name: debug
     Default: YES
-    DefMemPerCPU: 4820
-    Nodes: "localhost"
-
+    Nodes: "{{ ansible_hostname }}"
+    State: UP
+    DefMemPerCPU: "{{ ((ansible_memtotal_mb | int) * 0.9 / (ansible_processor_vcpus | int)) | round(0, 'floor') | int }}"
