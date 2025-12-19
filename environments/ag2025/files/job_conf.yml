@@ -89,7 +89,7 @@ tools:
     destination: "cluster_3"
 
   - id: "samtools_rmdup"
-    destination: "cluster_4"
+    destination: "cluster_3"
 
   - id: "sambamba"
     destination: "cluster_3"
