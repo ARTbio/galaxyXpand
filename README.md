@@ -1,26 +1,20 @@
-[![Test Playbook](https://github.com/ARTbio/galaxyXpand/actions/workflows/test_playbook.yaml/badge.svg)](https://github.com/ARTbio/galaxyXpand/actions/workflows/test_playbook.yaml)
-[![Docker Repository on Quay](https://quay.io/repository/artbioplatform/galaxyxpand/status "Docker Repository on Quay")](https://quay.io/repository/artbioplatform/galaxyxpand)
 ## GalaxyXpand 🌌
 
 **GalaxyXpand** is the next-generation Ansible playbook for automated [Galaxy](https://galaxyproject.org/) server deployment. Developed by the [ARTbio platform](https://artbio.fr/), it serves as the modern successor to *GalaxyKickStart*, designed to deploy production-ready Galaxy instances on cloud environments (e.g., Google Cloud Engine) or bare-metal servers.
 
-
 ### 🚀 Features
-
-
 
 * **Automated Deployment:** Deploys a full Galaxy stack from scratch.
 * **Job Management:** Supports configurations for Slurm or Celery.
 * **Tool Management:** Includes utilities to install Galaxy tools automatically.
 * **Extensible:** Uses standard Ansible roles and collections.
 
-
 ### 📋 Requirements
 
 Before running this playbook, ensure your control node and target machines meet the following requirements.
 
 
-#### Operating System Compatibility
+### Operating System Compatibility
 
 The playbook version you use depends on your target Operating System and the Galaxy version you intend to deploy.
 
@@ -54,25 +48,24 @@ The playbook version you use depends on your target Operating System and the Gal
 
 
 
-    ⚠️ For Ubuntu 20.04 users:
+⚠️ For Ubuntu 20.04 users:
+
+You must switch to the dedicated tag or branch to ensure compatibility with Galaxy release 24.1 or older.
+
+```
+# Example using the tag
+git checkout release_24.1_ubuntu20.04-final
+```
 
 
-    You must switch to the dedicated tag or branch to ensure compatibility with Galaxy release 24.1 or older.
-
-
-    # Example using the tag \
-git checkout release_24.1_ubuntu20.04-final \
-
-
-
-#### Quick Setup
+### Quick Setup
 
 On a fresh Ubuntu machine, installing the dependencies is straightforward. You do not need to manage complex pip environments manually; the system package manager provides a sufficiently recent version of Ansible.
 
 Run the following command on your control node (Ubuntu 24.04 recommended):
-
-sudo apt update && sudo apt install ansible -y \
-
+```
+sudo apt update && sudo apt install ansible -y
+```
 
 
 ### 🏁 Quick Start & Usage
@@ -81,45 +74,41 @@ Once Ansible is installed, follow these steps to deploy Galaxy.
 
 
 #### 1. Setup the Repository
+```
+# Clone the repository and install the required Ansible roles.
+git clone [https://github.com/ARTbio/galaxyXpand.git](https://github.com/ARTbio/galaxyXpand.git)
+cd galaxyXpand
 
-Clone the repository and install the required Ansible roles.
-
-git clone [https://github.com/ARTbio/galaxyXpand.git](https://github.com/ARTbio/galaxyXpand.git) \
-cd galaxyXpand \
- \
-# Install external roles dependencies \
-ansible-galaxy install -r requirements.yml -p roles/ \
-
-
+# Install external roles dependencies
+ansible-galaxy install -r requirements.yml -p roles/
+```
 
 #### 2. Deploy Galaxy
 
 Run the main playbook specifying your target environment inventory (e.g., dev_gce).
+```
+ansible-playbook -i environments/dev_gce/hosts playbook.yml
+```
 
-ansible-playbook -i environments/dev_gce/hosts playbook.yml \
-
-
-
-    **📝 Note:** If executed on a standard GCE VM (e.g., 4 CPUs), this will deploy a full Galaxy instance. Jobs will be managed by either **Celery** or **Slurm**, depending on the configuration defined in your job_conf.xml.
-
+**📝 Note:** If executed on a standard GCE VM (e.g., 4 CPUs), this will deploy a full Galaxy instance. Jobs will be managed by either **Celery** or **Slurm**, depending on the configuration defined in your job_conf.xml.
 
 #### 3. Install Tools
 
 Once Galaxy is running, you can automate the installation of tools (as defined in tool_list.yaml).
-
-ansible-playbook -i environments/dev_gce/hosts install_tools.yml \
-
+```
+ansible-playbook -i environments/dev_gce/hosts install_tools.yml
+```
 
 *This installs the tools described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample).*
 
+### 🔧 Utilities & Debugging
 
-#### 🔧 Utilities & Debugging
-
-Inspect Variables
+#### Inspect Variables
 
 To debug or verify the configuration of a specific environment (e.g., Mississippi) without applying changes, use the showvars.yml playbook.
-
-ansible-playbook -i environments/Mississippi/hosts showvars.yml \
+```
+ansible-playbook -i environments/Mississippi/hosts showvars.yml
+```
 
 
 *This will display the computed value of all ansible variables for the target environment.*
