@@ -1,8 +1,6 @@
 ---
-# playbook.yml — installation Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
-# Version simplifiée — utilise le PPA Natefoo officiel pour slurm-drmaa
-# Auteur : Christophe Antoniewski / ARTbio
-# Date   : 2025-10-25
+# Instal Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
+# Use Natefoo PPA for slurm-drmaa
 
 - name: Install PostgreSQL objects
   hosts: dbservers
@@ -54,6 +52,20 @@
         group: munge
         mode: '0755'
         state: directory
+
+    - name: "FIX: Clean out existing Node.js binaries from the venv to avoid nodeenv errors during Galaxy upgrade"
+      ansible.builtin.file:
+        path: "/home/galaxy/galaxy/.venv/{{ item }}"
+        state: absent
+      loop:
+        - "lib/node_modules"
+        - "bin/node"
+        - "bin/npm"
+        - "bin/npx"
+        - "bin/corepack"
+      become: true
+      tags:
+        - galaxy_upgrade_fix
 
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:

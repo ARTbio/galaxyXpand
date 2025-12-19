@@ -2,6 +2,7 @@
 # Galaxy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxy_commit_id: release_24.1 # freeze to 24.1 release until artbio server running Ubuntu 24.04 is stable.
 
 galaxy_config:
   gravity:
