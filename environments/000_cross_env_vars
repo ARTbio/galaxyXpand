@@ -33,8 +33,15 @@ galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
-miniconda_installer_python: "3.12"
+# Use Miniforge (Galaxy standard, licence issue with Miniconda)
+miniconda_distribution: "miniforge"
+# Exact version for direct download (to avoid latest changing unexpectedly)
+miniconda_installer_version: "25.11.0-1"
+# Update Conda/Mamba if recent version ex
+# leave 'latest' here, it's different from installing it.
 miniconda_version: "latest"
+# IMPORTANT : block modification of the installed Python unless absolutely necessary
+miniconda_base_env_packages: []
 miniconda_channels:
   - conda-forge
   - bioconda
