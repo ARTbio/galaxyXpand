@@ -137,6 +137,9 @@ tools:
   - id: "macs2_callpeak"
     destination: "cluster_8"
 
+  - id: "manta"
+    destination: "cluster_8"
+  
   - id: "megahit"
     destination: "cluster_8"
 
