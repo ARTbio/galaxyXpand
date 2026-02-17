@@ -67,7 +67,7 @@ galaxy_config:
     # Automation / Ease of Use / User-facing features
     require_login: true
     user_activation_on: true
-    allow_user_creation: false
+    allow_local_account_creation: false
     # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.183.195
