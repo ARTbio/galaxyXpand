@@ -17,7 +17,7 @@ galaxy_config:
       workers: 2  # eg workflow scheduling
 
   galaxy:
-    brand: "🧬 CONECT-AML"
+    brand: "🧬"
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           66646635666564653662306436393231646231613062623864363336653436343037613430383731
@@ -91,8 +91,6 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_logo.jpg"
   - src: "{{ inventory_dir }}/files/galaxy/html/images/IBPS_logo.jpg"
     dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
-  - src: "{{ inventory_dir }}/files/galaxy/html/images/conect_logo.png"
-    dest: "{{ galaxy_server_dir }}/static/images/conect_logo.png"
 
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
