@@ -17,7 +17,7 @@ galaxy_config:
       workers: 2  # eg workflow scheduling
 
   galaxy:
-    brand: "🧬 CONECT-AML"
+    brand: "🧬"
     admin_users: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           66646635666564653662306436393231646231613062623864363336653436343037613430383731
@@ -67,7 +67,7 @@ galaxy_config:
     # Automation / Ease of Use / User-facing features
     require_login: true
     user_activation_on: true
-    allow_user_creation: false
+    allow_local_account_creation: false
     # Miscellaneous
     ftp_upload_dir: /home/galaxy/galaxy/database/ftp
     ftp_upload_site: ftp://134.157.183.195
@@ -91,8 +91,6 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_logo.jpg"
   - src: "{{ inventory_dir }}/files/galaxy/html/images/IBPS_logo.jpg"
     dest: "{{ galaxy_server_dir }}/static/images/IBPS_logo.jpg"
-  - src: "{{ inventory_dir }}/files/galaxy/html/images/conect_logo.png"
-    dest: "{{ galaxy_server_dir }}/static/images/conect_logo.png"
 
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
