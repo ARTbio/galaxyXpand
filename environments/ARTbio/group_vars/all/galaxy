@@ -73,11 +73,9 @@ galaxy_config:
 
 # Welcome html page variables
 _artbio_info: |
-  <h4>
-  <strong>Ubuntu system was upgraded to
+  <strong>Ubuntu system was upgraded to version 24.04 LTS Noble
   <br>
-  version 24.04 LTS Noble</strong>
-  </h4>
+  Galaxy is now running {{ galaxy_commit_id }}</strong>
 artbio_info: "{{ _artbio_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files
