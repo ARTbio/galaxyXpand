@@ -1,0 +1,3 @@
+---
+# Nginx is managed by ansible-artbio-system, not by galaxyXpand
+galaxyxpand_manage_nginx: false

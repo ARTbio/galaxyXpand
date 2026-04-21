@@ -1,0 +1,5 @@
+[artbio-gce-test]
+localhost  ansible_connection=local ansible_user=root
+
+[dbservers:children]
+artbio-gce-test
