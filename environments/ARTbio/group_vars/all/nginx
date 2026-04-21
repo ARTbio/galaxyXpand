@@ -1,5 +1,10 @@
 ---
 # NGINX
+# galaxyxpand is now uncoupled from nginx on artbio server.
+# see https://github.com/artbio/ansible-artbio-system.git for details
+
+galaxyxpand_manage_nginx: false
+
 nginx_server_src_dir: "{{ inventory_dir }}/templates/nginx/"
 nginx_selinux_allow_local_connections: true
 nginx_ssl_servers:
