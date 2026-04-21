@@ -2,6 +2,8 @@
 # GCE test for ARTbio migration
 # Tests galaxyXpand with nginx managed externally (by ansible-artbio-system)
 
+galaxy_create_user: false
+
 galaxy_manage_cleanup: yes
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
