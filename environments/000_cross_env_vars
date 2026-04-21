@@ -10,6 +10,8 @@ install_uptime: false
 # to install slurm set to 'true'
 install_slurm: true
 
+# Nginx management — set to false if nginx is managed externally
+galaxyxpand_manage_nginx: true
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
 
