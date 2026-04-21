@@ -82,7 +82,8 @@
       vars:
         ansible_become_user: galaxy
       tags: [miniconda]
-    - galaxyproject.nginx
+    - role: galaxyproject.nginx
+      when: galaxyxpand_manage_nginx
     - role: galaxyproject.slurm
       become: true
       when: install_slurm
@@ -100,6 +101,7 @@
         group: root
         mode: '0644'
       notify: Restart nginx
+      when: galaxyxpand_manage_nginx
 
     - name: Create and start Galaxy systemd units via galaxyctl
       ansible.builtin.command:
