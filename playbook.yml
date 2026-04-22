@@ -24,17 +24,26 @@
       ansible.builtin.file:
         path: /etc/slurm-llnl
         state: absent
+      when: install_slurm
+
+    - name: Remove stale Slurm clustername state file
+      ansible.builtin.file:
+        path: /tmp/slurm/clustername
+        state: absent
+      when: install_slurm
 
     - name: Remove potentially corrupted slurm-drmaa PPA file
       ansible.builtin.file:
         path: /etc/apt/sources.list.d/ppa_natefoo_slurm_drmaa_{{ ansible_distribution_release }}.list
         state: absent
+      when: install_slurm
 
     - name: Add official Slurm-DRMAA PPA (Natefoo)
       ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
         state: present
         update_cache: true
+      when: install_slurm
 
     - name: Install Slurm-DRMAA from the correct PPA release
       ansible.builtin.apt:
@@ -42,6 +51,7 @@
         state: present
         default_release: '{{ ansible_distribution_release }}'
         update_cache: true
+      when: install_slurm
 
     - name: Install required packages
       ansible.builtin.package:
