@@ -35,7 +35,7 @@ execution:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=5"
     java_cluster:
-      runner: slurm # if not working, try drmaa runner
+      runner: slurm
       nativeSpecification: "--partition=debug --ntasks=1 --mem=40960"
       env:
         - name: '_JAVA_OPTIONS'
