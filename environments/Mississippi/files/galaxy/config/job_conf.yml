@@ -27,11 +27,10 @@ execution:
       nativeSpecification: "--partition=debug --ntasks=8"
     java_cluster:
       runner: slurm
-      nativeSpecification: "--partition=debug --ntasks=1 --mem=40G"
+      nativeSpecification: "--partition=debug --ntasks=1 --mem=40960"
       env:
         - name: '_JAVA_OPTIONS'
           value: '-Xmx32g -Xms1g -Djava.io.tmpdir=/tmp'
-        - file: '/home/galaxy/galaxy/.venv/bin/activate'
 
 limits:
   - type: anonymous_user_concurrent_jobs
