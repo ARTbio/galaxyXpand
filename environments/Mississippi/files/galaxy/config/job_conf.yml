@@ -179,8 +179,8 @@ tools:
   - id: "oases"
     destination: "cluster_8"
 
-  # Picard tools → java_cluster (heap control, --mem=40G)
-  - id: "toolshed.g2.bx.psu.edu/repos/devteam/picard"
+  # Picard tools → java_cluster (heap control, --mem=40960)
+  - id: "picard_MarkDuplicates"
     destination: "java_cluster"
 
   - id: "repenrich"
