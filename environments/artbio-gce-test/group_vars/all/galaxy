@@ -1,0 +1,39 @@
+---
+# GCE test for ARTbio migration
+# Tests galaxyXpand with nginx managed externally (by ansible-artbio-system)
+
+galaxy_create_user: false
+
+galaxy_manage_cleanup: yes
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+
+galaxy_config:
+  gravity:
+    gunicorn:
+      # Socket — nginx is managed by ansible-artbio-system
+      bind: "unix:{{ galaxy_config_dir }}/gunicorn.sock"
+      workers: 2
+    handlers:
+      job_handlers:
+        pools:
+          - job-handlers
+        processes: 2
+    celery:
+      workers: 1
+
+  galaxy:
+    admin_users: admin@example.org,tooladmin@galaxy.org
+    job_working_directory: /home/galaxy/galaxy/database/jobs
+    enable_per_request_sql_debugging: false
+    enable_quotas: false
+    themes_config_file_by_host: {}
+
+# Deploy welcome page
+galaxy_config_templates:
+  - src: "{{ inventory_dir }}/templates/welcome.html.j2"
+    dest: "{{ galaxy_server_dir }}/static/welcome.html"
+
+# Deploy job_conf
+galaxy_config_files:
+  - src: "{{ inventory_dir }}/files/galaxy/config/job_conf.yml"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"

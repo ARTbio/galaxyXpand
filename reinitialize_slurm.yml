@@ -9,6 +9,12 @@
 
   pre_tasks:
 
+
+    - name: Remove legacy slurm-llnl config directory (Ubuntu 20.04 vestige)
+      ansible.builtin.file:
+        path: /etc/slurm-llnl
+        state: absent
+
     - name: Reset slurm state directories
       ansible.builtin.file:
         path: "{{ item }}"

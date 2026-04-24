@@ -1,0 +1,23 @@
+# Simplified job_conf for GCE test
+runners:
+  slurm:
+    load: galaxy.jobs.runners.slurm:SlurmJobRunner
+    drmaa_library_path: /usr/lib/slurm-drmaa/lib/libdrmaa.so.1
+
+handling:
+  assign:
+    - db-skip-locked
+
+execution:
+  default: cluster_1
+  environments:
+    cluster_1:
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=1"
+    cluster_2:
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=2"
+
+limits:
+  - type: registered_user_concurrent_jobs
+    value: 4

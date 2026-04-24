@@ -35,12 +35,11 @@ execution:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=5"
     java_cluster:
-      runner: slurm # if not working, try drmaa runner
-      nativeSpecification: "--partition=debug --ntasks=1"
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=1 --mem=40960"
       env:
         - name: '_JAVA_OPTIONS'
-          value: '-Xmx40g -Xms512m'
-        - file: '/home/galaxy/galaxy/.venv/bin/activate'
+          value: '-Xmx32g -Xms1g -Djava.io.tmpdir=/tmp'
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -186,6 +185,9 @@ tools:
     destination: "cluster_8"
 
   - id: "nanopolish_eventalign"
+    destination: "cluster_16"
+
+  - id: "nanopolish_polya"
     destination: "cluster_16"
 
   - id: "ncbi_blastn_wrapper"

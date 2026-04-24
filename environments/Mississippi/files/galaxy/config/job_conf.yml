@@ -25,6 +25,12 @@ execution:
     cluster_8:
       runner: slurm
       nativeSpecification: "--partition=debug --ntasks=8"
+    java_cluster:
+      runner: slurm
+      nativeSpecification: "--partition=debug --ntasks=1 --mem=40960"
+      env:
+        - name: '_JAVA_OPTIONS'
+          value: '-Xmx32g -Xms1g -Djava.io.tmpdir=/tmp'
 
 limits:
   - type: anonymous_user_concurrent_jobs
@@ -44,6 +50,9 @@ limits:
   - type: environment_total_concurrent_jobs
     id: cluster_8
     value: 10
+  - type: environment_total_concurrent_jobs
+    id: java_cluster
+    value: 8
 
   - type: environment_user_concurrent_jobs
     id: cluster_1
@@ -117,7 +126,7 @@ tools:
     destination: "cluster_1"
 
   - id: "fastqc"
-    destination: "cluster_8"
+    destination: "java_cluster"
 
   - id: "freebayes"
     destination: "cluster_8"
@@ -139,7 +148,7 @@ tools:
 
   - id: "manta"
     destination: "cluster_8"
-  
+
   - id: "megahit"
     destination: "cluster_8"
 
@@ -170,14 +179,9 @@ tools:
   - id: "oases"
     destination: "cluster_8"
 
-  - id: "picard_MergeSamFiles"
-    destination: "cluster_8"
-
-  - id: "picard_AddOrReplaceReadGroups"
-    destination: "cluster_8"
-
-  - id: "picard_SortSam"
-    destination: "cluster_8"
+  # Picard tools → java_cluster (heap control, --mem=40960)
+  - id: "picard_MarkDuplicates"
+    destination: "java_cluster"
 
   - id: "repenrich"
     destination: "cluster_8"
@@ -210,9 +214,12 @@ tools:
     destination: "cluster_8"
 
   - id: "sambamba_filter"
-    destination: "cluster_1"
+    destination: "cluster_8"
 
   - id: "sambamba_sample_or_filter"
+    destination: "cluster_8"
+
+  - id: "sambamba_markdup"
     destination: "cluster_8"
 
   - id: "samtools_view"
