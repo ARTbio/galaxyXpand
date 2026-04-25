@@ -30,7 +30,7 @@
     - name: Install Slurm-DRMAA from the correct PPA release
       ansible.builtin.apt:
         name: slurm-drmaa1
-        state: latest
+        state: present
         default_release: '{{ ansible_distribution_release }}'
         update_cache: true
       when: install_slurm
