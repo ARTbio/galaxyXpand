@@ -59,15 +59,28 @@
       become_user: "{{ galaxy_user.name }}"
 
     - name: Migrate Miniconda to Miniforge if mamba is absent
-      ansible.builtin.shell: |
-        wget -q https://github.com/conda-forge/miniforge/releases/download/{{ miniconda_installer_version }}/Miniforge3-{{ miniconda_installer_version }}-Linux-x86_64.sh \
-          -O /tmp/miniforge_upgrade.sh
-        bash /tmp/miniforge_upgrade.sh -u -b -p {{ miniconda_prefix }}
-        rm /tmp/miniforge_upgrade.sh
-      become: true
-      become_user: "{{ galaxy_user.name }}"
       when: not mamba_bin.stat.exists
       tags: [miniconda]
+      block:
+        - name: Download Miniforge installer
+          ansible.builtin.get_url:
+            url: >-
+              https://github.com/conda-forge/miniforge/releases/latest/download/
+              Miniforge3-Linux-x86_64.sh
+            dest: /tmp/miniforge_upgrade.sh
+            mode: "0755"
+
+        - name: Run Miniforge installer (upgrade mode)
+          ansible.builtin.command:
+            cmd: "bash /tmp/miniforge_upgrade.sh -u -b -p {{ miniconda_prefix }}"
+          become: true
+          become_user: "{{ galaxy_user.name }}"
+          changed_when: true
+
+        - name: Remove Miniforge installer
+          ansible.builtin.file:
+            path: /tmp/miniforge_upgrade.sh
+            state: absent
 
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
