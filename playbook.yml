@@ -51,13 +51,20 @@
         mode: "0755"
         state: directory
 
+    - name: Check if conda exists in conda prefix
+      ansible.builtin.stat:
+        path: "{{ miniconda_prefix }}/bin/conda"
+      register: conda_bin
+
     - name: Check if mamba is available in conda prefix
       ansible.builtin.stat:
         path: "{{ miniconda_prefix }}/bin/mamba"
       register: mamba_bin
 
     - name: Migrate Miniconda to Miniforge if mamba is absent
-      when: not mamba_bin.stat.exists
+      when:
+        - conda_bin.stat.exists       # installation existante détectée
+        - not mamba_bin.stat.exists   # mais pas mamba → c'est un Miniconda
       tags: [miniconda]
       block:
         - name: Download Miniforge installer
