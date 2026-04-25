@@ -55,8 +55,6 @@
       ansible.builtin.stat:
         path: "{{ miniconda_prefix }}/bin/mamba"
       register: mamba_bin
-      become: true
-      become_user: "{{ galaxy_user.name }}"
 
     - name: Migrate Miniconda to Miniforge if mamba is absent
       when: not mamba_bin.stat.exists
@@ -73,8 +71,6 @@
         - name: Run Miniforge installer (upgrade mode)
           ansible.builtin.command:
             cmd: "bash /tmp/miniforge_upgrade.sh -u -b -p {{ miniconda_prefix }}"
-          become: true
-          become_user: "{{ galaxy_user.name }}"
           changed_when: true
 
         - name: Remove Miniforge installer
