@@ -1,283 +1,208 @@
-## GalaxyXpand 🌌
+# GalaxyXpand
 
-**GalaxyXpand** is the next-generation Ansible playbook for automated [Galaxy](https://galaxyproject.org/) server deployment. Developed by the [ARTbio platform](https://artbio.fr/), it serves as the modern successor to *GalaxyKickStart*, designed to deploy production-ready Galaxy instances on cloud environments (e.g., Google Cloud Engine) or bare-metal servers.
+**GalaxyXpand** is an Ansible playbook for automated [Galaxy](https://galaxyproject.org/) server deployment on Ubuntu. Developed by the [ARTbio platform](https://artbio.fr/), it is the modern successor to *GalaxyKickStart* and deploys production-ready Galaxy instances on cloud environments (GCE, OVH, AWS) or bare-metal servers.
 
-### 🚀 Features
+---
 
-* **Automated Deployment:** Deploys a full Galaxy stack from scratch.
-* **Job Management:** Supports configurations for Slurm or Celery.
-* **Tool Management:** Includes utilities to install Galaxy tools automatically.
-* **Extensible:** Uses standard Ansible roles and collections.
+## OS Compatibility
 
-### 📋 Requirements
+| Target OS | Galaxy Version | Branch / Tag |
+|-----------|---------------|--------------|
+| **Ubuntu 24.04 LTS** | Latest (current) | `main` |
+| **Ubuntu 20.04 LTS** | ≤ 24.1 | `final/release_24.1_ubuntu20.04-final` |
 
-Before running this playbook, ensure your control node and target machines meet the following requirements.
+> For Ubuntu 20.04: `git checkout release_24.1_ubuntu20.04-final`
 
+---
 
-### Operating System Compatibility
+## Requirements
 
-The playbook version you use depends on your target Operating System and the Galaxy version you intend to deploy.
+On the **control node** (Ubuntu 24.04 recommended):
 
-
-<table>
-  <tr>
-   <td><strong>Target OS</strong>
-   </td>
-   <td><strong>Galaxy Version</strong>
-   </td>
-   <td><strong>Playbook Branch / Tag</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Ubuntu 24.04 LTS</strong>
-   </td>
-   <td>Latest (Current)
-   </td>
-   <td>main
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Ubuntu 20.04 LTS</strong>
-   </td>
-   <td>$\le$ 24.1
-   </td>
-   <td>final/release_24.1_ubuntu20.04-final
-   </td>
-  </tr>
-</table>
-
-
-
-⚠️ For Ubuntu 20.04 users:
-
-You must switch to the dedicated tag or branch to ensure compatibility with Galaxy release 24.1 or older.
-
-```
-# Example using the tag
-git checkout release_24.1_ubuntu20.04-final
-```
-
-
-### Quick Setup
-
-On a fresh Ubuntu machine, installing the dependencies is straightforward. You do not need to manage complex pip environments manually; the system package manager provides a sufficiently recent version of Ansible.
-
-Run the following command on your control node (Ubuntu 24.04 recommended):
-```
+```bash
 sudo apt update && sudo apt install ansible -y
 ```
 
+---
 
-### 🏁 Quick Start & Usage
+## Quick Start
 
-Once Ansible is installed, follow these steps to deploy Galaxy.
-
-
-#### 1. Setup the Repository
-```
-# Clone the repository and install the required Ansible roles.
-git clone [https://github.com/ARTbio/galaxyXpand.git](https://github.com/ARTbio/galaxyXpand.git)
+```bash
+# 1. Clone and install role dependencies
+git clone https://github.com/ARTbio/galaxyXpand.git
 cd galaxyXpand
-
-# Install external roles dependencies
 ansible-galaxy install -r requirements.yml -p roles/
-```
 
-#### 2. Deploy Galaxy
-
-Run the main playbook specifying your target environment inventory (e.g., dev_gce).
-```
+# 2. Deploy Galaxy
 ansible-playbook -i environments/dev_gce/hosts playbook.yml
-```
 
-**📝 Note:** If executed on a standard GCE VM (e.g., 4 CPUs), this will deploy a full Galaxy instance. Jobs will be managed by either **Celery** or **Slurm**, depending on the configuration defined in your job_conf.xml.
-
-#### 3. Install Tools
-
-Once Galaxy is running, you can automate the installation of tools (as defined in tool_list.yaml).
-```
+# 3. Install tools (optional)
 ansible-playbook -i environments/dev_gce/hosts install_tools.yml
 ```
 
-*This installs the tools described in [tool_list.yaml.sample](https://github.com/ARTbio/ansible-galaxy-tools/blob/galaxyXpand/files/tool_list.yaml.sample).*
+---
 
-### 🔧 Utilities & Debugging
+## Architecture
 
-#### Inspect Variables
+### Playbooks
 
-To debug or verify the configuration of a specific environment (e.g., Mississippi) without applying changes, use the showvars.yml playbook.
+| File | Purpose |
+|------|---------|
+| `playbook.yml` | Main deployment: PostgreSQL, Galaxy, Slurm, nginx |
+| `install_tools.yml` | Install Galaxy tools from a tool list YAML |
+| `reinitialize_slurm.yml` | Reset Slurm state (useful after node restart) |
+| `showvars.yml` | Dump all computed variables for an environment (debug) |
+
+### Environments
+
+Each environment lives under `environments/<name>/` and contains:
+
 ```
-ansible-playbook -i environments/Mississippi/hosts showvars.yml
+environments/
+├── 000_cross_env_vars          # Global defaults shared by all environments
+└── <env_name>/
+    ├── hosts                   # Ansible inventory
+    ├── group_vars/all/
+    │   ├── 000_cross_env_vars  # Symlink → ../../000_cross_env_vars (REQUIRED)
+    │   ├── galaxy              # Galaxy-specific overrides
+    │   └── nginx               # nginx overrides (if managed by galaxyXpand)
+    ├── files/                  # Static files (job_conf.yml, logos, tool lists)
+    └── templates/              # Jinja2 templates (welcome page, nginx vhost)
 ```
 
+> **Critical:** The symlink `environments/<env>/group_vars/all/000_cross_env_vars → ../../000_cross_env_vars`
+is mandatory in every environment. Without it, the recursive `combine()` in the
+pre-task enters an infinite loop causing OOM (31 GB observed on ansible-core 2.16).
 
-*This will display the computed value of all ansible variables for the target environment.*
+### Configuration merge strategy
 
+`galaxy_config` uses a **recursive deep merge**: the playbook merges `common_galaxy_config`
+(defined in `000_cross_env_vars`) with the environment-specific `galaxy_config`.
+You only need to define the keys you want to override — everything else is inherited.
 
-### ⚙️ Configuration & Actionable Variables
+---
 
-This playbook relies on a **hierarchical configuration architecture**.
+## Key Variables
 
+All defaults are defined in `environments/000_cross_env_vars`. Override
+per-environment in `group_vars/all/galaxy`.
 
+### Deployment flags
 
-1. **Defaults**: Global defaults are defined in environments/000_cross_env_vars.
-2. **Overrides**: Specific settings are defined in environments/&lt;your_env>/group_vars/all.
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `galaxy_commit_id` | `release_25.1` | Galaxy Git branch or tag to deploy |
+| `install_slurm` | `true` | Install and configure Slurm |
+| `install_uptime` | `false` | Install Uptime monitoring |
+| `galaxyxpand_manage_nginx` | `true` | Set to `false` to disable nginx management (external proxy) |
 
-    **ℹ️ Note:** The main galaxy_config dictionary uses a **recursive deep merge**. You only need to define the specific keys you want to change or add in your environment; everything else is inherited from the global defaults.
+### Conda / Miniforge
 
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `miniconda_distribution` | `miniforge` | Use Miniforge (avoids Anaconda licence issues) |
+| `miniconda_installer_version` | `latest` | Miniforge installer version |
+| `miniconda_version` | `latest` | Post-install conda/mamba update target |
+| `miniconda_base_env_packages` | `[]` | Packages injected into the base env — keep empty to protect the base Python |
+| `miniconda_prefix` | `{{ galaxy_tool_dependency_dir }}/_conda` | Conda installation path |
 
+> `miniconda_installer_version` and `miniconda_version` serve different purposes:
+the former controls which installer `.sh` is downloaded; the latter controls
+`conda update` after installation. Both can safely be set to `latest`.
 
-#### 1. Core Deployment Variables
+### Galaxy paths
 
-Control the software versions and main feature flags.
+| Variable | Default |
+|----------|---------|
+| `galaxy_root` | `/home/galaxy` |
+| `galaxy_server_dir` | `{{ galaxy_root }}/galaxy` |
+| `galaxy_tool_dependency_dir` | `{{ galaxy_root }}/tool_dependencies` |
+| `galaxy_venv_dir` | `/home/galaxy/galaxy/.venv` |
 
+> When creating a new environment, always define `galaxy_tool_dependency_dir` and
+`galaxy_root` explicitly. `miniconda_prefix` depends on `galaxy_tool_dependency_dir`
+which must be resolved before the roles run.
 
-<table>
-  <tr>
-   <td><strong>Variable</strong>
-   </td>
-   <td><strong>Default / Example</strong>
-   </td>
-   <td><strong>Description</strong>
-   </td>
-  </tr>
-  <tr>
-   <td>galaxy_commit_id
-   </td>
-   <td>release_25.1
-   </td>
-   <td>The Galaxy Git branch or tag to deploy (e.g., downgrade to release_24.1 for stability).
-   </td>
-  </tr>
-  <tr>
-   <td>miniconda_installer_version
-   </td>
-   <td>25.11.0-1
-   </td>
-   <td>Pinned version of the Miniforge installer to ensure reproducibility.
-   </td>
-  </tr>
-  <tr>
-   <td>install_slurm
-   </td>
-   <td>true
-   </td>
-   <td>Feature flag to install and configure the Slurm workload manager.
-   </td>
-  </tr>
-  <tr>
-   <td>install_uptime
-   </td>
-   <td>false
-   </td>
-   <td>Feature flag to install Uptime Kuma for monitoring.
-   </td>
-  </tr>
-</table>
+### Slurm
 
+Resources are computed dynamically via Jinja2:
 
+```yaml
+slurm_nodes:
+  - name: "{{ ansible_hostname }}"
+    CPUs: "{{ ansible_processor_vcpus }}"
+    RealMemory: "{{ (ansible_memtotal_mb | int * 0.95) | round(0,'floor') | int }}"
+    State: UNKNOWN
 
-#### 2. Galaxy Configuration (galaxy_config)
+slurm_partitions:
+  - name: debug
+    Default: YES
+    Nodes: "{{ ansible_hostname }}"
+    State: UP
+    DefMemPerCPU: "{{ ((ansible_memtotal_mb|int)*0.9 / (ansible_processor_vcpus|int)) | round(0,'floor') | int }}"
+```
 
-Key functional settings nested under galaxy_config. Due to the deep merge strategy, you can override specific leaves of the tree.
+> Partition names in `slurm_partitions` must exactly match destination IDs in your
+`files/job_conf.yml`. A mismatch causes immediate job failure.
 
+### Slurm-DRMAA
 
-<table>
-  <tr>
-   <td><strong>YAML Path</strong>
-   </td>
-   <td><strong>Description</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><strong>galaxy</strong>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>.admin_users
-   </td>
-   <td>Comma-separated list of admin emails. <strong>Replaces</strong> the default list entirely.
-   </td>
-  </tr>
-  <tr>
-   <td>.brand
-   </td>
-   <td>Custom text or HTML label for the navigation bar (e.g., "🧬 Ag2025").
-   </td>
-  </tr>
-  <tr>
-   <td>.enable_quotas
-   </td>
-   <td>true or false. Enforce storage limits for users.
-   </td>
-  </tr>
-  <tr>
-   <td><strong>gravity</strong>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>.gunicorn.bind
-   </td>
-   <td>Network binding. Use unix:... for local sockets or 0.0.0.0:4000 for exposing Galaxy (Docker/Cloud).
-   </td>
-  </tr>
-  <tr>
-   <td>.gunicorn.workers
-   </td>
-   <td>Number of Gunicorn workers handling web requests.
-   </td>
-  </tr>
-  <tr>
-   <td>.celery.workers
-   </td>
-   <td>Number of Celery workers for background tasks (if added to the environment).
-   </td>
-  </tr>
-</table>
+The playbook installs `slurm-drmaa1` from the [natefoo PPA](https://launchpad.net/~natefoo/+archive/ubuntu/slurm-drmaa),
+which provides Ubuntu-release-aware packages. The correct version is selected automatically via
+`default_release: "{{ ansible_distribution_release }}"`.
 
+> On servers **migrated** from Ubuntu 20.04 to 24.04, `slurm-drmaa1` may survive
+the upgrade in its old 20.04 build, causing silent DRMAA submission failures.
+In this case, reinstall manually: `apt install slurm-drmaa1`.
 
+### nginx
 
-#### 3. Tool Management
+By default, galaxyXpand installs and manages nginx. To use an external proxy
+(e.g., a dedicated nginx role, NPM, Traefik):
 
-Tools are not defined in the variables directly but referenced via external YAML files.
+```yaml
+# group_vars/all/nginx
+galaxyxpand_manage_nginx: false
+```
 
-galaxy_tools_tool_list_files: \
-  - "environments/&lt;your_env>/files/your_tool_list.yaml" \
+This disables both the `galaxyproject.nginx` role and the `Overwrite nginx.conf`
+post-task.
 
+---
 
+## Available Environments
 
-#### 4. Infrastructure & Performance
+| Environment | Target | Notes |
+|-------------|--------|-------|
+| `dev_gce` | GCE VM (CI/CD) | Reference environment, tested on every push |
+| `artbio-gce-test` | GCE VM | ARTbio integration test (15 representative tools) |
+| `ARTbio` | Bare-metal | Production server (artbio.snv.jussieu.fr), external nginx |
+| `Conect` | Bare-metal | Production server (usegalaxy.sorbonne-universite.fr) |
+| `Mississippi` | Bare-metal | Public Mississippi Galaxy server (mississippi.sorbonne-universite.fr) |
+| `ag2025` | GCE VM | Analyse des Génomes 2025 training |
+| `Docker` | Docker container | Local development via `docker_startup.sh` |
 
+---
 
-##### Slurm (Compute)
+## Debugging
 
-Slurm resources are often calculated dynamically via Jinja2 filters in the playbook, but can be overridden.
+```bash
+# Inspect all computed variables for an environment
+ansible-playbook -i environments/<env>/hosts showvars.yml
 
+# Run without applying changes
+ansible-playbook -i environments/<env>/hosts playbook.yml --check
 
+# Limit to specific tags
+ansible-playbook -i environments/<env>/hosts playbook.yml --tags slurm
+```
 
-* **slurm_nodes**: Defines CPU/RAM per node.
-    * *Default behavior:* Auto-calculates RealMemory as 95% of total RAM.
-* **slurm_partitions**: Defines queues (e.g., debug).
-    * *Crucial:* Partition names must match the destinations defined in your files/job_conf.yml.
+---
 
+## Known Gotchas
 
-##### NGINX (Proxy)
-
-
-
-* **nginx_conf_http.client_max_body_size**: Max upload size (e.g., 10g). Essential for large datasets (FASTQ/BAM).
-* **nginx_conf_http.gzip_comp_level**: Compression level (default 6).
-
-
-#### ⚠️ Important Configuration Gotchas
-
-
-
-1. Job Handlers Naming: \
-If you rename handler pools in galaxy_config (e.g., changing job-handler to job-handlers), ensure your job_conf.yml uses the assign: - db-skip-locked mechanism. This allows any available handler to pick up jobs regardless of the specific process name.
-2. Job Destinations: \
-Always verify that every destination ID used in files/job_conf.yml refers to a valid cluster/partition defined in slurm_partitions (in group_vars). A mismatch will cause jobs to fail immediately.
+1. **Symlink `000_cross_env_vars`** is mandatory in every environment's `group_vars/all/` — see Architecture section.
+2. **Job handler naming:** if you rename handler pools in `galaxy_config`, ensure `job_conf.yml` uses `assign: db-skip-locked` so any available handler picks up jobs regardless of process name.
+3. **`slurm-drmaa1` version mismatch** after OS upgrade: reinstall manually from the PPA to get the Ubuntu-release-appropriate build.
+4. **Miniforge migration from legacy Miniconda:** if `conda` is present but `mamba` is absent in `miniconda_prefix`, the playbook automatically runs the Miniforge installer in upgrade mode (`-u -b`) before the `galaxyproject.miniconda` role executes.
+5. **`galaxy_tool_dependency_dir`** must be defined explicitly in each environment's `group_vars` — do not rely on role defaults, as this variable must be available during pre-tasks.

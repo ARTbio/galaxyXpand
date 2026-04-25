@@ -1,12 +1,10 @@
 ---
-# Instal Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
+# Install Galaxy + Slurm + DRMAA (Ubuntu ≥22.04)
 # Use Natefoo PPA for slurm-drmaa
-
 - name: Install PostgreSQL objects
   hosts: dbservers
   become: true
   become_user: root
-
   roles:
     - galaxyproject.postgresql
     - role: galaxyproject.postgresql_objects
@@ -17,27 +15,7 @@
   hosts: all
   become: true
   become_user: root
-
   pre_tasks:
-
-    - name: Remove legacy slurm-llnl config directory (Ubuntu 20.04 vestige)
-      ansible.builtin.file:
-        path: /etc/slurm-llnl
-        state: absent
-      when: install_slurm
-
-    - name: Remove stale Slurm clustername state file
-      ansible.builtin.file:
-        path: /tmp/slurm/clustername
-        state: absent
-      when: install_slurm
-
-    - name: Remove potentially corrupted slurm-drmaa PPA file
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/ppa_natefoo_slurm_drmaa_{{ ansible_distribution_release }}.list
-        state: absent
-      when: install_slurm
-
     - name: Add official Slurm-DRMAA PPA (Natefoo)
       ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
@@ -49,7 +27,7 @@
       ansible.builtin.apt:
         name: slurm-drmaa1
         state: present
-        default_release: '{{ ansible_distribution_release }}'
+        default_release: "{{ ansible_distribution_release }}"
         update_cache: true
       when: install_slurm
 
@@ -70,22 +48,40 @@
         path: /run/munge
         owner: munge
         group: munge
-        mode: '0755'
+        mode: "0755"
         state: directory
 
-    - name: "FIX: Clean out existing Node.js binaries from the venv to avoid nodeenv errors during Galaxy upgrade"
-      ansible.builtin.file:
-        path: "/home/galaxy/galaxy/.venv/{{ item }}"
-        state: absent
-      loop:
-        - "lib/node_modules"
-        - "bin/node"
-        - "bin/npm"
-        - "bin/npx"
-        - "bin/corepack"
-      become: true
-      tags:
-        - galaxy_upgrade_fix
+    - name: Check if conda exists in conda prefix
+      ansible.builtin.stat:
+        path: "{{ miniconda_prefix }}/bin/conda"
+      register: conda_bin
+
+    - name: Check if mamba is available in conda prefix
+      ansible.builtin.stat:
+        path: "{{ miniconda_prefix }}/bin/mamba"
+      register: mamba_bin
+
+    - name: Migrate Miniconda to Miniforge if mamba is absent
+      when:
+        - conda_bin.stat.exists       # installation existante détectée
+        - not mamba_bin.stat.exists   # mais pas mamba → c'est un Miniconda
+      tags: [miniconda]
+      block:
+        - name: Download Miniforge installer
+          ansible.builtin.get_url:
+            url: "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
+            dest: /tmp/miniforge_upgrade.sh
+            mode: "0755"
+
+        - name: Run Miniforge installer (upgrade mode)
+          ansible.builtin.command:
+            cmd: "bash /tmp/miniforge_upgrade.sh -u -b -p {{ miniconda_prefix }}"
+          changed_when: true
+
+        - name: Remove Miniforge installer
+          ansible.builtin.file:
+            path: /tmp/miniforge_upgrade.sh
+            state: absent
 
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
@@ -110,16 +106,14 @@
     - role: installUptime
       when: install_uptime
 
-
   post_tasks:
-
     - name: Overwrite nginx.conf
       ansible.builtin.template:
         src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
         dest: /etc/nginx/nginx.conf
         owner: root
         group: root
-        mode: '0644'
+        mode: "0644"
       notify: Restart nginx
       when: galaxyxpand_manage_nginx
 
