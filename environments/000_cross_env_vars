@@ -100,6 +100,7 @@ galaxy_config_dir: "{{ galaxy_server_dir }}/config"
 galaxy_config_file: "{{ galaxy_config_dir }}/galaxy.yml"
 galaxy_force_checkout: true
 galaxy_venv_dir: "/home/galaxy/galaxy/.venv"
+galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda"
 # Use Miniforge (Galaxy standard, licence issue with Miniconda)
 miniconda_distribution: "miniforge"
