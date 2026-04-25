@@ -20,24 +20,6 @@
 
   pre_tasks:
 
-    - name: Remove legacy slurm-llnl config directory (Ubuntu 20.04 vestige)
-      ansible.builtin.file:
-        path: /etc/slurm-llnl
-        state: absent
-      when: install_slurm
-
-    - name: Remove stale Slurm clustername state file
-      ansible.builtin.file:
-        path: /tmp/slurm/clustername
-        state: absent
-      when: install_slurm
-
-    - name: Remove potentially corrupted slurm-drmaa PPA file
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/ppa_natefoo_slurm_drmaa_{{ ansible_distribution_release }}.list
-        state: absent
-      when: install_slurm
-
     - name: Add official Slurm-DRMAA PPA (Natefoo)
       ansible.builtin.apt_repository:
         repo: ppa:natefoo/slurm-drmaa
@@ -48,7 +30,7 @@
     - name: Install Slurm-DRMAA from the correct PPA release
       ansible.builtin.apt:
         name: slurm-drmaa1
-        state: present
+        state: latest
         default_release: '{{ ansible_distribution_release }}'
         update_cache: true
       when: install_slurm
@@ -72,20 +54,6 @@
         group: munge
         mode: '0755'
         state: directory
-
-    - name: "FIX: Clean out existing Node.js binaries from the venv to avoid nodeenv errors during Galaxy upgrade"
-      ansible.builtin.file:
-        path: "/home/galaxy/galaxy/.venv/{{ item }}"
-        state: absent
-      loop:
-        - "lib/node_modules"
-        - "bin/node"
-        - "bin/npm"
-        - "bin/npx"
-        - "bin/corepack"
-      become: true
-      tags:
-        - galaxy_upgrade_fix
 
     - name: Merge common and specific Galaxy configurations
       ansible.builtin.set_fact:
