@@ -2,6 +2,7 @@
 .DS_Store
 *.pyc
 docs/html
+.vault_pass
 .vault-password.txt
 roles/galaxyproject.galaxy
 roles/galaxyproject.miniconda
