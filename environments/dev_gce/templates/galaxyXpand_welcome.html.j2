@@ -1,52 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style/base.css" type="text/css" />
-    </head>
-    <body  class="m-0">
-        <div class="py-4">
-            <div class="container">
-                <p align="center">
-                    <img src="images/galaxyXpand_logo.png" width="400" />
-                </p>
-                <h2>Hello, <strong>galaxyXpand</strong> has deployed <strong>Galaxy</strong> 
-                    <a href="https://github.com/galaxyproject/galaxy/tree/{{ galaxy_commit_id }}" target="_blank">
-                    {{ galaxy_commit_id }}
-                    </a>
-                </h2>
-                To customize this page edit <code>static/galaxy_welcome.html</code>
-                <br>
-                <a target="_blank" href="https://artbio.github.io/GalaxyKickStart/" class="btn btn-primary">galaxyXpand Documentation »</a>
-                <a target="_blank" href="https://github.com/ARTbio/galaxyXpand" class="btn btn-primary">galaxyXpand Repository »</a>
-                <br>
-                <a target="_blank" href="https://docs.galaxyproject.org/en/latest/admin/config.html" class="btn btn-primary">Configuring Galaxy »</a>
-                <a target="_blank" href="https://galaxyproject.org/admin/tools/add-tool-from-toolshed-tutorial/" class="btn btn-primary">Installing Tools »</a>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>galaxyXpand — Galaxy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/base.css" type="text/css" />
+    <style>
+        /* ── Reset & base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold-bright:  #FFD84D;
+            --gold-mid:     #F0B800;
+            --gold-deep:    #A07800;
+            --dark-bg:      #0D0E10;
+            --dark-surface: #14161A;
+            --dark-card:    #1B1D23;
+            --dark-border:  #2A2D35;
+            --text-primary: #F0EEE8;
+            --text-muted:   #7A7D87;
+            --text-link:    #C8A82A;
+            --radius:       10px;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Starfield canvas ── */
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Layout wrapper ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 60px 32px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 52px;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            text-align: center;
+            animation: fadeUp .7s ease both;
+        }
+
+        .header img {
+            width: 340px;
+            max-width: 90%;
+            filter: drop-shadow(0 0 28px rgba(240,184,0,.25));
+            transition: filter .4s ease;
+        }
+        .header img:hover {
+            filter: drop-shadow(0 0 44px rgba(240,184,0,.55));
+        }
+
+        .deploy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: 100px;
+            padding: 8px 20px 8px 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: .8rem;
+            color: var(--text-muted);
+            letter-spacing: .04em;
+        }
+        .deploy-badge .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--gold-mid);
+            box-shadow: 0 0 8px var(--gold-mid);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .deploy-badge a {
+            color: var(--gold-bright);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color .2s;
+        }
+        .deploy-badge a:hover { color: #fff; }
+
+        /* ── Section title ── */
+        .section-label {
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        /* ── Action cards grid ── */
+        .cards-section { animation: fadeUp .7s .15s ease both; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (max-width: 520px) {
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: .9rem;
+            font-weight: 600;
+            transition: background .2s, border-color .25s, transform .2s, box-shadow .25s;
+        }
+        .card:hover {
+            background: #22252E;
+            border-color: var(--gold-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,.45), 0 0 0 1px var(--gold-deep);
+        }
+        .card-icon {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1f2128, #2a2d38);
+            border: 1px solid #32363f;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+        .card-text { display: flex; flex-direction: column; gap: 2px; }
+        .card-text small {
+            font-family: 'DM Mono', monospace;
+            font-size: .67rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            letter-spacing: .04em;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--dark-border) 30%, var(--dark-border) 70%, transparent);
+        }
+
+        /* ── Tours section ── */
+        .tours-section { animation: fadeUp .7s .3s ease both; }
+
+        .tours-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tour-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: transparent;
+            border: 1px solid var(--dark-border);
+            border-radius: 6px;
+            padding: 8px 14px;
+            color: var(--text-muted);
+            font-family: 'DM Mono', monospace;
+            font-size: .78rem;
+            text-decoration: none;
+            transition: color .2s, border-color .2s, background .2s;
+        }
+        .tour-btn:hover {
+            color: var(--gold-bright);
+            border-color: var(--gold-deep);
+            background: rgba(240,184,0,.05);
+        }
+        .tour-btn::before {
+            content: '▷';
+            font-size: .65rem;
+            opacity: .7;
+        }
+
+        /* ── Footer ── */
+        .footer-section {
+            animation: fadeUp .7s .45s ease both;
+            font-size: .83rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            border-top: 1px solid var(--dark-border);
+            padding-top: 28px;
+        }
+        .footer-section a {
+            color: var(--text-link);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .footer-section a:hover { color: var(--gold-bright); }
+
+        .footer-top { margin-bottom: 12px; }
+
+        /* ── Animations ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: .5; transform: scale(.85); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stars-canvas"></canvas>
+
+    <div class="page">
+
+        <!-- ── Header ── -->
+        <header class="header">
+            <img src="images/galaxyXpand_logo.png" alt="galaxyXpand" />
+            <div class="deploy-badge">
+                <span class="dot"></span>
+                Galaxy deployed ·
+                <a href="https://github.com/galaxyproject/galaxy/tree/{% raw %}{{ galaxy_commit_id }}{% endraw %}" target="_blank">
+                    {% raw %}{{ galaxy_commit_id }}{% endraw %}
+                </a>
             </div>
-            <br>
-        <div class="container">
-                <p>Take an interactive tour:
-                    <a target="_parent" href="../tours/core.galaxy_ui" class="btn btn-secondary btn-sm">Galaxy UI</a>
-                    <a target="_parent" href="../tours/core.history" class="btn btn-secondary btn-sm">History</a>
-                    <a target="_parent" href="../tours/core.scratchbook" class="btn btn-secondary btn-sm">Scratchbook</a>
-                </p>
+        </header>
+
+        <!-- ── Action cards ── -->
+        <section class="cards-section">
+            <p class="section-label">Resources</p>
+            <div class="cards-grid">
+                <a class="card" href="https://artbio.github.io/GalaxyKickStart/" target="_blank">
+                    <div class="card-icon">📖</div>
+                    <div class="card-text">
+                        <span>Documentation</span>
+                        <small>galaxyXpand</small>
+                    </div>
+                </a>
+                <a class="card" href="https://github.com/ARTbio/galaxyXpand" target="_blank">
+                    <div class="card-icon">⬡</div>
+                    <div class="card-text">
+                        <span>Repository</span>
+                        <small>ARTbio / galaxyXpand</small>
+                    </div>
+                </a>
+                <a class="card" href="https://docs.galaxyproject.org/en/latest/admin/config.html" target="_blank">
+                    <div class="card-icon">⚙</div>
+                    <div class="card-text">
+                        <span>Configuration</span>
+                        <small>Galaxy Admin Guide</small>
+                    </div>
+                </a>
+                <a class="card" href="https://galaxyproject.org/admin/tools/add-tool-from-toolshed-tutorial/" target="_blank">
+                    <div class="card-icon">🔧</div>
+                    <div class="card-text">
+                        <span>Installing Tools</span>
+                        <small>ToolShed Tutorial</small>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="container">
-            <p class="lead">
-                <a target="_blank" class="reference" href="http://galaxyproject.org/">
-                Galaxy</a> is an open platform for supporting data intensive
-                research. Galaxy is developed by <a target="_blank" class="reference" href="http://wiki.galaxyproject.org/GalaxyTeam">The Galaxy Team</a>
-                with the support of  <a target="_blank" class="reference" href="https://github.com/galaxyproject/galaxy/blob/dev/CONTRIBUTORS.md">many contributors</a>.
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ── Tours ── -->
+        <section class="tours-section">
+            <p class="section-label">Interactive Tours</p>
+            <div class="tours-row">
+                <a class="tour-btn" href="../tours/core.galaxy_ui" target="_parent">Galaxy UI</a>
+                <a class="tour-btn" href="../tours/core.history" target="_parent">History</a>
+                <a class="tour-btn" href="../tours/core.scratchbook" target="_parent">Scratchbook</a>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ── Footer ── -->
+        <footer class="footer-section">
+            <p class="footer-top">
+                <a href="http://galaxyproject.org/" target="_blank">Galaxy</a> is an open platform for
+                data-intensive research, developed by
+                <a href="http://wiki.galaxyproject.org/GalaxyTeam" target="_blank">The Galaxy Team</a>
+                with the support of
+                <a href="https://github.com/galaxyproject/galaxy/blob/dev/CONTRIBUTORS.md" target="_blank">many contributors</a>.
             </p>
-            <footer>
-                The <a target="_blank" class="reference" href="http://galaxyproject.org/">Galaxy Project</a>
-                is supported in part by <a target="_blank" class="reference" href="http://www.genome.gov">NHGRI</a>,
-                <a target="_blank" class="reference" href="http://www.nsf.gov">NSF</a>,
-                <a target="_blank" class="reference" href="http://www.huck.psu.edu">The Huck Institutes of the Life Sciences</a>,
-                <a target="_blank" class="reference" href="http://www.ics.psu.edu">The Institute for CyberScience at Penn State</a>,
-                and <a target="_blank" class="reference" href="http://www.jhu.edu/">Johns Hopkins University</a>.
-            </footer>
-        </div>
-    </body>
+            <p>
+                The <a href="http://galaxyproject.org/" target="_blank">Galaxy Project</a> is supported in
+                part by <a href="http://www.genome.gov" target="_blank">NHGRI</a>,
+                <a href="http://www.nsf.gov" target="_blank">NSF</a>,
+                <a href="http://www.huck.psu.edu" target="_blank">The Huck Institutes of the Life Sciences</a>,
+                <a href="http://www.ics.psu.edu" target="_blank">The Institute for CyberScience at Penn State</a>,
+                and <a href="http://www.jhu.edu/" target="_blank">Johns Hopkins University</a>.
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        /* ── Starfield ── */
+        (function () {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+
+            function resize() {
+                canvas.width  = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            function init() {
+                resize();
+                stars = Array.from({ length: 160 }, () => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.1 + 0.15,
+                    a: Math.random(),
+                    speed: Math.random() * 0.004 + 0.001,
+                    phase: Math.random() * Math.PI * 2,
+                }));
+            }
+
+            function draw(t) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    const alpha = s.a * (0.4 + 0.6 * Math.sin(t * s.speed + s.phase));
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(240, 235, 210, ${alpha})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', () => { resize(); });
+            init();
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
 </html>
