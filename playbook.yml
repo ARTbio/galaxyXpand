@@ -107,6 +107,7 @@
       when: install_uptime
 
   post_tasks:
+
     - name: Overwrite nginx.conf
       ansible.builtin.template:
         src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
@@ -115,7 +116,9 @@
         group: root
         mode: "0644"
       notify: Restart nginx
-      when: galaxyxpand_manage_nginx
+      when:
+        - galaxyxpand_manage_nginx
+        - (inventory_dir + '/templates/nginx/nginx.conf.j2') is file
 
     - name: Create and start Galaxy systemd units via galaxyctl
       ansible.builtin.command:

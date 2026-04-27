@@ -25,6 +25,18 @@ sudo apt update && sudo apt install ansible -y
 
 ---
 
+## Ansible Vault
+
+Les secrets (mots de passe, tokens) sont chiffrés avec ansible-vault. Le fichier `.vault_pass` est placé à la racine du dépôt et listé dans `.gitignore` — ne jamais le committer.
+
+Avant toute commande `ansible-playbook` :
+
+```bash
+export ANSIBLE_VAULT_PASSWORD_FILE=.vault_pass
+```
+
+---
+
 ## Quick Start
 
 ```bash
