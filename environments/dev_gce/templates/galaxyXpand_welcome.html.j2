@@ -243,8 +243,8 @@
             <div class="deploy-badge">
                 <span class="dot"></span>
                 Galaxy deployed ·
-                <a href="https://github.com/galaxyproject/galaxy/tree/{% raw %}{{ galaxy_commit_id }}{% endraw %}" target="_blank">
-                    {% raw %}{{ galaxy_commit_id }}{% endraw %}
+                <a href="https://github.com/galaxyproject/galaxy/tree/{{ galaxy_commit_id }}" target="_blank">
+                    {{ galaxy_commit_id }}
                 </a>
             </div>
         </header>
@@ -360,5 +360,6 @@
             requestAnimationFrame(draw);
         })();
     </script>
+
 </body>
 </html>
