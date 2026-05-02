@@ -1,6 +1,7 @@
 ---
 # Galaxy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
+galaxyxpand_manage_nginx: false
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
 galaxy_config:
