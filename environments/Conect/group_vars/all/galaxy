@@ -4,6 +4,9 @@ galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework an
 galaxyxpand_manage_nginx: false
 galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
 
+# development branch
+galaxy_commit_id: release_26.0
+
 galaxy_config:
   gravity:
     gunicorn:
