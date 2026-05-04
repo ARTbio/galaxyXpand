@@ -61,6 +61,7 @@ jobs:
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
                          --skip-tags galaxy_build_client \
+                         -vvv \
                          playbook.yml
 
     - name: Run diagnostics before API wait
