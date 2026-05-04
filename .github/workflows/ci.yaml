@@ -57,10 +57,11 @@ jobs:
     - name: Run Ansible playbook to install Galaxy
       run: |
         sudo apt-get -qq --purge remove nginx* || true
+        # --skip-tags galaxy_build_client \
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
-                         # --skip-tags galaxy_build_client \
+                         
                          -vvv \
                          playbook.yml
 
