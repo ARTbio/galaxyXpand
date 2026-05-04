@@ -61,6 +61,3 @@ galaxy_config_files:
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
-
-# this is required with release_26.0 to avoid gravity crash with "graceful"
-galaxy_gravity_restart_action: restart

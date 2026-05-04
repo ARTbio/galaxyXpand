@@ -38,6 +38,3 @@ galaxy_config_files:
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: "{{ inventory_dir }}/files/galaxyXpand_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
-
-# this is required with release_26.0 to avoid gravity crash with "graceful"
-galaxy_gravity_restart_action: restart
