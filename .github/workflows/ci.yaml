@@ -60,7 +60,6 @@ jobs:
         ansible-playbook --extra-vars RUNNER_ALLOW_RUNASROOT="1" \
                          -e ansible_user="runner" \
                          -e allow_world_readable_tmpfiles="true" \
-                         -v \
                          playbook.yml
 
     - name: Run diagnostics before API wait
