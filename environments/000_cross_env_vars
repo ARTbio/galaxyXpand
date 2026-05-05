@@ -84,7 +84,7 @@ nginx_conf_user: "www-data galaxy"
 # Galaxy common to all hosts
 galaxy_commit_id: release_25.1
 # required with release_26.0+ to avoid gravity crash with "graceful"
-galaxy_gravity_restart_action: "{{ 'restart' if galaxy_commit_id is version('26.0', '>=') else omit }}"
+galaxy_gravity_restart_action: "{{ 'restart' if galaxy_commit_id | regex_replace('^release_', '') is version('26.0', '>=') else omit }}"
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
