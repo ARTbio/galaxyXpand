@@ -6,8 +6,6 @@ postgresql_objects_databases:
   - name: "{{ galaxy_db_name }}"
     owner: "{{ galaxy_user_name }}"
 
-slurm_upgrade: true
-
 # Python 3 support
 pip_virtualenv_command: /usr/bin/python3 -m venv
 
