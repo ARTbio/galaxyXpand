@@ -146,7 +146,6 @@ tools:
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: manta
   owner: artbio
-
   tool_panel_section_id: genomic_variants
   tool_panel_section_label: Genomic Variants
   tool_shed_url: toolshed.g2.bx.psu.edu
@@ -325,6 +324,7 @@ tools:
   tool_panel_section_id: genomic_variants
   tool_panel_section_label: Genomic Variants
   tool_shed_url: toolshed.g2.bx.psu.edu
+
 - name: freebayes
   owner: devteam
   tool_panel_section_id: genomic_variants
@@ -947,6 +947,7 @@ tools:
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: sambamba
   owner: artbio
+
   tool_panel_section_id: ngs:_sam_tools
   tool_panel_section_label: 'NGS: SAM Tools'
   tool_shed_url: toolshed.g2.bx.psu.edu
@@ -1061,7 +1062,6 @@ tools:
   tool_panel_section_label: Operate on Genomic Intervals
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: join
-
   owner: devteam
   tool_panel_section_id: bxops
   tool_panel_section_label: Operate on Genomic Intervals
@@ -1483,7 +1483,6 @@ tools:
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: heat_map_creation
   owner: md-anderson-bioinformatics
-
   tool_panel_section_id: plots
   tool_panel_section_label: Graph/Display Data
   tool_shed_url: toolshed.g2.bx.psu.edu
@@ -1796,6 +1795,11 @@ tools:
   owner: devteam
   tool_panel_section_id: bcftools
   tool_panel_section_label: BCFtools
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: nanopolish_polya
+  owner: bgruening
+  tool_panel_section_id: nanopore
+  tool_panel_section_label: Nanopore
   tool_shed_url: toolshed.g2.bx.psu.edu
 - name: guppy_basecaller
   owner: artbio
