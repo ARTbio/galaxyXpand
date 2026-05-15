@@ -131,6 +131,9 @@ tools:
   - id: "freebayes"
     destination: "cluster_8"
 
+  - id: "gatk4_mutect2"
+    destination: "cluster_8"
+
   - id: "hicexplorer_hicmergematrixbins"
     destination: "cluster_8"
 
