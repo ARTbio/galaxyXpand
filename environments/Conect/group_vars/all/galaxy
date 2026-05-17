@@ -1,7 +1,10 @@
 ---
 # Galaxy
 galaxy_manage_cleanup: yes  # Install a cron job to clean up Galaxy framework and job execution temporary
-galaxy_tool_dependency_dir: "{{ galaxy_root }}/tool_dependencies"
+galaxyxpand_manage_nginx: false
+
+# development branch
+galaxy_commit_id: release_26.0
 
 galaxy_config:
   gravity:
@@ -39,9 +42,8 @@ galaxy_config:
 
 # Welcome html page variables
 _conect_info: |
-  <strong>Galaxy is now running
-  <br>
-  release_25.1 (Dec 2025)</strong>
+  <strong>
+  Galaxy is now running {{ galaxy_commit_id }}</strong>
 conect_info: "{{ _conect_info | indent(width=10, first=True) }}"
 
 # deploy galaxy configuration files

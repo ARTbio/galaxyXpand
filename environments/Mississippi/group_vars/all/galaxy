@@ -35,9 +35,11 @@ galaxy_config:
 
 # Welcome html page variables
 _Mississippi_info: |
-  <strong>Galaxy is now running
+  <!--
+  <strong>
   <br>
-  release_25.1 (Dec 2025)</strong>
+  </strong>
+  -->
 Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
 # deploy galaxy configuration files

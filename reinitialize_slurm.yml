@@ -51,21 +51,11 @@
         state: absent
 
   roles:
-    - galaxyproject.nginx
     - role: galaxyproject.slurm
       become: true
       when: install_slurm
 
   post_tasks:
-
-    - name: Overwrite nginx.conf
-      ansible.builtin.template:
-        src: "{{ inventory_dir }}/templates/nginx/nginx.conf.j2"
-        dest: /etc/nginx/nginx.conf
-        owner: root
-        group: root
-        mode: '0644'
-      notify: Restart nginx
 
     - name: Ensure Galaxy is restarted and enabled (for reboot persistence)
       ansible.builtin.systemd:
