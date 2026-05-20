@@ -26,18 +26,18 @@ galaxy_config:
     # don't let galaxy role injecting this variable, unless galaxy startup crash
     themes_config_file_by_host: {}  # GitHub CI fix
 
-# deploy galaxy configuration files
+# deploy galaxy static files
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/galaxyXpand_welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
-
-# deploy png galaxyXpand logo
-galaxy_config_files:
-  - src: "{{ inventory_dir }}//files/job_conf.yml"
+  - src: "{{ playbook_dir }}/templates/job_conf.yml.j2"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
-  - src: "{{ inventory_dir }}//files/galaxyXpand_logo.png"
+
+# deploy logos
+galaxy_config_files:
+  - src: "{{ inventory_dir }}/files/galaxyXpand_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
-  - src: "{{ inventory_dir }}//files/ag_logo.png"
+  - src: "{{ inventory_dir }}/files/ag_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/ag_logo.png"
 
 galaxy_tools_tool_list_files:
