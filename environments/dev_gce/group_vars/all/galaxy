@@ -1,9 +1,6 @@
 ---
 # optimize 2 cpu VM GCE
 
-# development branch
-galaxy_commit_id: release_26.0
-
 galaxy_config:
   gravity:
     gunicorn:
@@ -31,10 +28,10 @@ galaxy_config:
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/galaxyXpand_welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/galaxy_welcome.html"
-
-# deploy galaxyXpand logo and job_conf.yml
-galaxy_config_files:
-  - src: "{{ inventory_dir }}/files/job_conf.yml"
+  - src: "{{ playbook_dir }}/templates/job_conf.yml.j2"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
+
+# deploy galaxyXpand logo
+galaxy_config_files:
   - src: "{{ inventory_dir }}/files/galaxyXpand_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
