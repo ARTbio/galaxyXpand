@@ -1,0 +1,170 @@
+---
+# Job configuration for Mississippi
+# Rendered by templates/job_conf.yml.j2
+
+job_default_destination: cluster_1
+
+job_destinations:
+  cluster_1:
+    ntasks: 1
+  cluster_2:
+    ntasks: 2
+  cluster_4:
+    ntasks: 4
+  cluster_8:
+    ntasks: 8
+  java_cluster:
+    ntasks: 1
+    mem: 40960
+    env:
+      - name: '_JAVA_OPTIONS'
+        value: '-Xmx32g -Xms1g -Djava.io.tmpdir=/tmp'
+
+job_limits_anonymous: 1
+job_limits_registered: 10
+
+job_limits_environment_total:
+  - id: cluster_1
+    value: 70
+  - id: cluster_2
+    value: 35
+  - id: cluster_4
+    value: 18
+  - id: cluster_8
+    value: 10
+  - id: java_cluster
+    value: 8
+
+job_limits_environment_user:
+  - id: cluster_1
+    value: 50
+  - id: cluster_2
+    value: 25
+  - id: cluster_4
+    value: 15
+  - id: cluster_8
+    value: 8
+
+job_tool_routing:
+  - class: local
+    environment: cluster_1
+  - id: "abyss-pe"
+    destination: "cluster_8"
+  - id: "bowtie_wrapper"
+    destination: "cluster_8"
+  - id: "bowtie2"
+    destination: "cluster_8"
+  - id: "bowtieForSmallRNA"
+    destination: "cluster_8"
+  - id: "breakdancer_max"
+    destination: "cluster_8"
+  - id: "bwa"
+    destination: "cluster_8"
+  - id: "bwa_mem"
+    destination: "cluster_8"
+  - id: "circgraph"
+    destination: "cluster_2"
+  - id: "cuffdiff"
+    destination: "cluster_8"
+  - id: "deeptools_bam_compare"
+    destination: "cluster_8"
+  - id: "deeptools_bam_coverage"
+    destination: "cluster_8"
+  - id: "deeptools_bigwig_compare"
+    destination: "cluster_8"
+  - id: "deeptools_compute_gc_bias"
+    destination: "cluster_8"
+  - id: "deeptools_compute_matrix"
+    destination: "cluster_8"
+  - id: "deeptools_multi_bam_summary"
+    destination: "cluster_8"
+  - id: "deeptools_multi_bigwig_summary"
+    destination: "cluster_8"
+  - id: "deeptools_plot_coverage"
+    destination: "cluster_8"
+  - id: "dexseq"
+    destination: "cluster_1"
+  - id: "fastqc"
+    destination: "java_cluster"
+  - id: "freebayes"
+    destination: "cluster_8"
+  - id: "gatk4_mutect2"
+    destination: "cluster_8"
+  - id: "hicexplorer_hicmergematrixbins"
+    destination: "cluster_8"
+  - id: "hisat2"
+    destination: "cluster_8"
+  - id: "lofreq_call"
+    destination: "cluster_8"
+  - id: "lumpy_smoove"
+    destination: "cluster_4"
+  - id: "macs2_callpeak"
+    destination: "cluster_8"
+  - id: "manta"
+    destination: "cluster_8"
+  - id: "megahit"
+    destination: "cluster_8"
+  - id: "metaspades"
+    destination: "cluster_8"
+  - id: "mircounts"
+    destination: "cluster_8"
+  - id: "ncbi_blastn_wrapper"
+    destination: "cluster_8"
+  - id: "ncbi_blastx_wrapper"
+    destination: "cluster_8"
+  - id: "ncbi_tblastn_wrapper"
+    destination: "cluster_8"
+  - id: "ncbi_tblastx_wrapper"
+    destination: "cluster_8"
+  - id: "ngsplot"
+    destination: "cluster_8"
+  - id: "oaseoptimiserv"
+    destination: "cluster_8"
+  - id: "oases"
+    destination: "cluster_8"
+  - id: "pindel"
+    destination: "cluster_8"
+  - id: "picard_MarkDuplicates"
+    destination: "java_cluster"
+  - id: "repenrich"
+    destination: "cluster_8"
+  - id: "repenrich2"
+    destination: "cluster_8"
+  - id: "retrieve_fasta_from_NCBI"
+    destination: "cluster_2"
+  - id: "rgrnastar"
+    destination: "cluster_8"
+  - id: "rna_star"
+    destination: "cluster_8"
+  - id: "rnaspades"
+    destination: "cluster_8"
+  - id: "rsembowtie"
+    destination: "cluster_8"
+  - id: "rsembowtie2"
+    destination: "cluster_8"
+  - id: "run_TEMP"
+    destination: "cluster_8"
+  - id: "salmon"
+    destination: "cluster_8"
+  - id: "sambamba_filter"
+    destination: "cluster_8"
+  - id: "sambamba_sample_or_filter"
+    destination: "cluster_8"
+  - id: "sambamba_markdup"
+    destination: "cluster_8"
+  - id: "samtools_view"
+    destination: "cluster_4"
+  - id: "spades"
+    destination: "cluster_8"
+  - id: "sr_bowtie"
+    destination: "cluster_8"
+  - id: "sr_bowtie_dataset_annotation"
+    destination: "cluster_8"
+  - id: "tophat2"
+    destination: "cluster_8"
+  - id: "tp_grep_tool"
+    destination: "cluster_1"
+  - id: "trinity"
+    destination: "cluster_8"
+  - id: "yac"
+    destination: "cluster_1"
