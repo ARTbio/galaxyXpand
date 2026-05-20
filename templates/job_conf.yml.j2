@@ -48,6 +48,11 @@ limits:
     id: {{ limit.id }}
     value: {{ limit.value }}
 {% endfor %}
+{% for limit in job_limits_environment_user | default([]) %}
+  - type: environment_user_concurrent_jobs
+    id: {{ limit.id }}
+    value: {{ limit.value }}
+{% endfor %}
 
 tools:
 {% for tool in job_tool_routing %}
