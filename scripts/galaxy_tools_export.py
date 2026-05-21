@@ -18,9 +18,18 @@ Usage:
     python3 galaxy_tools_export.py <galaxy_url> [options]
 
 Options:
+    --env <name>             galaxyXpand environment (Conect, ARTbio, Mississippi, ...).
+                             Derives default paths from the repo layout:
+                               --existing-tools environments/<name>/group_vars/all/tools
+                               --tool-list      environments/<name>/files/galaxy/config/<name>_tool_list.yml
+                               --routing        environments/<name>/files/galaxy/config/<name>_job_tool_routing.yml
+                             Explicit --tool-list / --routing / --existing-tools override.
+                             The repo root is located by walking up from this script
+                             looking for `ansible.cfg` + `environments/` — the script
+                             can live anywhere inside the repo.
     --dest <name>            Default Slurm destination (default: cluster_1)
-    --tool-list <path>       Output path for tool_list.yml (default: tool_list.yml)
-    --routing <path>         Output path for job_tool_routing.yml (default: job_tool_routing.yml)
+    --tool-list <path>       Output path for tool_list.yml
+    --routing <path>         Output path for job_tool_routing.yml
     --no-revisions           Omit changeset_revision from tool_list (install latest)
     --skip-builtins          Exclude built-in Galaxy tools from routing output
     --admin-key <key>        Galaxy API key; enables data manager fetch
@@ -29,11 +38,13 @@ Options:
     --tpv-url <url>          Override TPV URL (default: galaxyproject/tpv-shared-database main)
 
 Examples:
-    python3 galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
-        --dest cluster_1 \\
+    # Standard usage with --env (paths auto-derived from repo layout)
+    python3 scripts/galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
+        --env Conect --admin-key MY_KEY --skip-builtins
+
+    # Manual paths (legacy / one-off)
+    python3 scripts/galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
         --existing-tools environments/Conect/group_vars/all/tools \\
-        --admin-key MY_KEY \\
-        --skip-builtins \\
         --tool-list /tmp/conect_tool_list.yml \\
         --routing /tmp/conect_job_tool_routing.yml
 """
@@ -414,9 +425,10 @@ def render_routing(tools: list, default_dest: str,
 def parse_args(argv):
     args = {
         "galaxy_url":     None,
+        "env":            None,
         "dest":           "cluster_1",
-        "tool_list_path": "tool_list.yml",
-        "routing_path":   "job_tool_routing.yml",
+        "tool_list_path": None,   # filled later (env-derived or default)
+        "routing_path":   None,   # filled later (env-derived or default)
         "no_revisions":   False,
         "skip_builtins":  False,
         "admin_key":      None,
@@ -428,6 +440,7 @@ def parse_args(argv):
     while i < len(argv):
         a = argv[i]
         if   a == "--dest":            args["dest"] = argv[i+1]; i += 2
+        elif a == "--env":             args["env"] = argv[i+1]; i += 2
         elif a == "--tool-list":       args["tool_list_path"] = argv[i+1]; i += 2
         elif a == "--routing":         args["routing_path"] = argv[i+1]; i += 2
         elif a == "--no-revisions":    args["no_revisions"] = True; i += 1
@@ -441,11 +454,108 @@ def parse_args(argv):
     return args
 
 
+def find_repo_root() -> Path:
+    """
+    Locate the galaxyXpand repo root by walking up from this script's location
+    until we find a directory containing BOTH `ansible.cfg` and `environments/`.
+    Tolerates the script being moved anywhere inside the repo (scripts/, bin/,
+    root, etc.) and fails fast with a clear message if not found.
+
+    The double marker avoids false positives if a parent directory happens to
+    be another Ansible repo or just contains an environments/ folder.
+    """
+    start = Path(__file__).resolve().parent
+    for candidate in [start, *start.parents]:
+        if ((candidate / "ansible.cfg").is_file()
+                and (candidate / "environments").is_dir()):
+            return candidate
+    print(f"[error] could not locate galaxyXpand repo root", file=sys.stderr)
+    print(f"[error] walked up from {start} without finding a directory",
+          file=sys.stderr)
+    print(f"[error] containing both 'ansible.cfg' and 'environments/'",
+          file=sys.stderr)
+    sys.exit(2)
+
+
+def derive_env_paths(env: str, args: dict) -> None:
+    """
+    Populate args paths from the galaxyXpand repo layout based on --env <name>.
+    Fails fast with a clean message if:
+      - the environment directory does not exist (lists available envs)
+      - the output config directory does not exist (we never create dirs in a git repo)
+
+    Explicit --tool-list / --routing / --existing-tools always win over derivation.
+    """
+    repo = find_repo_root()
+    envs_dir = repo / "environments"
+    env_dir  = envs_dir / env
+
+    if not env_dir.is_dir():
+        if envs_dir.is_dir():
+            available = sorted(
+                p.name for p in envs_dir.iterdir()
+                if p.is_dir() and not p.name.startswith("000_")
+            )
+            print(f"[error] environment '{env}' not found under {envs_dir}",
+                  file=sys.stderr)
+            print(f"[error] available environments: {', '.join(available)}",
+                  file=sys.stderr)
+        else:
+            print(f"[error] no 'environments/' directory found at {envs_dir}",
+                  file=sys.stderr)
+            print(f"[error] is this script running from inside the galaxyXpand repo?",
+                  file=sys.stderr)
+        sys.exit(2)
+
+    prefix     = env.lower()
+    config_dir = env_dir / "files" / "galaxy" / "config"
+    gv_tools   = env_dir / "group_vars" / "all" / "tools"
+
+    needs_outputs = (args["tool_list_path"] is None) or (args["routing_path"] is None)
+    if needs_outputs and not config_dir.is_dir():
+        print(f"[error] expected output directory does not exist: {config_dir}",
+              file=sys.stderr)
+        print(f"[error] create it (and git add) before re-running with --env {env}",
+              file=sys.stderr)
+        print(f"[error] or pass --tool-list / --routing explicitly to bypass",
+              file=sys.stderr)
+        sys.exit(2)
+
+    if args["tool_list_path"] is None:
+        args["tool_list_path"] = str(config_dir / f"{prefix}_tool_list.yml")
+    if args["routing_path"] is None:
+        args["routing_path"] = str(config_dir / f"{prefix}_job_tool_routing.yml")
+
+    if args["existing_tools"] is None:
+        if gv_tools.is_file():
+            args["existing_tools"] = str(gv_tools)
+        else:
+            print(f"[info]  --env {env}: no {gv_tools.relative_to(repo)} "
+                  f"→ skipping existing-tools enrichment", file=sys.stderr)
+
+
 def main():
     args = parse_args(sys.argv)
     if not args["galaxy_url"]:
         print(__doc__)
         sys.exit(1)
+
+    # ── 0. Resolve paths from --env if requested ─────────────────────────────
+    if args["env"]:
+        derive_env_paths(args["env"], args)
+        print(f"[env]   {args['env']} → tool-list={args['tool_list_path']}",
+              file=sys.stderr)
+        print(f"[env]   {args['env']} → routing  ={args['routing_path']}",
+              file=sys.stderr)
+        if args["existing_tools"]:
+            print(f"[env]   {args['env']} → existing={args['existing_tools']}",
+                  file=sys.stderr)
+
+    # Apply fallback defaults if no --env and user didn't specify
+    if args["tool_list_path"] is None:
+        args["tool_list_path"] = "tool_list.yml"
+    if args["routing_path"] is None:
+        args["routing_path"] = "job_tool_routing.yml"
 
     # ── 1. Fetch Galaxy panel ────────────────────────────────────────────────
     panel = fetch_panel(args["galaxy_url"])
