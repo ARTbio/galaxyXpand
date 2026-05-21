@@ -33,7 +33,7 @@ galaxy_config_templates:
 
 # deploy galaxyXpand logo
 galaxy_config_files:
-  - src: "{{ inventory_dir }}/files/galaxy/html/galaxyXpand_logo.png"
+  - src: "{{ inventory_dir }}/files/galaxy/html/images/galaxyXpand_logo.png"
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
 
 # role ansible-galaxy-tools
