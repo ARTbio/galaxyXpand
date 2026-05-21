@@ -9,11 +9,11 @@ from two sources, in priority order:
   2. TPV shared database tools.yml              (community, cores only, no mem)
 
 Usage:
-    python3 enrich_routing.py \\
-        --draft  usegalaxy_job_routing_draft.yml \\
-        --tools  environments/Conect/group_vars/all/tools \\
-        --tpv    tpv-tools.yml \\
-        --out    conect_job_tool_routing.yml \\
+    python3 enrich_routing.py \
+        --draft  usegalaxy_job_routing_draft.yml \
+        --tools  environments/Conect/group_vars/all/tools \
+        --tpv    tpv-tools.yml \
+        --out    conect_job_tool_routing.yml \
         --default-dest cluster_1
 
 TPV cores → destination mapping is derived automatically from the destinations
