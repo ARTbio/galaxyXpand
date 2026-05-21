@@ -4,6 +4,8 @@ galaxy_tools_export.py
 ======================
 Generate both tool_list.yml (Ephemeris) and job_tool_routing.yml
 from a single GET /api/tools?in_panel=true call.
+If --admin-key is provided, also fetches data managers via
+GET /api/tools?in_panel=false and appends them to tool_list.yml.
 
 Usage:
     python3 galaxy_tools_export.py <galaxy_url> [options]
@@ -14,10 +16,12 @@ Options:
     --routing <path>   Output path for job_tool_routing.yml (default: job_tool_routing.yml)
     --no-revisions     Omit changeset_revision from tool_list (install latest)
     --skip-builtins    Exclude built-in Galaxy tools (no tool_shed_repository) from routing output
+    --admin-key <key>  Galaxy API key; enables data manager fetch (requires admin privileges)
 
 Examples:
     python3 galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr
-    python3 galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr --dest cluster_8
+    python3 galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
+        --dest cluster_1 --skip-builtins --admin-key MY_API_KEY
 """
 
 import json
@@ -31,10 +35,23 @@ from pathlib import Path
 # Helpers
 # ---------------------------------------------------------------------------
 
-def fetch_panel(galaxy_url: str) -> list:
+def fetch_panel(galaxy_url: str, api_key: str = None) -> list:
     url = galaxy_url.rstrip("/") + "/api/tools?in_panel=true"
     print(f"[fetch] {url}", file=sys.stderr)
-    with urllib.request.urlopen(url, timeout=30) as resp:
+    req = urllib.request.Request(url)
+    if api_key:
+        req.add_header("x-api-key", api_key)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.load(resp)
+
+
+def fetch_flat(galaxy_url: str, api_key: str) -> list:
+    """Fetch all tools flat (in_panel=false); requires API key for data managers."""
+    url = galaxy_url.rstrip("/") + "/api/tools?in_panel=false"
+    print(f"[fetch] {url}", file=sys.stderr)
+    req = urllib.request.Request(url)
+    req.add_header("x-api-key", api_key)
+    with urllib.request.urlopen(req, timeout=30) as resp:
         return json.load(resp)
 
 
@@ -50,16 +67,24 @@ def is_user_tool(full_id: str) -> bool:
     return not any(full_id.startswith(p) for p in SKIP_PREFIXES)
 
 
+def is_data_manager(tool: dict) -> bool:
+    """Data managers have no panel section and their id contains 'data_manager'."""
+    full = tool.get("id", "")
+    tsr  = tool.get("tool_shed_repository")
+    return (tsr is not None
+            and "data_manager" in tsr.get("name", "").lower())
+
+
 # ---------------------------------------------------------------------------
 # Parse
 # ---------------------------------------------------------------------------
 
 def parse_panel(panel: list, skip_builtins: bool = False):
     """
+    Parse in_panel=true response.
     Returns:
-        toolshed_tools : OrderedDict  repo_key → {name, owner, tool_shed,
-                                                   revisions: set, section_id}
-        routing_tools  : list of {short_id, repo_name, section_name}
+        toolshed_tools : list of repo dicts for tool_list.yml
+        routing_tools  : list of tool dicts for job_tool_routing.yml
     """
     toolshed_tools = OrderedDict()   # keyed by (name, owner, tool_shed)
     routing_tools  = []
@@ -106,29 +131,80 @@ def parse_panel(panel: list, skip_builtins: bool = False):
             if sid not in seen_sids:
                 seen_sids.add(sid)
                 routing_tools.append({
-                    "short_id":    sid,
-                    "repo_name":   tsr["name"] if tsr else "",
-                    "section":     section_name,
+                    "short_id":  sid,
+                    "repo_name": tsr["name"] if tsr else "",
+                    "section":   section_name,
                 })
 
     return list(toolshed_tools.values()), routing_tools
+
+
+def parse_data_managers(flat: list):
+    """
+    Extract data manager repos from in_panel=false response.
+    Returns:
+        dm_repos   : list of repo dicts for tool_list.yml
+        dm_routing : list of tool dicts for job_tool_routing.yml
+    """
+    dm_tools   = OrderedDict()   # keyed by (name, owner, tool_shed)
+    dm_routing = []
+    seen_sids  = set()
+
+    for tool in flat:
+        if not isinstance(tool, dict):
+            continue
+        if not is_data_manager(tool):
+            continue
+
+        tsr  = tool.get("tool_shed_repository")
+        if not tsr:
+            continue
+        full = tool.get("id", "")
+        sid  = short_id(full)
+
+        # ── tool_list entry ──────────────────────────────────────────────────
+        key = (tsr["name"], tsr["owner"], tsr["tool_shed"])
+        if key not in dm_tools:
+            dm_tools[key] = {
+                "name":         tsr["name"],
+                "owner":        tsr["owner"],
+                "tool_shed":    tsr["tool_shed"],
+                "revisions":    set(),
+                "section_id":   "",
+                "section_name": "",
+            }
+        rev = tsr.get("changeset_revision")
+        if rev:
+            dm_tools[key]["revisions"].add(rev)
+
+        # ── routing entry ────────────────────────────────────────────────────
+        if sid not in seen_sids:
+            seen_sids.add(sid)
+            dm_routing.append({
+                "short_id":  sid,
+                "repo_name": tsr["name"],
+                "section":   "Data Managers",
+            })
+
+    return list(dm_tools.values()), dm_routing
 
 
 # ---------------------------------------------------------------------------
 # Render
 # ---------------------------------------------------------------------------
 
-def render_tool_list(repos: list, include_revisions: bool) -> str:
+def render_tool_list(repos: list, dm_repos: list, include_revisions: bool) -> str:
     lines = [
         "# Tool list generated by galaxy_tools_export.py",
         "# Install with: shed-tools install -g <url> -a <key> -t tool_list.yml",
         "tools:",
     ]
+
     current_section = None
     for r in repos:
         if r["section_id"] != current_section:
             current_section = r["section_id"]
-            lines.append(f"")
+            lines.append("")
             lines.append(f"  # panel section: {current_section}")
         lines.append(f"  - name: {r['name']}")
         lines.append(f"    owner: {r['owner']}")
@@ -139,6 +215,19 @@ def render_tool_list(repos: list, include_revisions: bool) -> str:
             lines.append(f"    revisions:")
             for rev in sorted(r["revisions"]):
                 lines.append(f"      - {rev}")
+
+    if dm_repos:
+        lines.append("")
+        lines.append("  # --- Data Managers ---")
+        for r in dm_repos:
+            lines.append(f"  - name: {r['name']}")
+            lines.append(f"    owner: {r['owner']}")
+            lines.append(f"    tool_shed: {r['tool_shed']}")
+            if include_revisions and r["revisions"]:
+                lines.append(f"    revisions:")
+                for rev in sorted(r["revisions"]):
+                    lines.append(f"      - {rev}")
+
     return "\n".join(lines)
 
 
@@ -152,7 +241,7 @@ def render_routing(tools: list, default_dest: str) -> str:
     for t in tools:
         if t["section"] != current_section:
             current_section = t["section"]
-            lines.append(f"")
+            lines.append("")
             lines.append(f"  # --- {current_section} ---")
         comment = f"  # repo: {t['repo_name']}" if t["repo_name"] else ""
         lines.append(f'  - id: "{t["short_id"]}"')
@@ -166,12 +255,13 @@ def render_routing(tools: list, default_dest: str) -> str:
 
 def parse_args(argv):
     args = {
-        "galaxy_url":       None,
-        "dest":             "cluster_1",
-        "tool_list_path":   "tool_list.yml",
-        "routing_path":     "job_tool_routing.yml",
-        "no_revisions":     False,
-        "skip_builtins":    False,
+        "galaxy_url":     None,
+        "dest":           "cluster_1",
+        "tool_list_path": "tool_list.yml",
+        "routing_path":   "job_tool_routing.yml",
+        "no_revisions":   False,
+        "skip_builtins":  False,
+        "admin_key":      None,
     }
     i = 1
     while i < len(argv):
@@ -181,6 +271,7 @@ def parse_args(argv):
         elif a == "--routing":       args["routing_path"] = argv[i+1]; i += 2
         elif a == "--no-revisions":  args["no_revisions"] = True; i += 1
         elif a == "--skip-builtins": args["skip_builtins"] = True; i += 1
+        elif a == "--admin-key":     args["admin_key"] = argv[i+1]; i += 2
         elif not a.startswith("--"): args["galaxy_url"] = a; i += 1
         else:                        i += 1
     return args
@@ -192,14 +283,23 @@ def main():
         print(__doc__)
         sys.exit(1)
 
+    # ── fetch tools (public) ─────────────────────────────────────────────────
     panel = fetch_panel(args["galaxy_url"])
     repos, routing = parse_panel(panel, skip_builtins=args["skip_builtins"])
-
     print(f"[parse] {len(repos)} unique repos  |  {len(routing)} unique tool IDs",
           file=sys.stderr)
 
-    tool_list_text = render_tool_list(repos, not args["no_revisions"])
-    routing_text   = render_routing(routing, args["dest"])
+    # ── fetch data managers (admin only) ─────────────────────────────────────
+    dm_repos   = []
+    dm_routing = []
+    if args["admin_key"]:
+        flat     = fetch_flat(args["galaxy_url"], args["admin_key"])
+        dm_repos, dm_routing = parse_data_managers(flat)
+        print(f"[parse] {len(dm_repos)} data manager repos", file=sys.stderr)
+
+    # ── write outputs ─────────────────────────────────────────────────────────
+    tool_list_text = render_tool_list(repos, dm_repos, not args["no_revisions"])
+    routing_text   = render_routing(routing + dm_routing, args["dest"])
 
     Path(args["tool_list_path"]).write_text(tool_list_text)
     Path(args["routing_path"]).write_text(routing_text)
