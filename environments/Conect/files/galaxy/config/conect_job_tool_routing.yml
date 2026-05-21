@@ -1,0 +1,1112 @@
+# job_tool_routing enriched by enrich_routing.py
+# Sources: existing tools file (priority 1) | TPV cores (priority 2)
+# 'default' = cluster_1, no override found
+job_tool_routing:
+
+  # --- ARTbio tools ---
+  - id: "edger-repenrich2"
+    destination: "cluster_1"  # repo: repenrich2
+  - id: "repenrich2"
+    destination: "repenrich2"  # repo: repenrich2  src: existing
+  - id: "edger-repenrich"
+    destination: "cluster_1"  # repo: repenrich
+  - id: "repenrich"
+    destination: "cluster_16"  # repo: repenrich  src: existing
+  - id: "yac"
+    destination: "cluster_1"  # repo: yac_clipper
+  - id: "sr_bowtie_dataset_annotation"
+    destination: "cluster_1"  # repo: sr_bowtie_dataset_annotation
+  - id: "small_rna_maps"
+    destination: "cluster_1"  # repo: small_rna_maps
+  - id: "probecoverage"
+    destination: "cluster_1"  # repo: probecoverage
+  - id: "mircounts"
+    destination: "cluster_1"  # repo: mircounts
+  - id: "justgzip"
+    destination: "cluster_1"  # repo: justgzip
+  - id: "justdiff"
+    destination: "cluster_1"  # repo: justdiff
+  - id: "mannwhitney_de"
+    destination: "cluster_1"  # repo: gsc_mannwhitney_de
+  - id: "high_dimensions_visualisation"
+    destination: "cluster_1"  # repo: gsc_high_dimensions_visualisation
+  - id: "filter_genes"
+    destination: "cluster_1"  # repo: gsc_filter_genes
+  - id: "deseq2_normalization"
+    destination: "cluster_1"  # repo: deseq2_normalization
+  - id: "cherry_pick_fasta"
+    destination: "cluster_1"  # repo: cherry_pick_fasta
+  - id: "bamparse"
+    destination: "cluster_1"  # repo: bamparse
+  - id: "SigProfiler"
+    destination: "cluster_1"  # repo: sigmut
+  - id: "pathifier"
+    destination: "cluster_1"  # repo: pathifier
+  - id: "varscan"
+    destination: "cluster_1"  # repo: varscan_version_2
+
+  # --- Aligners ---
+  - id: "rna_star"
+    destination: "cluster_8"  # repo: rgrnastar  src: existing
+  - id: "hisat2"
+    destination: "cluster_8"  # repo: hisat2  src: existing
+  - id: "bwa_mem2"
+    destination: "cluster_16"  # repo: bwa_mem2  src: tpv(24c)
+  - id: "bwa_mem"
+    destination: "cluster_16"  # repo: bwa  src: existing
+  - id: "bbtools_bbmap"
+    destination: "cluster_1"  # repo: bbtools_bbmap
+  - id: "bwa"
+    destination: "cluster_16"  # repo: bwa  src: existing
+  - id: "bowtie2"
+    destination: "cluster_16"  # repo: bowtie2  src: existing
+
+  # --- SAMtools ---
+  - id: "samtools_view"
+    destination: "cluster_1"  # repo: samtools_view
+  - id: "samtools_stats"
+    destination: "cluster_2"  # repo: samtools_stats  src: tpv(2c)
+  - id: "samtools_split"
+    destination: "cluster_1"  # repo: samtools_split
+  - id: "samtools_sort"
+    destination: "cluster_8"  # repo: samtools_sort  src: tpv(10c)
+  - id: "samtools_slice_bam"
+    destination: "cluster_8"  # repo: samtools_slice_bam  src: existing
+  - id: "samtools_reheader"
+    destination: "cluster_1"  # repo: samtools_reheader
+  - id: "samtools_phase"
+    destination: "cluster_1"  # repo: samtools_phase
+  - id: "samtools_mpileup"
+    destination: "cluster_4"  # repo: samtools_mpileup  src: tpv(5c)
+  - id: "samtools_merge"
+    destination: "cluster_1"  # repo: samtools_merge
+  - id: "samtools_markdup"
+    destination: "cluster_1"  # repo: samtools_markdup
+  - id: "samtools_idxstats"
+    destination: "cluster_2"  # repo: samtools_idxstats  src: tpv(2c)
+  - id: "samtools_fixmate"
+    destination: "cluster_1"  # repo: samtools_fixmate
+  - id: "samtools_fastx"
+    destination: "cluster_4"  # repo: samtools_fastx  src: existing
+  - id: "samtools_depth"
+    destination: "cluster_1"  # repo: samtools_depth
+  - id: "samtools_calmd"
+    destination: "cluster_4"  # repo: samtools_calmd  src: existing
+  - id: "samtools_bedcov"
+    destination: "cluster_1"  # repo: samtools_bedcov
+  - id: "sam_to_bam"
+    destination: "cluster_8"  # repo: sam_to_bam  src: existing
+  - id: "bam_to_sam"
+    destination: "cluster_1"  # repo: bam_to_sam
+  - id: "samtool_filter2"
+    destination: "cluster_4"  # repo: samtool_filter2  src: existing
+  - id: "samtools_rmdup"
+    destination: "cluster_1"  # repo: samtools_rmdup
+  - id: "samtools_flagstat"
+    destination: "cluster_1"  # repo: samtools_flagstat
+  - id: "rmarkdown_samtools_flagstat"
+    destination: "cluster_1"  # repo: rmarkdown_samtools_flagstat
+
+  # --- BEDtools ---
+  - id: "bedtools_annotatebed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_bamtobed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_bed12tobed6"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_bedtobam"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_bedtoigv"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_bedpetobam"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_closestbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_clusterbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_complementbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_coveragebed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_expandbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_fisher"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_flankbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_genomecoveragebed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_getfastabed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_groupbybed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_intersectbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_jaccard"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_links"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_makewindowsbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_map"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_maskfastabed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_mergebed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_multicovtbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_multiintersectbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_nucbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_overlapbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_randombed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_reldistbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_shufflebed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_slopbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_sortbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_spacingbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_subtractbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_tagbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_unionbedgraph"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "bedtools_windowbed"
+    destination: "cluster_1"  # repo: bedtools
+  - id: "crossmap_bed"
+    destination: "cluster_1"  # repo: crossmap_bed
+
+  # --- PICARD tools ---
+  - id: "picard_AddOrReplaceReadGroups"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_MeanQualityByCycle"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CASM"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectBaseDistributionByCycle"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_RevertOriginalBaseQualitiesAndAddMateCigar"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectHsMetrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectInsertSizeMetrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_SortSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_artifact_metrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_RevertSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_FastqToSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_NormalizeFasta"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_DownsampleSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_MarkDuplicates"
+    destination: "java_cluster"  # repo: picard  src: existing
+  - id: "picard_MarkDuplicatesWithMateCigar"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_MergeBamAlignment"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CleanSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_ReplaceSamHeader"
+    destination: "java_cluster"  # repo: picard  src: existing
+  - id: "picard_MergeSamFiles"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_FixMateInformation"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_QualityScoreDistribution"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_SamToFastq"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectRnaSeqMetrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_ValidateSamFile"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_BedToIntervalList"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectWgsMetrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_ReorderSam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_CollectGcBiasMetrics"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_FilterSamReads"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_AddCommentsToBam"
+    destination: "cluster_1"  # repo: picard
+  - id: "picard_EstimateLibraryComplexity"
+    destination: "cluster_1"  # repo: picard
+
+  # --- NGS: QC and manipulation ---
+  - id: "fastqc"
+    destination: "cluster_1"  # repo: fastqc
+  - id: "tabular_to_fastq"
+    destination: "cluster_1"  # repo: tabular_to_fastq
+  - id: "fastq_to_tabular"
+    destination: "cluster_1"  # repo: fastq_to_tabular
+  - id: "fastp"
+    destination: "cluster_4"  # repo: fastp  src: tpv(4c)
+  - id: "mapqstatistics"
+    destination: "cluster_1"  # repo: mapping_quality_stats
+  - id: "sha256sum"
+    destination: "cluster_1"  # repo: hash
+  - id: "trimmomatic"
+    destination: "cluster_4"  # repo: trimmomatic  src: existing
+  - id: "seqtk_comp"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_cutN"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_dropse"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_fqchk"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_hety"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_listhet"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_mergefa"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_mergepe"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_mutfa"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_randbase"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_sample"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_seq"
+    destination: "cluster_4"  # repo: seqtk  src: tpv(4c)
+  - id: "seqtk_subseq"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_telo"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "seqtk_trimfq"
+    destination: "cluster_1"  # repo: seqtk
+  - id: "multiqc"
+    destination: "cluster_1"  # repo: multiqc
+  - id: "khmer_normalize_by_median"
+    destination: "cluster_16"  # repo: khmer_normalize_by_median  src: existing
+  - id: "cshl_fastx_trimmer"
+    destination: "cluster_1"  # repo: fastx_trimmer
+  - id: "cshl_fastx_reverse_complement"
+    destination: "cluster_1"  # repo: fastx_reverse_complement
+  - id: "cutadapt"
+    destination: "cluster_8"  # repo: cutadapt  src: tpv(8c)
+  - id: "artbio_bam_cleaning"
+    destination: "artbio_bam_cleaning"  # repo: artbio_bam_cleaning  src: existing
+  - id: "fastq_paired_end_deinterlacer"
+    destination: "cluster_1"  # repo: fastq_paired_end_deinterlacer
+
+  # --- Variant Analyses ---
+  - id: "ensembl_vep"
+    destination: "cluster_1"  # repo: ensembl_vep
+  - id: "hgvsparser"
+    destination: "cluster_1"  # repo: hgvsparser
+  - id: "alphafold"
+    destination: "cluster_8"  # repo: alphafold2  src: tpv(10c)
+  - id: "vcffilter2"
+    destination: "cluster_1"  # repo: vcffilter
+  - id: "vcf2tsv"
+    destination: "cluster_1"  # repo: vcf2tsv
+  - id: "manta"
+    destination: "cluster_8"  # repo: manta  src: existing
+  - id: "snpEff_build_gb"
+    destination: "cluster_1"  # repo: snpeff
+  - id: "filtermutectcalls"
+    destination: "cluster_1"  # repo: gatk4
+  - id: "mergemutectstats"
+    destination: "cluster_1"  # repo: gatk4
+  - id: "mutect2"
+    destination: "java_cluster"  # repo: gatk4  src: existing
+  - id: "freebayes"
+    destination: "cluster_16"  # repo: freebayes  src: existing
+  - id: "bamleftalign"
+    destination: "cluster_1"  # repo: freebayes
+  - id: "crossmap_vcf"
+    destination: "cluster_1"  # repo: crossmap_vcf
+  - id: "snpEff"
+    destination: "cluster_2"  # repo: snpeff  src: existing
+  - id: "snpEff_databases"
+    destination: "cluster_1"  # repo: snpeff
+  - id: "snpEff_download"
+    destination: "cluster_1"  # repo: snpeff
+  - id: "snpEff_get_chr_names"
+    destination: "cluster_1"  # repo: snpeff
+  - id: "vcftools_isec"
+    destination: "cluster_1"  # repo: vcftools_isec
+  - id: "vcffixup"
+    destination: "cluster_1"  # repo: vcffixup
+  - id: "snpSift_dbnsfp"
+    destination: "cluster_1"  # repo: snpsift_dbnsfp
+  - id: "snpSift_int"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpSift_rmInfo"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpsift_vartype"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpSift_annotate"
+    destination: "java_cluster"  # repo: snpsift  src: existing
+  - id: "snpSift_caseControl"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpSift_extractFields"
+    destination: "cluster_2"  # repo: snpsift  src: existing
+  - id: "snpSift_filter"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpSift_vcfCheck"
+    destination: "cluster_1"  # repo: snpsift
+  - id: "snpSift_dbnsfp_generic"
+    destination: "cluster_1"  # repo: snpsift_dbnsfp_generic
+  - id: "pindel"
+    destination: "cluster_1"  # repo: pindel
+  - id: "vcfbedintersect"
+    destination: "cluster_1"  # repo: vcfbedintersect
+  - id: "vcfannotate"
+    destination: "cluster_1"  # repo: vcfannotate
+  - id: "svtyper"
+    destination: "cluster_1"  # repo: svtyper
+  - id: "vcfhethom"
+    destination: "cluster_1"  # repo: vcfhethom
+  - id: "vcftools_annotate"
+    destination: "cluster_1"  # repo: vcftools_annotate
+  - id: "vcftools_merge"
+    destination: "cluster_1"  # repo: vcftools_merge
+  - id: "varscan_somatic"
+    destination: "varscan"  # repo: varscan_somatic  src: existing
+  - id: "strelka"
+    destination: "cluster_1"  # repo: strelka
+  - id: "qualimap_bamqc"
+    destination: "cluster_4"  # repo: qualimap2_bamqc  src: tpv(6c)
+  - id: "breakdancermax"
+    destination: "cluster_1"  # repo: breakdancer_max
+  - id: "varscan_mpileup"
+    destination: "cluster_1"  # repo: varscan_mpileup
+  - id: "vcftools_subset"
+    destination: "cluster_1"  # repo: vcftools_subset
+  - id: "gatk_variant_select"
+    destination: "cluster_1"  # repo: variant_select
+  - id: "gvcftools_extract_variants"
+    destination: "cluster_1"  # repo: gvcftools_extract_variants
+  - id: "sniplay_vcftoolsslidingwindow"
+    destination: "cluster_1"  # repo: vcftools_filter_stats_diversity
+  - id: "sniplay_vcftoolsstats"
+    destination: "cluster_1"  # repo: vcftools_filter_stats_diversity
+
+  # --- Graph/Display Data ---
+  - id: "ggplot2_point"
+    destination: "cluster_1"  # repo: ggplot2_point
+  - id: "high_dim_heatmap"
+    destination: "cluster_1"  # repo: high_dim_heatmap
+  - id: "ggplot2_histogram"
+    destination: "cluster_1"  # repo: ggplot2_histogram
+  - id: "circos_aln_to_links"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_binlinks"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_bundlelinks"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_gc_skew"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_resample"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_wiggle_to_scatter"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_wiggle_to_stacked"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_tableviewer"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_interval_to_text"
+    destination: "cluster_1"  # repo: circos
+  - id: "circos_interval_to_tile"
+    destination: "cluster_1"  # repo: circos
+  - id: "Jvenn"
+    destination: "cluster_1"  # repo: proteore_venn_diagram
+  - id: "mapToUCSC"
+    destination: "cluster_1"  # repo: mapping_to_ucsc
+  - id: "histogram_rpy"
+    destination: "cluster_1"  # repo: histogram
+
+  # --- Metavisitor-2 ---
+  - id: "bowtieForSmallRNA"
+    destination: "cluster_16"  # repo: sr_bowtie  src: existing
+  - id: "spades"
+    destination: "cluster_16"  # repo: spades  src: existing
+  - id: "cap3"
+    destination: "cluster_1"  # repo: cap3
+
+  # --- Machine Learning ---
+  - id: "scipy_sparse"
+    destination: "cluster_1"  # repo: scipy_sparse
+  - id: "keras_model_builder"
+    destination: "cluster_1"  # repo: keras_model_builder
+  - id: "sklearn_searchcv"
+    destination: "cluster_8"  # repo: sklearn_searchcv  src: tpv(10c)
+  - id: "sklearn_train_test_eval"
+    destination: "cluster_1"  # repo: sklearn_train_test_eval
+  - id: "sklearn_stacking_ensemble_models"
+    destination: "cluster_1"  # repo: sklearn_stacking_ensemble_models
+  - id: "sklearn_sample_generator"
+    destination: "cluster_1"  # repo: sklearn_sample_generator
+  - id: "sklearn_regression_metrics"
+    destination: "cluster_1"  # repo: sklearn_regression_metrics
+  - id: "sklearn_pairwise_metrics"
+    destination: "cluster_1"  # repo: sklearn_pairwise_metrics
+  - id: "sklearn_numeric_clustering"
+    destination: "cluster_1"  # repo: sklearn_numeric_clustering
+  - id: "sklearn_nn_classifier"
+    destination: "cluster_1"  # repo: sklearn_nn_classifier
+  - id: "sklearn_model_validation"
+    destination: "cluster_4"  # repo: sklearn_model_validation  src: tpv(6c)
+  - id: "sklearn_generalized_linear"
+    destination: "cluster_1"  # repo: sklearn_generalized_linear
+  - id: "sklearn_feature_selection"
+    destination: "cluster_1"  # repo: sklearn_feature_selection
+  - id: "sklearn_estimator_attributes"
+    destination: "cluster_1"  # repo: sklearn_estimator_attributes
+  - id: "sklearn_ensemble"
+    destination: "cluster_1"  # repo: sklearn_ensemble
+  - id: "sklearn_discriminant_classifier"
+    destination: "cluster_1"  # repo: sklearn_discriminant_classifier
+  - id: "sklearn_clf_metrics"
+    destination: "cluster_1"  # repo: sklearn_clf_metrics
+  - id: "plotly_parallel_coordinates_plot"
+    destination: "cluster_1"  # repo: plotly_parallel_coordinates_plot
+  - id: "plotly_ml_performance_plots"
+    destination: "cluster_1"  # repo: plotly_ml_performance_plots
+  - id: "sklearn_svm_classifier"
+    destination: "cluster_1"  # repo: sklearn_svm_classifier
+  - id: "sklearn_data_preprocess"
+    destination: "cluster_1"  # repo: sklearn_data_preprocess
+  - id: "sklearn_build_pipeline"
+    destination: "cluster_1"  # repo: sklearn_build_pipeline
+  - id: "keras_model_config"
+    destination: "cluster_1"  # repo: keras_model_config
+  - id: "model_prediction"
+    destination: "cluster_1"  # repo: model_prediction
+  - id: "keras_batch_models"
+    destination: "cluster_1"  # repo: keras_batch_models
+  - id: "plotly_regression_performance_plots"
+    destination: "cluster_1"  # repo: plotly_regression_performance_plots
+
+  # --- Statistics ---
+  - id: "ez_histograms"
+    destination: "cluster_1"  # repo: ez_histograms
+  - id: "table_compute"
+    destination: "cluster_1"  # repo: table_compute
+  - id: "summary_statistics"
+    destination: "cluster_1"  # repo: summary_statistics
+
+  # --- Text Manipulation ---
+  - id: "tp_awk_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_cat"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_cut_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_easyjoin_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_find_and_replace"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_grep_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_head_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_multijoin_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "nl"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_text_file_with_recurring_lines"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_replace_in_column"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_replace_in_line"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_sed_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_sort_header_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_sort_rows"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_uniq_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_tac"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_tail_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_unfold_column_tool"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "tp_sorted_uniq"
+    destination: "cluster_1"  # repo: text_processing
+  - id: "datamash_reverse"
+    destination: "cluster_1"  # repo: datamash_reverse
+  - id: "filter_tabular"
+    destination: "cluster_1"  # repo: filter_tabular
+  - id: "datamash_ops"
+    destination: "cluster_1"  # repo: datamash_ops
+  - id: "add_column_headers"
+    destination: "cluster_1"  # repo: add_column_headers
+  - id: "Add_a_column1"
+    destination: "cluster_1"  # repo: column_maker
+  - id: "Cut1"
+    destination: "cluster_1"  # repo: cut_columns
+  - id: "replace_column_with_key_value_file"
+    destination: "cluster_1"  # repo: replace_column_by_key_value_file
+  - id: "merge_cols_with_delimiter1"
+    destination: "cluster_1"  # repo: merge_columns_with_delimiter
+  - id: "tab2csv_R"
+    destination: "cluster_1"  # repo: tabular_to_csv
+  - id: "addName"
+    destination: "cluster_1"  # repo: add_input_name_as_column
+  - id: "regex1"
+    destination: "cluster_1"  # repo: regex_find_replace
+  - id: "regexColumn1"
+    destination: "cluster_1"  # repo: regex_find_replace
+  - id: "datamash_transpose"
+    destination: "cluster_1"  # repo: datamash_transpose
+  - id: "transpose"
+    destination: "cluster_1"  # repo: transpose
+  - id: "tables_arithmetic_operations"
+    destination: "cluster_1"  # repo: tables_arithmetic_operations
+
+  # --- SAM/BAM manipulation ---
+  - id: "mosdepth"
+    destination: "cluster_1"  # repo: mosdepth
+  - id: "bamtools"
+    destination: "cluster_1"  # repo: bamtools
+  - id: "bamtools_split"
+    destination: "cluster_1"  # repo: bamtools_split
+  - id: "sambamba_sample_or_filter"
+    destination: "cluster_4"  # repo: sambamba  src: existing
+  - id: "bamFilter"
+    destination: "cluster_1"  # repo: bamtools_filter
+  - id: "pe_histogram"
+    destination: "cluster_1"  # repo: pe_histogram
+
+  # --- DEEPTOOLS ---
+  - id: "deeptools_plot_coverage"
+    destination: "cluster_16"  # repo: deeptools_plot_coverage  src: existing
+  - id: "deeptools_correct_gc_bias"
+    destination: "cluster_8"  # repo: deeptools_correct_gc_bias  src: tpv(10c)
+  - id: "deeptools_compute_gc_bias"
+    destination: "cluster_8"  # repo: deeptools_compute_gc_bias  src: tpv(10c)
+  - id: "deeptools_bam_pe_fragmentsize"
+    destination: "cluster_8"  # repo: deeptools_bam_pe_fragmentsize  src: tpv(10c)
+  - id: "deeptools_bam_coverage"
+    destination: "cluster_4"  # repo: deeptools_bam_coverage  src: existing
+  - id: "deeptools_bam_compare"
+    destination: "cluster_8"  # repo: deeptools_bam_compare  src: tpv(10c)
+
+  # --- Ribosome Profiling ---
+  - id: "ribotaper_create_annotation"
+    destination: "cluster_1"  # repo: ribotaper
+  - id: "ribotaper_create_metaplots"
+    destination: "cluster_1"  # repo: ribotaper
+  - id: "ribotaper_ribosome_profiling"
+    destination: "cluster_8"  # repo: ribotaper  src: tpv(12c)
+  - id: "mqc"
+    destination: "cluster_1"  # repo: mqc
+  - id: "kmer_analysis"
+    destination: "cluster_1"  # repo: ribo_tools
+  - id: "readthrough_analysis"
+    destination: "cluster_1"  # repo: ribo_tools
+  - id: "frameshift_analysis"
+    destination: "cluster_1"  # repo: ribo_tools
+  - id: "Codon_analysis"
+    destination: "cluster_1"  # repo: ribo_tools
+
+  # --- BCFtools ---
+  - id: "bcftools_consensus"
+    destination: "cluster_1"  # repo: bcftools_consensus
+  - id: "bcftools_roh"
+    destination: "cluster_1"  # repo: bcftools_roh
+  - id: "bcftools_call"
+    destination: "cluster_1"  # repo: bcftools_call
+  - id: "bcftools_filter"
+    destination: "cluster_1"  # repo: bcftools_filter
+  - id: "bcftools_plugin_dosage"
+    destination: "cluster_1"  # repo: bcftools_plugin_dosage
+  - id: "bcftools_view"
+    destination: "cluster_1"  # repo: bcftools_view
+  - id: "bcftools_plugin_fill_tags"
+    destination: "cluster_1"  # repo: bcftools_plugin_fill_tags
+  - id: "bcftools_concat"
+    destination: "cluster_1"  # repo: bcftools_concat
+  - id: "bcftools_plugin_fixploidy"
+    destination: "cluster_1"  # repo: bcftools_plugin_fixploidy
+  - id: "bcftools_plugin_setgt"
+    destination: "cluster_1"  # repo: bcftools_plugin_setgt
+  - id: "bcftools_stats"
+    destination: "cluster_1"  # repo: bcftools_stats
+  - id: "bcftools_plugin_frameshifts"
+    destination: "cluster_1"  # repo: bcftools_plugin_frameshifts
+  - id: "bcftools_plugin_counts"
+    destination: "cluster_1"  # repo: bcftools_plugin_counts
+  - id: "bcftools_reheader"
+    destination: "cluster_1"  # repo: bcftools_reheader
+  - id: "bcftools_convert_from_vcf"
+    destination: "cluster_1"  # repo: bcftools_convert_from_vcf
+  - id: "bcftools_merge"
+    destination: "cluster_1"  # repo: bcftools_merge
+  - id: "bcftools_query_list_samples"
+    destination: "cluster_1"  # repo: bcftools_query_list_samples
+  - id: "bcftools_convert_to_vcf"
+    destination: "cluster_1"  # repo: bcftools_convert_to_vcf
+  - id: "bcftools_plugin_tag2tag"
+    destination: "cluster_1"  # repo: bcftools_plugin_tag2tag
+  - id: "bcftools_cnv"
+    destination: "cluster_1"  # repo: bcftools_cnv
+  - id: "bcftools_plugin_color_chrs"
+    destination: "cluster_1"  # repo: bcftools_plugin_color_chrs
+  - id: "bcftools_plugin_mendelian"
+    destination: "cluster_1"  # repo: bcftools_plugin_mendelian
+  - id: "bcftools_isec"
+    destination: "cluster_1"  # repo: bcftools_isec
+  - id: "bcftools_plugin_split_vep"
+    destination: "cluster_1"  # repo: bcftools_plugin_split_vep
+  - id: "bcftools_query"
+    destination: "cluster_1"  # repo: bcftools_query
+  - id: "bcftools_gtcheck"
+    destination: "cluster_1"  # repo: bcftools_gtcheck
+  - id: "bcftools_mpileup"
+    destination: "cluster_16"  # repo: bcftools_mpileup  src: existing
+  - id: "bcftools_plugin_fill_an_ac"
+    destination: "cluster_1"  # repo: bcftools_plugin_fill_an_ac
+  - id: "bcftools_annotate"
+    destination: "java_cluster"  # repo: bcftools_annotate  src: existing
+  - id: "bcftools_norm"
+    destination: "cluster_2"  # repo: bcftools_norm  src: tpv(2c)
+  - id: "bcftools_plugin_missing2ref"
+    destination: "cluster_1"  # repo: bcftools_plugin_missing2ref
+  - id: "bcftools_plugin_impute_info"
+    destination: "cluster_1"  # repo: bcftools_plugin_impute_info
+  - id: "bcftools_csq"
+    destination: "cluster_1"  # repo: bcftools_csq
+  - id: "vcfsort"
+    destination: "cluster_1"  # repo: vcfsort
+  - id: "vcfvcfintersect"
+    destination: "vcfvcfintersect"  # repo: vcfvcfintersect  src: existing
+
+  # --- Collection Operations ---
+  - id: "split_file_to_collection"
+    destination: "cluster_1"  # repo: split_file_to_collection
+  - id: "cat_multi_datasets"
+    destination: "cluster_1"  # repo: concatenate_multiple_datasets
+  - id: "bundle_collection"
+    destination: "cluster_1"  # repo: bundle_collections
+  - id: "collection_element_identifiers"
+    destination: "cluster_1"  # repo: collection_element_identifiers
+  - id: "extract_element_from_collection"
+    destination: "cluster_1"  # repo: extract_element_from_collection
+  - id: "collection_column_join"
+    destination: "cluster_1"  # repo: collection_column_join
+
+  # --- Get Data ---
+  - id: "fasterq_dump"
+    destination: "cluster_8"  # repo: sra_tools  src: tpv(8c)
+  - id: "fastq_dump"
+    destination: "cluster_1"  # repo: sra_tools
+  - id: "sam_dump"
+    destination: "cluster_4"  # repo: sra_tools  src: tpv(4c)
+  - id: "get_fasta_reference"
+    destination: "cluster_1"  # repo: get_reference_fasta
+  - id: "show_metadata"
+    destination: "cluster_1"  # repo: show_metadata
+
+  # --- GATKtools ---
+  - id: "gatk2_variant_recalibrator"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_apply_recalibration"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_combine"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_unified_genotyper"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_annotator"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_indel_realigner"
+    destination: "cluster_1"  # repo: gatktools
+  - id: "gatk2_base_recalibrator"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_haplotype_caller"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_eval"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_reduce_reads"
+    destination: "cluster_1"  # repo: gatktools
+  - id: "gatk2_variant_validate"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_realigner_target_creator"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_filtration"
+    destination: "cluster_1"  # repo: gatktools
+  - id: "gatk2_print_reads"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_variant_select"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+  - id: "gatk2_depth_of_coverage"
+    destination: "cluster_8"  # repo: gatktools  src: tpv(10c)
+
+  # --- Convert Formats ---
+  - id: "ucsc-twobittofa"
+    destination: "cluster_1"  # repo: ucsc_twobittofa
+  - id: "crossmap_bam"
+    destination: "cluster_1"  # repo: crossmap_bam
+  - id: "crossmap_wig"
+    destination: "cluster_1"  # repo: crossmap_wig
+  - id: "bigwig_to_wig"
+    destination: "cluster_1"  # repo: bigwig_to_wig
+  - id: "bigwig_to_bedgraph"
+    destination: "cluster_1"  # repo: bigwig_to_bedgraph
+  - id: "annotatemyids"
+    destination: "cluster_1"  # repo: annotatemyids
+  - id: "vcf2maf"
+    destination: "cluster_4"  # repo: vcf2maf  src: tpv(6c)
+  - id: "gtftobed12"
+    destination: "cluster_1"  # repo: gtftobed12
+  - id: "sequence_format_converter"
+    destination: "cluster_1"  # repo: sequence_format_converter
+
+  # --- Operate on Genomic Intervals ---
+  - id: "gops_intersect_1"
+    destination: "cluster_1"  # repo: intersect
+
+  # --- Fasta Manipulation ---
+  - id: "fasta_filter_by_length"
+    destination: "cluster_1"  # repo: fasta_filter_by_length
+  - id: "fasta_compute_length"
+    destination: "cluster_1"  # repo: fasta_compute_length
+  - id: "tab2fasta"
+    destination: "cluster_1"  # repo: tabular_to_fasta
+  - id: "fasta2tab"
+    destination: "cluster_1"  # repo: fasta_to_tabular
+
+  # --- Differential expression ---
+  - id: "center_scale"
+    destination: "cluster_1"  # repo: gsc_center_scale
+  - id: "featurecounts"
+    destination: "cluster_8"  # repo: featurecounts  src: existing
+  - id: "edger"
+    destination: "cluster_1"  # repo: edger
+  - id: "deseq2"
+    destination: "cluster_1"  # repo: deseq2
+  - id: "cpm_tpm_rpk"
+    destination: "cluster_1"  # repo: cpm_tpm_rpk
+  - id: "htseq_count"
+    destination: "cluster_1"  # repo: htseq_count
+
+  # --- ncbi_blast_plus ---
+  - id: "blastxml_to_tabular"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "get_species_taxids"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_blastdbcmd_info"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_blastdbcmd_wrapper"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_blastn_wrapper"
+    destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
+  - id: "ncbi_blastp_wrapper"
+    destination: "cluster_8"  # repo: ncbi_blast_plus  src: tpv(8c)
+  - id: "ncbi_blastx_wrapper"
+    destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
+  - id: "ncbi_convert2blastmask_wrapper"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_dustmasker_wrapper"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_makeblastdb"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_makeprofiledb"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_rpsblast_wrapper"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_rpstblastn_wrapper"
+    destination: "cluster_1"  # repo: ncbi_blast_plus
+  - id: "ncbi_segmasker_wrapper"
+    destination: "cluster_4"  # repo: ncbi_blast_plus  src: tpv(4c)
+  - id: "ncbi_tblastn_wrapper"
+    destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
+  - id: "ncbi_tblastx_wrapper"
+    destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
+
+  # --- Mississippi Extra Tools ---
+  - id: "patser-v3e"
+    destination: "cluster_1"  # repo: patser
+
+  # --- NGS: Assembly ---
+  - id: "trinity"
+    destination: "cluster_16"  # repo: trinity  src: existing
+  - id: "oasesoptimiserv"
+    destination: "cluster_1"  # repo: oases
+
+  # --- Genomic Variants ---
+  - id: "facets_analysis"
+    destination: "cluster_1"  # repo: cnv_facets
+  - id: "snp_pileup_for_facets"
+    destination: "cluster_16"  # repo: cnv_facets  src: existing
+  - id: "lumpy_smoove"
+    destination: "smoove"  # repo: lumpy_smoove  src: existing
+  - id: "vcf2hrdetect"
+    destination: "cluster_1"  # repo: lumpy_smoove
+  - id: "varscan_vaf"
+    destination: "cluster_1"  # repo: varscan_vaf
+  - id: "sequenzaindex"
+    destination: "cluster_1"  # repo: snvtocnv
+  - id: "snvtocnv"
+    destination: "cluster_1"  # repo: snvtocnv
+  - id: "mutational_patterns"
+    destination: "cluster_2"  # repo: mutational_patterns  src: existing
+  - id: "table_annovar"
+    destination: "cluster_1"  # repo: table_annovar
+  - id: "vcfallelicprimitives"
+    destination: "cluster_1"  # repo: vcfallelicprimitives
+
+  # --- Mississippi Tool Suite ---
+  - id: "overlapping_reads"
+    destination: "cluster_1"  # repo: small_rna_signatures
+  - id: "signature"
+    destination: "cluster_1"  # repo: small_rna_signatures
+  - id: "extract_transcript_to_gene_map_from_trinity"
+    destination: "cluster_1"  # repo: rsem
+  - id: "rsembowtie"
+    destination: "cluster_1"  # repo: rsem
+  - id: "rsembowtie2"
+    destination: "cluster_1"  # repo: rsem
+  - id: "purgegtffrommultichromgenes"
+    destination: "cluster_1"  # repo: rsem
+
+  # --- NGS: Mapping ---
+  - id: "bowtie_wrapper"
+    destination: "cluster_16"  # repo: bowtie_wrappers  src: existing
+  - id: "rseqc_FPKM_count"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_RNA_fragment_size"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_RPKM_saturation"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_bam2wig"
+    destination: "cluster_8"  # repo: rseqc  src: tpv(8c)
+  - id: "rseqc_bam_stat"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_clipping_profile"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_deletion_profile"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_geneBody_coverage"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_geneBody_coverage2"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_infer_experiment"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_inner_distance"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_insertion_profile"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_junction_annotation"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_junction_saturation"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_mismatch_profile"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_GC"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_NVC"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_distribution"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_duplication"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_hexamer"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_read_quality"
+    destination: "cluster_1"  # repo: rseqc
+  - id: "rseqc_tin"
+    destination: "cluster_1"  # repo: rseqc
+
+  # --- Metavisitor ---
+  - id: "retrieve_fasta_from_NCBI"
+    destination: "cluster_4"  # repo: fetch_fasta_from_ncbi  src: existing
+  - id: "blastx2scaffold"
+    destination: "cluster_1"  # repo: blastx_to_scaffold
+  - id: "BlastParser_and_hits"
+    destination: "cluster_1"  # repo: blastparser_and_hits
+  - id: "blast_unmatched"
+    destination: "cluster_1"  # repo: blast_unmatched
+  - id: "blast2scaffold"
+    destination: "cluster_1"  # repo: blast_to_scaffold
+  - id: "vsearch_sorting"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_chimera_detection"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_clustering"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_search"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_shuffling"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_alignment"
+    destination: "cluster_16"  # repo: vsearch  src: tpv(16c)
+  - id: "vsearch_dereplication"
+    destination: "cluster_1"  # repo: vsearch
+  - id: "vsearch_masking"
+    destination: "cluster_1"  # repo: vsearch
+
+  # --- Gemini Suite ---
+  - id: "gemini_stats"
+    destination: "cluster_1"  # repo: gemini_stats
+  - id: "gemini_set_somatic"
+    destination: "cluster_1"  # repo: gemini_set_somatic
+  - id: "gemini_query"
+    destination: "cluster_1"  # repo: gemini_query
+  - id: "gemini_pathways"
+    destination: "cluster_1"  # repo: gemini_pathways
+  - id: "gemini_lof_sieve"
+    destination: "cluster_1"  # repo: gemini_lof_sieve
+  - id: "gemini_load"
+    destination: "cluster_8"  # repo: gemini_load  src: tpv(10c)
+  - id: "gemini_inheritance"
+    destination: "cluster_4"  # repo: gemini_inheritance  src: tpv(4c)
+  - id: "gemini_gene_wise"
+    destination: "cluster_1"  # repo: gemini_gene_wise
+  - id: "gemini_db_info"
+    destination: "cluster_1"  # repo: gemini_db_info
+  - id: "gemini_burden"
+    destination: "cluster_1"  # repo: gemini_burden
+  - id: "gemini_actionable_mutations"
+    destination: "cluster_1"  # repo: gemini_actionable_mutations
+  - id: "gemini_annotate"
+    destination: "cluster_1"  # repo: gemini_annotate
+  - id: "gemini_roh"
+    destination: "cluster_1"  # repo: gemini_roh
+  - id: "gemini_amend"
+    destination: "cluster_1"  # repo: gemini_amend
+  - id: "gemini_interactions"
+    destination: "cluster_1"  # repo: gemini_interactions
+  - id: "gemini_windower"
+    destination: "cluster_1"  # repo: gemini_windower
+  - id: "gemini_qc"
+    destination: "cluster_1"  # repo: gemini_qc
+  - id: "gemini_fusions"
+    destination: "cluster_1"  # repo: gemini_fusions
+
+  # --- vcftools ---
+  - id: "vcftools_compare"
+    destination: "cluster_1"  # repo: vcftools_compare
+  - id: "vcftools_slice"
+    destination: "cluster_1"  # repo: vcftools_slice
+
+  # --- Gene Fusions ---
+  - id: "arriba_get_filters"
+    destination: "cluster_1"  # repo: arriba_get_filters
+  - id: "arriba_draw_fusions"
+    destination: "cluster_1"  # repo: arriba_draw_fusions
+  - id: "arriba"
+    destination: "cluster_8"  # repo: arriba  src: existing
+  - id: "star_fusion"
+    destination: "cluster_8"  # repo: star_fusion  src: existing
+
+  # --- CNV ---
+  - id: "wisecondorx_npz_converter"
+    destination: "cluster_1"  # repo: wisecondorx
+  - id: "wisecondorx_predict"
+    destination: "cluster_1"  # repo: wisecondorx
+  - id: "wisecondorx_reference_builder"
+    destination: "cluster_16"  # repo: wisecondorx  src: existing
+  - id: "cnv_vcf2json"
+    destination: "cluster_1"  # repo: cnv_vcf2json
+  - id: "delly_filter"
+    destination: "cluster_1"  # repo: delly_filter
+  - id: "delly_merge"
+    destination: "cluster_1"  # repo: delly_merge
+  - id: "delly_lr"
+    destination: "cluster_1"  # repo: delly_lr
+  - id: "delly_cnv"
+    destination: "cluster_1"  # repo: delly_cnv
+  - id: "delly_classify"
+    destination: "cluster_1"  # repo: delly_classify
+  - id: "delly_call"
+    destination: "cluster_1"  # repo: delly_call
+  - id: "cnvkit_access"
+    destination: "cluster_1"  # repo: cnvkit_access
+
+  # --- CNVkit ---
+  - id: "cnvkit_target"
+    destination: "cluster_1"  # repo: cnvkit_target
+  - id: "cnvkit_antitarget"
+    destination: "cluster_1"  # repo: cnvkit_antitarget
+  - id: "cnvkit_breaks"
+    destination: "cluster_1"  # repo: cnvkit_breaks
+  - id: "cnvkit_scatter"
+    destination: "cluster_1"  # repo: cnvkit_scatter
+  - id: "cnvkit_autobin"
+    destination: "cluster_1"  # repo: cnvkit_autobin
+  - id: "cnvkit_segment"
+    destination: "cluster_1"  # repo: cnvkit_segment
+  - id: "cnvkit_batch"
+    destination: "cluster_4"  # repo: cnvkit_batch  src: existing
+  - id: "cnvkit_heatmap"
+    destination: "cluster_1"  # repo: cnvkit_heatmap
+  - id: "cnvkit_sex"
+    destination: "cluster_1"  # repo: cnvkit_sex
+  - id: "cnvkit_fix"
+    destination: "cluster_1"  # repo: cnvkit_fix
+  - id: "cnvkit_coverage"
+    destination: "cluster_1"  # repo: cnvkit_coverage
+  - id: "cnvkit_call"
+    destination: "cluster_1"  # repo: cnvkit_call
+  - id: "cnvkit_segmetrics"
+    destination: "cluster_1"  # repo: cnvkit_segmetrics
+  - id: "cnvkit_reference"
+    destination: "cluster_1"  # repo: cnvkit_reference
+  - id: "cnvkit_genemetrics"
+    destination: "cluster_1"  # repo: cnvkit_genemetrics
+  - id: "cnvkit_diagram"
+    destination: "cluster_1"  # repo: cnvkit_diagram
+
+  # --- Data Managers ---
+  - id: "bowtie_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_bowtie_index_builder
+  - id: "bowtie_color_space_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_bowtie_index_builder
+  - id: "gene_annotation_fetcher_data_manager"
+    destination: "cluster_1"  # repo: data_manager_fetch_gene_annotation
+  - id: "picard_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_picard_index_builder
+  - id: "bwa_mem_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_bwa_mem_index_builder
+  - id: "data_manager_fetch_genome_all_fasta_dbkey"
+    destination: "cluster_1"  # repo: data_manager_fetch_genome_dbkeys_all_fasta
+  - id: "hisat2_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_hisat2_index_builder
+  - id: "sam_fasta_index_builder"
+    destination: "cluster_1"  # repo: data_manager_sam_fasta_index_builder
+  - id: "data_manager_snpeff_databases"
+    destination: "cluster_1"  # repo: data_manager_snpeff
+  - id: "data_manager_snpeff_download"
+    destination: "cluster_1"  # repo: data_manager_snpeff
+  - id: "data_manager_vep_cache_download"
+    destination: "cluster_1"  # repo: data_manager_vep_cache_downloader
+  - id: "bowtie2_index_builder_data_manager"
+    destination: "cluster_16"  # repo: data_manager_bowtie2_index_builder  src: existing
+  - id: "gatk_picard_index_builder"
+    destination: "cluster_1"  # repo: data_manager_gatk_picard_index_builder
+  - id: "data_manager_gemini_download"
+    destination: "cluster_1"  # repo: data_manager_gemini_database_downloader
+  - id: "data_manager_snpsift_dbnsfp"
+    destination: "cluster_1"  # repo: data_manager_snpsift_dbnsfp
+  - id: "twobit_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_twobit_builder
+  - id: "rna_star_index_builder_data_manager"
+    destination: "cluster_1"  # repo: data_manager_star_index_builder
