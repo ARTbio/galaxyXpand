@@ -1085,11 +1085,11 @@ job_tool_routing:
   - id: "picard_index_builder_data_manager"
     destination: "cluster_1"  # repo: data_manager_picard_index_builder
   - id: "bwa_mem_index_builder_data_manager"
-    destination: "cluster_1"  # repo: data_manager_bwa_mem_index_builder
+    destination: "cluster_8"  # repo: data_manager_bwa_mem_index_builder  src: tpv(12c)
   - id: "data_manager_fetch_genome_all_fasta_dbkey"
     destination: "cluster_1"  # repo: data_manager_fetch_genome_dbkeys_all_fasta
   - id: "hisat2_index_builder_data_manager"
-    destination: "cluster_1"  # repo: data_manager_hisat2_index_builder
+    destination: "cluster_8"  # repo: data_manager_hisat2_index_builder  src: tpv(10c)
   - id: "sam_fasta_index_builder"
     destination: "cluster_1"  # repo: data_manager_sam_fasta_index_builder
   - id: "data_manager_snpeff_databases"
@@ -1107,6 +1107,6 @@ job_tool_routing:
   - id: "data_manager_snpsift_dbnsfp"
     destination: "cluster_1"  # repo: data_manager_snpsift_dbnsfp
   - id: "twobit_builder_data_manager"
-    destination: "cluster_1"  # repo: data_manager_twobit_builder
+    destination: "cluster_8"  # repo: data_manager_twobit_builder  src: tpv(10c)
   - id: "rna_star_index_builder_data_manager"
-    destination: "cluster_1"  # repo: data_manager_star_index_builder
+    destination: "cluster_8"  # repo: data_manager_star_index_builder  src: tpv(10c)
