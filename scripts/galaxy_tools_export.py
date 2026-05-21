@@ -13,6 +13,7 @@ Options:
     --tool-list <path> Output path for tool_list.yml (default: tool_list.yml)
     --routing <path>   Output path for job_tool_routing.yml (default: job_tool_routing.yml)
     --no-revisions     Omit changeset_revision from tool_list (install latest)
+    --skip-builtins    Exclude built-in Galaxy tools (no tool_shed_repository) from routing output
 
 Examples:
     python3 galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr
@@ -53,7 +54,7 @@ def is_user_tool(full_id: str) -> bool:
 # Parse
 # ---------------------------------------------------------------------------
 
-def parse_panel(panel: list):
+def parse_panel(panel: list, skip_builtins: bool = False):
     """
     Returns:
         toolshed_tools : OrderedDict  repo_key → {name, owner, tool_shed,
@@ -88,17 +89,20 @@ def parse_panel(panel: list):
                 key = (tsr["name"], tsr["owner"], tsr["tool_shed"])
                 if key not in toolshed_tools:
                     toolshed_tools[key] = {
-                        "name":       tsr["name"],
-                        "owner":      tsr["owner"],
-                        "tool_shed":  tsr["tool_shed"],
-                        "revisions":  set(),
-                        "section_id": section_id,
+                        "name":         tsr["name"],
+                        "owner":        tsr["owner"],
+                        "tool_shed":    tsr["tool_shed"],
+                        "revisions":    set(),
+                        "section_id":   section_id,
+                        "section_name": section_name,
                     }
                 rev = tsr.get("changeset_revision")
                 if rev:
                     toolshed_tools[key]["revisions"].add(rev)
 
             # ── routing entry (all user tools, deduplicated by short_id) ────
+            if skip_builtins and not tsr:
+                continue
             if sid not in seen_sids:
                 seen_sids.add(sid)
                 routing_tools.append({
@@ -129,6 +133,7 @@ def render_tool_list(repos: list, include_revisions: bool) -> str:
         lines.append(f"  - name: {r['name']}")
         lines.append(f"    owner: {r['owner']}")
         lines.append(f"    tool_panel_section_id: {r['section_id']}")
+        lines.append(f"    tool_panel_section_label: {r['section_name']}")
         lines.append(f"    tool_shed: {r['tool_shed']}")
         if include_revisions and r["revisions"]:
             lines.append(f"    revisions:")
@@ -166,6 +171,7 @@ def parse_args(argv):
         "tool_list_path":   "tool_list.yml",
         "routing_path":     "job_tool_routing.yml",
         "no_revisions":     False,
+        "skip_builtins":    False,
     }
     i = 1
     while i < len(argv):
@@ -174,6 +180,7 @@ def parse_args(argv):
         elif a == "--tool-list":     args["tool_list_path"] = argv[i+1]; i += 2
         elif a == "--routing":       args["routing_path"] = argv[i+1]; i += 2
         elif a == "--no-revisions":  args["no_revisions"] = True; i += 1
+        elif a == "--skip-builtins": args["skip_builtins"] = True; i += 1
         elif not a.startswith("--"): args["galaxy_url"] = a; i += 1
         else:                        i += 1
     return args
@@ -186,7 +193,7 @@ def main():
         sys.exit(1)
 
     panel = fetch_panel(args["galaxy_url"])
-    repos, routing = parse_panel(panel)
+    repos, routing = parse_panel(panel, skip_builtins=args["skip_builtins"])
 
     print(f"[parse] {len(repos)} unique repos  |  {len(routing)} unique tool IDs",
           file=sys.stderr)
