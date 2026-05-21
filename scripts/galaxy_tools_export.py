@@ -381,7 +381,7 @@ def render_tool_list(repos: list, dm_repos: list, include_revisions: bool) -> st
                 for rev in sorted(r["revisions"]):
                     lines.append(f"      - {rev}")
 
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
 def render_routing(tools: list, default_dest: str,
@@ -415,7 +415,7 @@ def render_routing(tools: list, default_dest: str,
         lines.append(f'  - id: "{t["id"]}"')
         lines.append(f'    destination: "{t["destination"]}"{comment}')
 
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
 # =============================================================================
