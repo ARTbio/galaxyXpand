@@ -17,8 +17,6 @@ job_destinations:
     ntasks: 16
   cluster_64:
     ntasks: 64
-  samtools_fastx:
-    ntasks: 5
   java_cluster:
     ntasks: 1
     mem: 40960
@@ -42,8 +40,6 @@ job_limits_environment_total:
     value: 4
   - id: java_cluster
     value: 32
-  - id: samtools_fastx
-    value: 30
 
 job_tool_routing:
   - id: "artbio_bam_cleaning"
@@ -52,8 +48,6 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "bcftools_mpileup"
     destination: "cluster_8"
-  - id: "bcftools_norm"
-    destination: "cluster_1"
   - id: "bowtie_wrapper"
     destination: "cluster_16"
   - id: "bowtie"
@@ -96,8 +90,6 @@ job_tool_routing:
     destination: "cluster_2"
   - id: "featurecounts"
     destination: "cluster_4"
-  - id: "freebayes"
-    destination: "cluster_1"
   - id: "Group"
     destination: "cluster_1"
   - id: "guppy-basecaller"
@@ -136,8 +128,6 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "picard_FilterSamReads"
     destination: "java_cluster"
-  - id: "picard_SamToFastq"
-    destination: "cluster_1"
   - id: "repenrich"
     destination: "cluster_16"
   - id: "rna_star_index_builder_data_manager"
@@ -156,8 +146,6 @@ job_tool_routing:
     destination: "cluster_4"
   - id: "samtools_cram_to_bam"
     destination: "cluster_8"
-  - id: "samtools_fastx"
-    destination: "samtools_fastx"
   - id: "samtools_rmdup"
     destination: "cluster_8"
   - id: "samtools_slice_bam"

@@ -47,3 +47,6 @@ galaxy_config_templates:
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
   - src: "{{ playbook_dir }}/templates/job_conf.yml.j2"
     dest: "{{ galaxy_config_dir }}/job_conf.yml"
+
+# role ansible-galaxy-tools
+galaxy_tools_tool_list_files: [ "{{ inventory_dir }}/files/galaxy/config/tool_list.yml" ]
