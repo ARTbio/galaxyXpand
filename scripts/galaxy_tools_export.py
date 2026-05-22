@@ -2,17 +2,22 @@
 """
 galaxy_tools_export.py
 ======================
-Generate tool_list.yml (Ephemeris) and job_tool_routing.yml from a single
-Galaxy instance, optionally enriching the routing with destinations from:
+Generate tool_list.yml (Ephemeris) and the Ansible variable file tools (containing
+`job_tool_routing:`) from a single Galaxy instance, optionally enriching with:
 
-  1. An existing galaxyXpand group_vars/all/tools file  (priority 1)
-  2. The live TPV shared database tools.yml             (priority 2, cores only)
+  1. An existing galaxyXpand group_vars/all/job_conf file  (priority 1)
+  2. The live TPV shared database tools.yml                (priority 2, cores only)
 
 Pipeline:
   Galaxy /api/tools?in_panel=true   →  tool_list.yml + routing skeleton
   Galaxy /api/tools?in_panel=false  →  data managers (if --admin-key)
-  group_vars/all/tools              →  per-tool destination overrides + cores_map
+  group_vars/all/job_conf           →  per-tool destination overrides + cores_map
+                                        + job_default_destination + valid destinations
   TPV tools.yml (HTTPS GET)         →  static cores → destination (via cores_map)
+
+Output files (with --env):
+  environments/<env>/files/galaxy/config/tool_list.yml
+  environments/<env>/group_vars/all/tools                  (Ansible var, not a Galaxy file)
 
 Usage:
     python3 galaxy_tools_export.py <galaxy_url> [options]
@@ -20,16 +25,16 @@ Usage:
 Options:
     --env <name>             galaxyXpand environment (Conect, ARTbio, Mississippi, ...).
                              Derives default paths from the repo layout:
-                               --existing-tools environments/<name>/group_vars/all/tools
-                               --tool-list      environments/<name>/files/galaxy/config/<name>_tool_list.yml
-                               --routing        environments/<name>/files/galaxy/config/<name>_job_tool_routing.yml
-                             Explicit --tool-list / --routing / --existing-tools override.
+                               --job-conf  environments/<name>/group_vars/all/job_conf
+                               --tool-list environments/<name>/files/galaxy/config/tool_list.yml
+                               --routing   environments/<name>/group_vars/all/tools
+                             Explicit --tool-list / --routing / --job-conf override.
                              The repo root is located by walking up from this script
                              looking for `ansible.cfg` + `environments/` — the script
                              can live anywhere inside the repo.
     --dest <name>            Force the effective default destination.
-                             Default: read job_default_destination from --existing-tools,
-                             or 'cluster_1' if no existing-tools.
+                             Default: read job_default_destination from --job-conf,
+                             or 'cluster_1' if no job-conf.
                              Tools resolving to this default are NOT emitted in the
                              routing output (they inherit job_default_destination at
                              runtime). Use --include-defaults to override.
@@ -37,24 +42,22 @@ Options:
                              resolving to the default destination. Useful for the
                              very first generation of a new environment.
     --tool-list <path>       Output path for tool_list.yml
-    --routing <path>         Output path for job_tool_routing.yml
+    --routing <path>         Output path for the routing var file (typically `tools`)
     --no-revisions           Omit changeset_revision from tool_list (install latest)
     --skip-builtins          Exclude built-in Galaxy tools from routing output
     --admin-key <key>        Galaxy API key; enables data manager fetch
-    --existing-tools <path>  Existing group_vars/all/tools for per-tool overrides + cores_map
+    --job-conf <path>        Existing group_vars/all/job_conf for overrides + cores_map
     --no-tpv                 Skip TPV fetch (offline / debug)
     --tpv-url <url>          Override TPV URL (default: galaxyproject/tpv-shared-database main)
 
 Examples:
-    # Standard usage with --env (paths auto-derived from repo layout)
+    # Standard usage — paths auto-derived
     python3 scripts/galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
         --env Conect --admin-key MY_KEY --skip-builtins
 
-    # Manual paths (legacy / one-off)
-    python3 scripts/galaxy_tools_export.py https://usegalaxy.sorbonne-universite.fr \\
-        --existing-tools environments/Conect/group_vars/all/tools \\
-        --tool-list /tmp/conect_tool_list.yml \\
-        --routing /tmp/conect_job_tool_routing.yml
+    # First generation of a new env (no overrides exist yet → emit everything)
+    python3 scripts/galaxy_tools_export.py https://usegalaxy.example.org \\
+        --env NewEnv --include-defaults
 """
 
 import json
@@ -422,7 +425,7 @@ def render_routing(tools: list, default_dest: str,
         f"# Effective default destination (skipped from emission): {default_dest}",
     ]
     if used_existing:
-        header.append("# Source priority 1: existing group_vars/all/tools (per-tool override)")
+        header.append("# Source priority 1: group_vars/all/job_conf (per-tool override)")
     if used_tpv:
         header.append("# Source priority 2: TPV shared database (static cores → destination)")
     if include_defaults:
@@ -464,13 +467,13 @@ def parse_args(argv):
     args = {
         "galaxy_url":       None,
         "env":              None,
-        "dest":             None,   # auto-detected from existing-tools if None
+        "dest":             None,   # auto-detected from job-conf if None
         "tool_list_path":   None,
         "routing_path":     None,
         "no_revisions":     False,
         "skip_builtins":    False,
         "admin_key":        None,
-        "existing_tools":   None,
+        "job_conf":         None,
         "no_tpv":           False,
         "tpv_url":          TPV_URL_DEFAULT,
         "include_defaults": False,
@@ -485,7 +488,7 @@ def parse_args(argv):
         elif a == "--no-revisions":      args["no_revisions"] = True; i += 1
         elif a == "--skip-builtins":     args["skip_builtins"] = True; i += 1
         elif a == "--admin-key":         args["admin_key"] = argv[i+1]; i += 2
-        elif a == "--existing-tools":    args["existing_tools"] = argv[i+1]; i += 2
+        elif a == "--job-conf":          args["job_conf"] = argv[i+1]; i += 2
         elif a == "--no-tpv":            args["no_tpv"] = True; i += 1
         elif a == "--tpv-url":           args["tpv_url"] = argv[i+1]; i += 2
         elif a == "--include-defaults":  args["include_defaults"] = True; i += 1
@@ -522,9 +525,14 @@ def derive_env_paths(env: str, args: dict) -> None:
     Populate args paths from the galaxyXpand repo layout based on --env <name>.
     Fails fast with a clean message if:
       - the environment directory does not exist (lists available envs)
-      - the output config directory does not exist (we never create dirs in a git repo)
+      - an expected output directory does not exist (we never create dirs in a git repo)
 
-    Explicit --tool-list / --routing / --existing-tools always win over derivation.
+    Explicit --tool-list / --routing / --job-conf always win over derivation.
+
+    New convention (post-refactor):
+      tool_list  → files/galaxy/config/tool_list.yml         (Galaxy input)
+      routing    → group_vars/all/tools                      (Ansible var, generated)
+      job-conf   → group_vars/all/job_conf                   (Ansible var, human-edited)
     """
     repo = find_repo_root()
     envs_dir = repo / "environments"
@@ -547,31 +555,41 @@ def derive_env_paths(env: str, args: dict) -> None:
                   file=sys.stderr)
         sys.exit(2)
 
-    prefix     = env.lower()
-    config_dir = env_dir / "files" / "galaxy" / "config"
-    gv_tools   = env_dir / "group_vars" / "all" / "tools"
+    config_dir     = env_dir / "files" / "galaxy" / "config"
+    group_vars_dir = env_dir / "group_vars" / "all"
+    gv_job_conf    = group_vars_dir / "job_conf"
 
-    needs_outputs = (args["tool_list_path"] is None) or (args["routing_path"] is None)
-    if needs_outputs and not config_dir.is_dir():
+    needs_tool_list = args["tool_list_path"] is None
+    needs_routing   = args["routing_path"]   is None
+
+    if needs_tool_list and not config_dir.is_dir():
         print(f"[error] expected output directory does not exist: {config_dir}",
               file=sys.stderr)
         print(f"[error] create it (and git add) before re-running with --env {env}",
               file=sys.stderr)
-        print(f"[error] or pass --tool-list / --routing explicitly to bypass",
+        print(f"[error] or pass --tool-list explicitly to bypass",
+              file=sys.stderr)
+        sys.exit(2)
+    if needs_routing and not group_vars_dir.is_dir():
+        print(f"[error] expected output directory does not exist: {group_vars_dir}",
+              file=sys.stderr)
+        print(f"[error] create it (and git add) before re-running with --env {env}",
+              file=sys.stderr)
+        print(f"[error] or pass --routing explicitly to bypass",
               file=sys.stderr)
         sys.exit(2)
 
     if args["tool_list_path"] is None:
-        args["tool_list_path"] = str(config_dir / f"{prefix}_tool_list.yml")
+        args["tool_list_path"] = str(config_dir / "tool_list.yml")
     if args["routing_path"] is None:
-        args["routing_path"] = str(config_dir / f"{prefix}_job_tool_routing.yml")
+        args["routing_path"] = str(group_vars_dir / "tools")
 
-    if args["existing_tools"] is None:
-        if gv_tools.is_file():
-            args["existing_tools"] = str(gv_tools)
+    if args["job_conf"] is None:
+        if gv_job_conf.is_file():
+            args["job_conf"] = str(gv_job_conf)
         else:
-            print(f"[info]  --env {env}: no {gv_tools.relative_to(repo)} "
-                  f"→ skipping existing-tools enrichment", file=sys.stderr)
+            print(f"[info]  --env {env}: no {gv_job_conf.relative_to(repo)} "
+                  f"→ skipping job-conf enrichment", file=sys.stderr)
 
 
 def main():
@@ -587,15 +605,15 @@ def main():
               file=sys.stderr)
         print(f"[env]   {args['env']} → routing  ={args['routing_path']}",
               file=sys.stderr)
-        if args["existing_tools"]:
-            print(f"[env]   {args['env']} → existing={args['existing_tools']}",
+        if args["job_conf"]:
+            print(f"[env]   {args['env']} → job-conf={args['job_conf']}",
                   file=sys.stderr)
 
     # Apply fallback defaults if no --env and user didn't specify
     if args["tool_list_path"] is None:
         args["tool_list_path"] = "tool_list.yml"
     if args["routing_path"] is None:
-        args["routing_path"] = "job_tool_routing.yml"
+        args["routing_path"] = "tools"
 
     # ── 1. Fetch Galaxy panel ────────────────────────────────────────────────
     panel = fetch_panel(args["galaxy_url"])
@@ -612,16 +630,16 @@ def main():
 
     all_routing = routing + dm_routing
 
-    # ── 3. Existing group_vars/all/tools (priority 1) ────────────────────────
+    # ── 3. Existing group_vars/all/job_conf (priority 1) ─────────────────────
     overrides     = {}
     cores_map     = []
     valid_dests   = set()
     file_default  = None
     used_existing = False
-    if args["existing_tools"]:
-        print(f"[read]  existing tools: {args['existing_tools']}", file=sys.stderr)
+    if args["job_conf"]:
+        print(f"[read]  job-conf: {args['job_conf']}", file=sys.stderr)
         file_default, valid_dests, cores_map, overrides_raw = \
-            parse_existing_config(args["existing_tools"])
+            parse_existing_config(args["job_conf"])
         used_existing = bool(overrides_raw)
         print(f"[parse] job_default_destination: {file_default!r}", file=sys.stderr)
         print(f"[parse] job_destinations declared: {sorted(valid_dests)}", file=sys.stderr)
@@ -629,17 +647,17 @@ def main():
         print(f"[parse] raw overrides parsed: {len(overrides_raw)}", file=sys.stderr)
     else:
         overrides_raw = {}
-        print("[info]  no --existing-tools → no per-tool overrides, no cores_map",
+        print("[info]  no --job-conf → no per-tool overrides, no cores_map",
               file=sys.stderr)
 
     # ── 3bis. Resolve the effective default destination ──────────────────────
-    # Priority: explicit --dest > file's job_default_destination > 'cluster_1'
+    # Priority: explicit --dest > job_conf's job_default_destination > 'cluster_1'
     if args["dest"]:
         effective_default = args["dest"]
         default_origin    = "--dest"
     elif file_default:
         effective_default = file_default
-        default_origin    = "existing-tools file"
+        default_origin    = "job-conf file"
     else:
         effective_default = "cluster_1"
         default_origin    = "fallback"
@@ -681,7 +699,7 @@ def main():
         if unknown:
             print(f"[warn]  emitted destination(s) NOT declared in job_destinations: "
                   f"{sorted(unknown)}", file=sys.stderr)
-            print(f"[warn]  declared in {args['existing_tools']}: {sorted(valid_dests)}",
+            print(f"[warn]  declared in {args['job_conf']}: {sorted(valid_dests)}",
                   file=sys.stderr)
 
     # ── 6. Write outputs ─────────────────────────────────────────────────────
