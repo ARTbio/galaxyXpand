@@ -13,6 +13,8 @@ job_destinations:
     ntasks: 4
   cluster_8:
     ntasks: 8
+  cluster_16:
+    ntasks: 16
   java_cluster:
     ntasks: 1
     mem: 40960
@@ -32,6 +34,8 @@ job_limits_environment_total:
     value: 18
   - id: cluster_8
     value: 10
+  - id: cluster_16
+    value: 4
   - id: java_cluster
     value: 8
 
@@ -44,24 +48,24 @@ job_limits_environment_user:
     value: 15
   - id: cluster_8
     value: 8
+  - id: cluster_16
+    value: 3
 
 job_tool_routing:
-  - class: local
-    environment: cluster_1
   - id: "abyss-pe"
     destination: "cluster_8"
   - id: "bowtie_wrapper"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "bowtie2"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "bowtieForSmallRNA"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "breakdancer_max"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "bwa"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "bwa_mem"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "circgraph"
     destination: "cluster_2"
   - id: "cuffdiff"
@@ -82,26 +86,24 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "deeptools_plot_coverage"
     destination: "cluster_8"
-  - id: "dexseq"
-    destination: "cluster_1"
   - id: "fastqc"
     destination: "java_cluster"
   - id: "freebayes"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "gatk4_mutect2"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "hicexplorer_hicmergematrixbins"
     destination: "cluster_8"
   - id: "hisat2"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "lofreq_call"
     destination: "cluster_8"
   - id: "lumpy_smoove"
-    destination: "cluster_4"
+    destination: "cluster_8"
   - id: "macs2_callpeak"
     destination: "cluster_8"
   - id: "manta"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "megahit"
     destination: "cluster_8"
   - id: "metaspades"
@@ -116,14 +118,12 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "ncbi_tblastx_wrapper"
     destination: "cluster_8"
-  - id: "ngsplot"
-    destination: "cluster_8"
   - id: "oaseoptimiserv"
     destination: "cluster_8"
   - id: "oases"
     destination: "cluster_8"
   - id: "pindel"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "picard_MarkDuplicates"
     destination: "java_cluster"
   - id: "repenrich"
@@ -132,10 +132,8 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "retrieve_fasta_from_NCBI"
     destination: "cluster_2"
-  - id: "rgrnastar"
-    destination: "cluster_8"
   - id: "rna_star"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "rnaspades"
     destination: "cluster_8"
   - id: "rsembowtie"
@@ -157,14 +155,10 @@ job_tool_routing:
   - id: "spades"
     destination: "cluster_8"
   - id: "sr_bowtie"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "sr_bowtie_dataset_annotation"
-    destination: "cluster_8"
+    destination: "cluster_16"
   - id: "tophat2"
-    destination: "cluster_8"
-  - id: "tp_grep_tool"
-    destination: "cluster_1"
+    destination: "cluster_16"
   - id: "trinity"
-    destination: "cluster_8"
-  - id: "yac"
-    destination: "cluster_1"
+    destination: "cluster_16"
