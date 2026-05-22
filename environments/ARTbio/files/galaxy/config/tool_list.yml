@@ -174,11 +174,6 @@ tools:
     tool_panel_section_id: genomic_variants
     tool_panel_section_label: Genomic Variants
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: lumpy_sv
-    owner: artbio
-    tool_panel_section_id: genomic_variants
-    tool_panel_section_label: Genomic Variants
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: lumpy_smoove
     owner: artbio
     tool_panel_section_id: genomic_variants
@@ -860,6 +855,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: ngs:_mapping
+  - name: rgrnastar
+    owner: iuc
+    tool_panel_section_id: ngs:_mapping
+    tool_panel_section_label: NGS: Mapping
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: hisat2
     owner: iuc
     tool_panel_section_id: ngs:_mapping
@@ -1427,6 +1427,16 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: transposon_detection
+  - name: repenrich2
+    owner: artbio
+    tool_panel_section_id: transposon_detection
+    tool_panel_section_label: Transposon Detection
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: repenrich
+    owner: artbio
+    tool_panel_section_id: transposon_detection
+    tool_panel_section_label: Transposon Detection
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: pindel
     owner: artbio
     tool_panel_section_id: transposon_detection
@@ -2130,34 +2140,25 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # --- Data Managers ---
-  - name: data_manager_bowtie_index_builder
-    owner: iuc
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_bwa_mem_index_builder
-    owner: devteam
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_star_index_builder
-    owner: iuc
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: data_manager_vep_cache_downloader
-    owner: iuc
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_snpeff
     owner: iuc
     tool_shed: toolshed.g2.bx.psu.edu
   - name: data_manager_snpsift_dbnsfp
     owner: iuc
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_bowtie2_index_builder
-    owner: devteam
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: data_manager_gemini_database_downloader
     owner: iuc
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_sam_fasta_index_builder
+  - name: data_manager_twobit_builder
     owner: devteam
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: data_manager_twobit_builder
+  - name: data_manager_bowtie_index_builder
+    owner: iuc
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: data_manager_bowtie2_index_builder
+    owner: devteam
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: data_manager_bwa_mem_index_builder
     owner: devteam
     tool_shed: toolshed.g2.bx.psu.edu
   - name: data_manager_fetch_genome_dbkeys_all_fasta
@@ -2167,5 +2168,14 @@ tools:
     owner: iuc
     tool_shed: toolshed.g2.bx.psu.edu
   - name: data_manager_kallisto_index_builder
+    owner: iuc
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: data_manager_sam_fasta_index_builder
+    owner: devteam
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: data_manager_snpeff
+    owner: iuc
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: data_manager_star_index_builder
     owner: iuc
     tool_shed: toolshed.g2.bx.psu.edu

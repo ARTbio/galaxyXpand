@@ -86,6 +86,8 @@ job_tool_routing:
     destination: "cluster_8"  # repo: rnaspades  src: tpv(10c)
 
   # --- NGS: Mapping ---
+  - id: "rna_star"
+    destination: "cluster_8"  # repo: rgrnastar  src: existing
   - id: "hisat2"
     destination: "cluster_16"  # repo: hisat2  src: existing
   - id: "bwa_mem2"
@@ -195,6 +197,10 @@ job_tool_routing:
   - id: "deeptools_bigwig_compare"
     destination: "cluster_8"  # repo: deeptools_bigwig_compare  src: tpv(10c)
 
+  # --- Transposon Detection ---
+  - id: "repenrich"
+    destination: "cluster_16"  # repo: repenrich  src: existing
+
   # --- Vsearch ---
   - id: "vsearch_clustering"
     destination: "cluster_64"  # repo: vsearch  src: existing
@@ -260,15 +266,15 @@ job_tool_routing:
     destination: "cluster_2"  # repo: lofreq_call  src: tpv(2c)
 
   # --- Data Managers ---
-  - id: "bwa_mem_index_builder_data_manager"
-    destination: "cluster_8"  # repo: data_manager_bwa_mem_index_builder  src: tpv(12c)
-  - id: "rna_star_index_builder_data_manager"
-    destination: "cluster_8"  # repo: data_manager_star_index_builder  src: existing
-  - id: "bowtie2_index_builder_data_manager"
-    destination: "cluster_16"  # repo: data_manager_bowtie2_index_builder  src: tpv(16c)
   - id: "twobit_builder_data_manager"
     destination: "cluster_8"  # repo: data_manager_twobit_builder  src: tpv(10c)
+  - id: "bowtie2_index_builder_data_manager"
+    destination: "cluster_16"  # repo: data_manager_bowtie2_index_builder  src: tpv(16c)
+  - id: "bwa_mem_index_builder_data_manager"
+    destination: "cluster_8"  # repo: data_manager_bwa_mem_index_builder  src: tpv(12c)
   - id: "hisat2_index_builder_data_manager"
     destination: "cluster_4"  # repo: data_manager_hisat2_index_builder  src: existing
   - id: "kallisto_index_builder_data_manager"
     destination: "cluster_8"  # repo: data_manager_kallisto_index_builder  src: tpv(12c)
+  - id: "rna_star_index_builder_data_manager"
+    destination: "cluster_8"  # repo: data_manager_star_index_builder  src: existing
