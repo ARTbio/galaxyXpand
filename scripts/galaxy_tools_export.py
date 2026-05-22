@@ -27,7 +27,15 @@ Options:
                              The repo root is located by walking up from this script
                              looking for `ansible.cfg` + `environments/` — the script
                              can live anywhere inside the repo.
-    --dest <name>            Default Slurm destination (default: cluster_1)
+    --dest <name>            Force the effective default destination.
+                             Default: read job_default_destination from --existing-tools,
+                             or 'cluster_1' if no existing-tools.
+                             Tools resolving to this default are NOT emitted in the
+                             routing output (they inherit job_default_destination at
+                             runtime). Use --include-defaults to override.
+    --include-defaults       Emit ALL tools in the routing output, including those
+                             resolving to the default destination. Useful for the
+                             very first generation of a new environment.
     --tool-list <path>       Output path for tool_list.yml
     --routing <path>         Output path for job_tool_routing.yml
     --no-revisions           Omit changeset_revision from tool_list (install latest)
@@ -220,55 +228,77 @@ def parse_data_managers(flat: list):
 
 
 # =============================================================================
-# Existing group_vars/all/tools parsing  (from enrich_routing.py)
+# Existing group_vars/all/tools parsing — single-pass, extracts everything
 # =============================================================================
 
-def parse_existing_tools(path: str, default_dest: str) -> dict:
-    """Return {short_id: destination} for tools with explicit non-default destination."""
-    routing = {}
-    current_id = None
+def parse_existing_config(path: str):
+    """
+    Single-pass parser for environments/<env>/group_vars/all/tools. Returns:
+      - file_default_dest : str | None  (from `job_default_destination:`)
+      - valid_dests       : set         (all destination names in `job_destinations:`)
+      - cores_map         : list        (sorted [(ntasks, name)] for cluster_N only)
+      - overrides_raw     : dict        ({id: destination} — all entries, unfiltered)
+
+    Filtering of overrides against the effective default is done at the caller
+    level, since the effective default may come from --dest or this file.
+    """
+    file_default_dest = None
+    valid_dests       = set()
+    destinations_ntasks = {}   # name → ntasks (for cores_map)
+    overrides_raw     = {}
+
+    current_dest = None
+    current_id   = None
+    in_destinations = False
+
     with open(path) as f:
         for line in f:
-            m_id   = re.match(r'\s*-\s+id:\s+"?([^"#\n]+)"?', line)
-            m_dest = re.match(r'\s+destination:\s+"?([^"#\n]+)"?', line)
-            if m_id:
-                current_id = m_id.group(1).strip()
-            elif m_dest and current_id:
-                dest = m_dest.group(1).strip()
-                if dest != default_dest:
-                    routing[current_id] = dest
-                current_id = None
-    return routing
+            # job_default_destination (top-level)
+            m_default = re.match(r'^job_default_destination:\s+"?([^"#\n]+?)"?\s*(?:#.*)?$', line)
+            if m_default:
+                file_default_dest = m_default.group(1).strip()
+                continue
 
-
-def build_cores_map(tools_path: str) -> list:
-    """
-    Parse job_destinations from tools file: returns sorted [(ntasks, dest_name), ...]
-    for cluster_N destinations only (excludes special targets like java_cluster).
-    """
-    destinations = {}
-    current_dest = None
-    in_destinations = False
-    with open(tools_path) as f:
-        for line in f:
+            # job_destinations section opener
             if re.match(r'^job_destinations:', line):
                 in_destinations = True
+                current_dest = None
                 continue
+
             if in_destinations:
-                m_dest = re.match(r'^  (\w+):', line)
-                if m_dest:
-                    current_dest = m_dest.group(1)
+                m_dest_name = re.match(r'^  (\w+):\s*$', line)
+                if m_dest_name:
+                    current_dest = m_dest_name.group(1)
+                    valid_dests.add(current_dest)
                     continue
                 m_ntasks = re.match(r'^    ntasks:\s+(\d+)', line)
                 if m_ntasks and current_dest:
-                    destinations[current_dest] = int(m_ntasks.group(1))
+                    destinations_ntasks[current_dest] = int(m_ntasks.group(1))
+                    continue
+                # Exit job_destinations block at next non-indented non-comment line
                 if line and not line.startswith(" ") and not line.startswith("#"):
                     in_destinations = False
+                    # fall through — this same line may be a new top-level key
 
-    return sorted(
-        [(n, d) for d, n in destinations.items() if re.match(r'^cluster_\d+$', d)],
+            # Tool overrides (job_tool_routing entries; can appear anywhere)
+            m_id   = re.match(r'\s*-\s+id:\s+"?([^"#\n]+?)"?\s*(?:#.*)?$', line)
+            m_dest = re.match(r'\s+destination:\s+"?([^"#\n]+?)"?\s*(?:#.*)?$', line)
+            if m_id:
+                current_id = m_id.group(1).strip()
+            elif m_dest and current_id:
+                overrides_raw[current_id] = m_dest.group(1).strip()
+                current_id = None
+
+    cores_map = sorted(
+        [(n, d) for d, n in destinations_ntasks.items() if re.match(r'^cluster_\d+$', d)],
         key=lambda x: x[0],
     )
+    return file_default_dest, valid_dests, cores_map, overrides_raw
+
+
+def filter_overrides(overrides_raw: dict, default_dest: str) -> dict:
+    """Drop entries whose destination equals the effective default."""
+    return {sid: d for sid, d in overrides_raw.items() if d != default_dest}
 
 
 # =============================================================================
@@ -385,21 +415,29 @@ def render_tool_list(repos: list, dm_repos: list, include_revisions: bool) -> st
 
 
 def render_routing(tools: list, default_dest: str,
-                   used_existing: bool, used_tpv: bool) -> str:
+                   used_existing: bool, used_tpv: bool,
+                   include_defaults: bool = False) -> str:
     header = [
         "# job_tool_routing generated by galaxy_tools_export.py",
-        f"# Default destination: {default_dest}",
+        f"# Effective default destination (skipped from emission): {default_dest}",
     ]
     if used_existing:
         header.append("# Source priority 1: existing group_vars/all/tools (per-tool override)")
     if used_tpv:
         header.append("# Source priority 2: TPV shared database (static cores → destination)")
-    header.append("# Review before commit.")
+    if include_defaults:
+        header.append("# --include-defaults: emitting ALL tools (review before commit)")
+    else:
+        header.append("# Only tools with explicit overrides are emitted; others inherit "
+                      "job_default_destination.")
     header.append("job_tool_routing:")
+
+    # Filter tools: drop those falling on the default unless --include-defaults
+    visible = tools if include_defaults else [t for t in tools if t["source"] != "default"]
 
     lines = list(header)
     current_section = None
-    for t in tools:
+    for t in visible:
         if t["section"] != current_section:
             current_section = t["section"]
             lines.append("")
@@ -424,33 +462,35 @@ def render_routing(tools: list, default_dest: str,
 
 def parse_args(argv):
     args = {
-        "galaxy_url":     None,
-        "env":            None,
-        "dest":           "cluster_1",
-        "tool_list_path": None,   # filled later (env-derived or default)
-        "routing_path":   None,   # filled later (env-derived or default)
-        "no_revisions":   False,
-        "skip_builtins":  False,
-        "admin_key":      None,
-        "existing_tools": None,
-        "no_tpv":         False,
-        "tpv_url":        TPV_URL_DEFAULT,
+        "galaxy_url":       None,
+        "env":              None,
+        "dest":             None,   # auto-detected from existing-tools if None
+        "tool_list_path":   None,
+        "routing_path":     None,
+        "no_revisions":     False,
+        "skip_builtins":    False,
+        "admin_key":        None,
+        "existing_tools":   None,
+        "no_tpv":           False,
+        "tpv_url":          TPV_URL_DEFAULT,
+        "include_defaults": False,
     }
     i = 1
     while i < len(argv):
         a = argv[i]
-        if   a == "--dest":            args["dest"] = argv[i+1]; i += 2
-        elif a == "--env":             args["env"] = argv[i+1]; i += 2
-        elif a == "--tool-list":       args["tool_list_path"] = argv[i+1]; i += 2
-        elif a == "--routing":         args["routing_path"] = argv[i+1]; i += 2
-        elif a == "--no-revisions":    args["no_revisions"] = True; i += 1
-        elif a == "--skip-builtins":   args["skip_builtins"] = True; i += 1
-        elif a == "--admin-key":       args["admin_key"] = argv[i+1]; i += 2
-        elif a == "--existing-tools":  args["existing_tools"] = argv[i+1]; i += 2
-        elif a == "--no-tpv":          args["no_tpv"] = True; i += 1
-        elif a == "--tpv-url":         args["tpv_url"] = argv[i+1]; i += 2
-        elif not a.startswith("--"):   args["galaxy_url"] = a; i += 1
-        else:                          i += 1
+        if   a == "--dest":              args["dest"] = argv[i+1]; i += 2
+        elif a == "--env":               args["env"] = argv[i+1]; i += 2
+        elif a == "--tool-list":         args["tool_list_path"] = argv[i+1]; i += 2
+        elif a == "--routing":           args["routing_path"] = argv[i+1]; i += 2
+        elif a == "--no-revisions":      args["no_revisions"] = True; i += 1
+        elif a == "--skip-builtins":     args["skip_builtins"] = True; i += 1
+        elif a == "--admin-key":         args["admin_key"] = argv[i+1]; i += 2
+        elif a == "--existing-tools":    args["existing_tools"] = argv[i+1]; i += 2
+        elif a == "--no-tpv":            args["no_tpv"] = True; i += 1
+        elif a == "--tpv-url":           args["tpv_url"] = argv[i+1]; i += 2
+        elif a == "--include-defaults":  args["include_defaults"] = True; i += 1
+        elif not a.startswith("--"):     args["galaxy_url"] = a; i += 1
+        else:                            i += 1
     return args
 
 
@@ -573,18 +613,42 @@ def main():
     all_routing = routing + dm_routing
 
     # ── 3. Existing group_vars/all/tools (priority 1) ────────────────────────
-    existing  = {}
-    cores_map = []
+    overrides     = {}
+    cores_map     = []
+    valid_dests   = set()
+    file_default  = None
     used_existing = False
     if args["existing_tools"]:
         print(f"[read]  existing tools: {args['existing_tools']}", file=sys.stderr)
-        existing  = parse_existing_tools(args["existing_tools"], args["dest"])
-        cores_map = build_cores_map(args["existing_tools"])
-        used_existing = True
-        print(f"[parse] existing overrides: {len(existing)}", file=sys.stderr)
+        file_default, valid_dests, cores_map, overrides_raw = \
+            parse_existing_config(args["existing_tools"])
+        used_existing = bool(overrides_raw)
+        print(f"[parse] job_default_destination: {file_default!r}", file=sys.stderr)
+        print(f"[parse] job_destinations declared: {sorted(valid_dests)}", file=sys.stderr)
         print(f"[parse] cores_map: {cores_map}", file=sys.stderr)
+        print(f"[parse] raw overrides parsed: {len(overrides_raw)}", file=sys.stderr)
     else:
+        overrides_raw = {}
         print("[info]  no --existing-tools → no per-tool overrides, no cores_map",
+              file=sys.stderr)
+
+    # ── 3bis. Resolve the effective default destination ──────────────────────
+    # Priority: explicit --dest > file's job_default_destination > 'cluster_1'
+    if args["dest"]:
+        effective_default = args["dest"]
+        default_origin    = "--dest"
+    elif file_default:
+        effective_default = file_default
+        default_origin    = "existing-tools file"
+    else:
+        effective_default = "cluster_1"
+        default_origin    = "fallback"
+    print(f"[default] effective_default = {effective_default!r}  (from {default_origin})",
+          file=sys.stderr)
+
+    overrides = filter_overrides(overrides_raw, effective_default)
+    if used_existing:
+        print(f"[parse] overrides after dropping ones equal to default: {len(overrides)}",
               file=sys.stderr)
 
     # ── 4. TPV (priority 2) — only useful if cores_map is available ──────────
@@ -602,15 +666,29 @@ def main():
         print(f"[parse] TPV tools with static cores: {len(tpv_cores)}", file=sys.stderr)
 
     # ── 5. Enrich routing ────────────────────────────────────────────────────
-    enrich_routing(all_routing, existing, tpv_cores, cores_map, args["dest"])
+    enrich_routing(all_routing, overrides, tpv_cores, cores_map, effective_default)
     stats = Counter(t["source"].split("(")[0] for t in all_routing)
     print(f"[enrich] existing={stats.get('existing', 0)}  "
           f"tpv={stats.get('tpv', 0)}  "
-          f"default={stats.get('default', 0)}", file=sys.stderr)
+          f"default={stats.get('default', 0)} (dropped from output "
+          f"unless --include-defaults)", file=sys.stderr)
+
+    # ── 5bis. Validate emitted destinations against declared job_destinations ─
+    if valid_dests:
+        emitted_dests = {t["destination"] for t in all_routing
+                         if t["source"] != "default" or args["include_defaults"]}
+        unknown = emitted_dests - valid_dests
+        if unknown:
+            print(f"[warn]  emitted destination(s) NOT declared in job_destinations: "
+                  f"{sorted(unknown)}", file=sys.stderr)
+            print(f"[warn]  declared in {args['existing_tools']}: {sorted(valid_dests)}",
+                  file=sys.stderr)
 
     # ── 6. Write outputs ─────────────────────────────────────────────────────
     tool_list_text = render_tool_list(repos, dm_repos, not args["no_revisions"])
-    routing_text   = render_routing(all_routing, args["dest"], used_existing, used_tpv)
+    routing_text   = render_routing(all_routing, effective_default,
+                                    used_existing, used_tpv,
+                                    include_defaults=args["include_defaults"])
 
     Path(args["tool_list_path"]).write_text(tool_list_text)
     Path(args["routing_path"]).write_text(routing_text)
