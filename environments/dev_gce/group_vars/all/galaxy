@@ -37,4 +37,4 @@ galaxy_config_files:
     dest: "{{ galaxy_server_dir }}/static/images/galaxyXpand_logo.png"
 
 # role ansible-galaxy-tools
-galaxy_tools_tool_list_files: [ "{{ inventory_dir }}/files/galaxy/config/dev_gce_tool_list.yml" ]
+galaxy_tools_tool_list_files: [ "{{ inventory_dir }}/files/galaxy/config/tool_list.yml" ]
