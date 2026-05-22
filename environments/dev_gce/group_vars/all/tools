@@ -19,11 +19,15 @@ job_limits_registered: 2
 job_tool_routing:
   - class: local
     environment: local_env
-  - id: "bowtieForSmallRNA"
+  - id: "sr_bowtie"
     destination: "cluster"
   - id: "bowtie_index_builder_data_manager"
     destination: "local_env"
-  - id: "retrieve_fasta_from_NCBI"
+  - id: "bowtie_index_builder_data_manager"
+    destination: "local_env"
+  - id: "data_manager_fetch_genome_dbkeys_all_fasta"
+    destination: "cluster"
+  - id: "fetch_fasta_from_ncbi"
     destination: "cluster"
   - id: "samtools_view"
     destination: "cluster"
