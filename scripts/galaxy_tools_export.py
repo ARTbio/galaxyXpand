@@ -101,6 +101,24 @@ def fetch_flat(galaxy_url: str, api_key: str) -> list:
         return json.load(resp)
 
 
+def fetch_installed_repos(galaxy_url: str, api_key: str) -> list:
+    """
+    Fetch the list of installed tool_shed_repositories. Source of truth for
+    'what is installed in the database', regardless of panel visibility.
+    Requires admin API key. Returns [] on failure (non-fatal).
+    """
+    url = galaxy_url.rstrip("/") + "/api/tool_shed_repositories"
+    print(f"[fetch] {url}", file=sys.stderr)
+    req = urllib.request.Request(url)
+    req.add_header("x-api-key", api_key)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.load(resp)
+    except (urllib.error.URLError, TimeoutError) as e:
+        print(f"[warn]  installed repos fetch failed: {e}", file=sys.stderr)
+        return []
+
+
 def fetch_tpv(url: str) -> str:
     """Fetch the TPV shared database tools.yml. Returns text or empty on failure."""
     print(f"[fetch] {url}", file=sys.stderr)
@@ -701,6 +719,66 @@ def main():
                   f"{sorted(unknown)}", file=sys.stderr)
             print(f"[warn]  declared in {args['job_conf']}: {sorted(valid_dests)}",
                   file=sys.stderr)
+
+    # ── 5ter. Feature A: orphan overrides — overrides in job_conf for tool IDs
+    #         that don't match any installed tool exposed in the panel.
+    #         Galaxy is case-sensitive on tool IDs at runtime → strict match.
+    # ──────────────────────────────────────────────────────────────────────────
+    if overrides:
+        import difflib
+        galaxy_ids       = {t["id"] for t in all_routing}
+        galaxy_ids_lower = {tid.lower(): tid for tid in galaxy_ids}
+
+        orphans = sorted(sid for sid in overrides if sid not in galaxy_ids)
+        if orphans:
+            print(f"[warn]  {len(orphans)} override(s) in job_conf reference "
+                  f"tool IDs not present in Galaxy panel (override silently ignored):",
+                  file=sys.stderr)
+            for o in orphans:
+                # Case mismatch is the most common cause and the most actionable
+                if o.lower() in galaxy_ids_lower:
+                    real = galaxy_ids_lower[o.lower()]
+                    print(f"[warn]    - {o!r}: CASE MISMATCH with installed {real!r}",
+                          file=sys.stderr)
+                else:
+                    matches_lower = difflib.get_close_matches(
+                        o.lower(), list(galaxy_ids_lower.keys()), n=2, cutoff=0.5)
+                    matches = [galaxy_ids_lower[m] for m in matches_lower]
+                    hint = f"closest: {matches}" if matches else "no close match"
+                    print(f"[warn]    - {o!r}: {hint}", file=sys.stderr)
+
+    # ── 5quater. Feature B: ghost installed repos — repos installed in the
+    #         database but with no tool visible in the panel
+    # ──────────────────────────────────────────────────────────────────────────
+    if args["admin_key"]:
+        installed = fetch_installed_repos(args["galaxy_url"], args["admin_key"])
+        # Only repos in 'Installed' status (skip Uninstalled/Error/etc)
+        installed_active = [
+            r for r in installed
+            if isinstance(r, dict)
+            and r.get("status") == "Installed"
+            and not r.get("uninstalled", False)
+            and not r.get("deleted", False)
+        ]
+        # Set of (owner, name) actually exposed in the panel (from parse_panel)
+        panel_repo_keys = {(r["owner"], r["name"]) for r in repos}
+        # Same for data managers exposed via in_panel=false
+        dm_repo_keys = {(r["owner"], r["name"]) for r in dm_repos}
+        exposed = panel_repo_keys | dm_repo_keys
+
+        ghosts = []
+        for r in installed_active:
+            key = (r.get("owner", ""), r.get("name", ""))
+            if key not in exposed:
+                ghosts.append(key)
+
+        if ghosts:
+            print(f"[warn]  {len(ghosts)} repo(s) installed in DB but NOT exposed "
+                  f"in panel (tools invisible to users):", file=sys.stderr)
+            for owner, name in sorted(ghosts):
+                print(f"[warn]    - {owner}/{name}", file=sys.stderr)
+            print(f"[warn]  fix in Galaxy admin UI: assign panel section, "
+                  f"or reinstall with --tool_panel_section_id", file=sys.stderr)
 
     # ── 6. Write outputs ─────────────────────────────────────────────────────
     tool_list_text = render_tool_list(repos, dm_repos, not args["no_revisions"])
