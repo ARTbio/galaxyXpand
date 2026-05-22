@@ -100,8 +100,6 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "lumpy_smoove"
     destination: "cluster_8"
-  - id: "lumpy_sv"
-    destination: "cluster_8"
   - id: "macs2_callpeak"
     destination: "cluster_16"
   - id: "manta"
