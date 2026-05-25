@@ -42,8 +42,6 @@ job_tool_routing:
     destination: "cluster_16"  # repo: hisat2  src: existing
   - id: "featurecounts"
     destination: "cluster_2"  # repo: featurecounts  src: tpv(2c)
-  - id: "cufflinks"
-    destination: "cluster_4"  # repo: cufflinks  src: tpv(6c)
   - id: "repenrich"
     destination: "cluster_8"  # repo: repenrich  src: existing
   - id: "rsembowtie"
@@ -92,6 +90,8 @@ job_tool_routing:
     destination: "cluster_8"  # repo: trinity_align_and_estimate_abundance  src: tpv(8c)
   - id: "trinity"
     destination: "cluster_16"  # repo: trinity  src: existing
+  - id: "oasesoptimiserv"
+    destination: "cluster_8"  # repo: oases  src: existing
 
   # --- FASTA manipulation ---
   - id: "seqtk_seq"
@@ -172,14 +172,16 @@ job_tool_routing:
     destination: "cluster_8"  # repo: ncbi_blast_plus  src: existing
 
   # --- NGS: RNA Analysis ---
-  - id: "cuffquant"
-    destination: "cluster_4"  # repo: cuffquant  src: tpv(6c)
   - id: "cuffnorm"
     destination: "cluster_4"  # repo: cuffnorm  src: tpv(6c)
 
   # --- Transposon Detection ---
+  - id: "repenrich2"
+    destination: "cluster_8"  # repo: repenrich2  src: existing
   - id: "pindel"
     destination: "cluster_16"  # repo: pindel  src: existing
+  - id: "breakdancermax"
+    destination: "cluster_16"  # repo: breakdancer_max  src: existing
 
   # --- Picard Tools ---
   - id: "picard_MarkDuplicates"

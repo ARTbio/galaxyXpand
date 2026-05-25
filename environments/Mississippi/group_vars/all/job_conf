@@ -134,8 +134,6 @@ job_tool_routing:
     destination: "cluster_8"
   - id: "rsembowtie2"
     destination: "cluster_8"
-  - id: "run_TEMP"
-    destination: "cluster_8"
   - id: "salmon"
     destination: "cluster_8"
   - id: "sambamba_filter"

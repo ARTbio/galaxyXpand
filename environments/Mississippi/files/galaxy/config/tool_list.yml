@@ -275,6 +275,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: stats
+  - name: fishertest
+    owner: artbio
+    tool_panel_section_id: stats
+    tool_panel_section_label: Statistics
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: ggplot2_violin
     owner: iuc
     tool_panel_section_id: stats
@@ -297,11 +302,6 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
   - name: numeric_clustering
     owner: bgruening
-    tool_panel_section_id: stats
-    tool_panel_section_label: Statistics
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: fishertest
-    owner: artbio
     tool_panel_section_id: stats
     tool_panel_section_label: Statistics
     tool_shed: toolshed.g2.bx.psu.edu
@@ -513,11 +513,6 @@ tools:
     tool_panel_section_id: differential_expression
     tool_panel_section_label: Differential Expression
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: cufflinks
-    owner: devteam
-    tool_panel_section_id: differential_expression
-    tool_panel_section_label: Differential Expression
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: cpm_tpm_rpk
     owner: artbio
     tool_panel_section_id: differential_expression
@@ -527,11 +522,6 @@ tools:
     owner: artbio
     tool_panel_section_id: differential_expression
     tool_panel_section_label: Differential Expression
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: repenrich2
-    owner: artbio
-    tool_panel_section_id: transposon_detection
-    tool_panel_section_label: Transposon Detection
     tool_shed: toolshed.g2.bx.psu.edu
   - name: ruvseq
     owner: iuc
@@ -1247,8 +1237,8 @@ tools:
     tool_panel_section_id: ngs:_rna_analysis
     tool_panel_section_label: NGS: RNA Analysis
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: cuffquant
-    owner: devteam
+  - name: length_and_gc_content
+    owner: iuc
     tool_panel_section_id: ngs:_rna_analysis
     tool_panel_section_label: NGS: RNA Analysis
     tool_shed: toolshed.g2.bx.psu.edu
@@ -1257,34 +1247,19 @@ tools:
     tool_panel_section_id: ngs:_rna_analysis
     tool_panel_section_label: NGS: RNA Analysis
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: cuffmerge
-    owner: devteam
-    tool_panel_section_id: ngs:_rna_analysis
-    tool_panel_section_label: NGS: RNA Analysis
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: cuffcompare
-    owner: devteam
-    tool_panel_section_id: ngs:_rna_analysis
-    tool_panel_section_label: NGS: RNA Analysis
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: length_and_gc_content
-    owner: iuc
-    tool_panel_section_id: ngs:_rna_analysis
-    tool_panel_section_label: NGS: RNA Analysis
-    tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: transposon_detection
+  - name: repenrich2
+    owner: artbio
+    tool_panel_section_id: transposon_detection
+    tool_panel_section_label: Transposon Detection
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: pindel
     owner: artbio
     tool_panel_section_id: transposon_detection
     tool_panel_section_label: Transposon Detection
     tool_shed: toolshed.g2.bx.psu.edu
   - name: breakdancer_max
-    owner: portiahollyoak
-    tool_panel_section_id: transposon_detection
-    tool_panel_section_label: Transposon Detection
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: temp
     owner: portiahollyoak
     tool_panel_section_id: transposon_detection
     tool_panel_section_label: Transposon Detection
@@ -1332,6 +1307,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: metavisitor_2
+  - name: blast_unmatched
+    owner: artbio
+    tool_panel_section_id: metavisitor_2
+    tool_panel_section_label: METAVISITOR_2
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: ncbi_eutils_esearch
     owner: iuc
     tool_panel_section_id: metavisitor_2
@@ -1357,12 +1337,6 @@ tools:
     tool_panel_section_id: metavisitor_2
     tool_panel_section_label: METAVISITOR_2
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: blast_unmatched
-    owner: artbio
-    tool_panel_section_id: metavisitor_2
-    tool_panel_section_label: METAVISITOR_2
-    tool_shed: toolshed.g2.bx.psu.edu
-
 
   # panel section: bacterial_metagenomics
   - name: prokka
@@ -1504,11 +1478,6 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
   - name: vcfsamplecompare
     owner: hepcat72
-    tool_panel_section_id: covid_19
-    tool_panel_section_label: COVID-19
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: compose_text_param
-    owner: iuc
     tool_panel_section_id: covid_19
     tool_panel_section_label: COVID-19
     tool_shed: toolshed.g2.bx.psu.edu
