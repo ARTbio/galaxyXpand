@@ -1875,53 +1875,6 @@ tools:
     tool_panel_section_label: NGS: QC and manipulation
     tool_shed: toolshed.g2.bx.psu.edu
 
-  # panel section: ngs:_methylation
-  - name: poretools_occupancy
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_squiggle
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_extract
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_hist
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_stats
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_qualpos
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_times
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_yield_plot
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_tabular
-    owner: iuc
-    tool_panel_section_id: ngs:_methylation
-    tool_panel_section_label: NGS: Methylation
-    tool_shed: toolshed.g2.bx.psu.edu
-
   # panel section: filter
   - name: vcfbedintersect
     owner: devteam
@@ -2022,21 +1975,6 @@ tools:
     tool_panel_section_id: nanopore
     tool_panel_section_label: Nanopore
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_winner
-    owner: iuc
-    tool_panel_section_id: nanopore
-    tool_panel_section_label: Nanopore
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_qualdist
-    owner: iuc
-    tool_panel_section_id: nanopore
-    tool_panel_section_label: Nanopore
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_nucdist
-    owner: iuc
-    tool_panel_section_id: nanopore
-    tool_panel_section_label: Nanopore
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: graphmap_align
     owner: bgruening
     tool_panel_section_id: nanopore
@@ -2049,11 +1987,6 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
   - name: ont_fast5_api
     owner: artbio
-    tool_panel_section_id: nanopore
-    tool_panel_section_label: Nanopore
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: poretools_events
-    owner: iuc
     tool_panel_section_id: nanopore
     tool_panel_section_label: Nanopore
     tool_shed: toolshed.g2.bx.psu.edu
