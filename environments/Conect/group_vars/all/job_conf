@@ -15,6 +15,8 @@ job_destinations:
     ntasks: 8
   cluster_16:
     ntasks: 16
+  cluster_32:
+    ntasks: 32
   java_cluster:
     ntasks: 1
     mem: 40960
@@ -50,6 +52,8 @@ job_limits_environment_total:
     value: 10
   - id: cluster_16
     value: 5
+  - id: cluster_32
+    value: 2
   - id: java_cluster
     value: 35
   - id: slurm_upload
