@@ -251,68 +251,68 @@ job_tool_routing:
     destination: "cluster_1"  # repo: crossmap_bed
 
   # --- PICARD tools ---
-  - id: "picard_AddOrReplaceReadGroups"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_MeanQualityByCycle"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CASM"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectBaseDistributionByCycle"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_RevertOriginalBaseQualitiesAndAddMateCigar"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectHsMetrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectInsertSizeMetrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_SortSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_artifact_metrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_RevertSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_FastqToSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_NormalizeFasta"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_DownsampleSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_MarkDuplicates"
-    destination: "java_cluster"  # repo: picard  src: existing
-  - id: "picard_MarkDuplicatesWithMateCigar"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_MergeBamAlignment"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CleanSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_ReplaceSamHeader"
-    destination: "java_cluster"  # repo: picard  src: existing
-  - id: "picard_MergeSamFiles"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_FixMateInformation"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_QualityScoreDistribution"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_SamToFastq"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectRnaSeqMetrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_ValidateSamFile"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_BedToIntervalList"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectWgsMetrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_ReorderSam"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_CollectGcBiasMetrics"
-    destination: "cluster_1"  # repo: picard
-  - id: "picard_FilterSamReads"
-    destination: "cluster_1"  # repo: picard
   - id: "picard_AddCommentsToBam"
-    destination: "cluster_1"  # repo: picard
+    destination: "java_cluster"
+  - id: "picard_AddOrReplaceReadGroups"
+    destination: "java_cluster"
+  - id: "picard_artifact_metrics"
+    destination: "java_cluster"
+  - id: "picard_BedToIntervalList"
+    destination: "java_cluster"
+  - id: "picard_CASM"
+    destination: "java_cluster"
+  - id: "picard_CleanSam"
+    destination: "java_cluster"
+  - id: "picard_CollectBaseDistributionByCycle"
+    destination: "java_cluster"
+  - id: "picard_CollectGcBiasMetrics"
+    destination: "java_cluster"
+  - id: "picard_CollectHsMetrics"
+    destination: "java_cluster"
+  - id: "picard_CollectInsertSizeMetrics"
+    destination: "java_cluster"
+  - id: "picard_CollectRnaSeqMetrics"
+    destination: "java_cluster"
+  - id: "picard_CollectWgsMetrics"
+    destination: "java_cluster"
+  - id: "picard_DownsampleSam"
+    destination: "java_cluster"
   - id: "picard_EstimateLibraryComplexity"
-    destination: "cluster_1"  # repo: picard
+    destination: "java_cluster"
+  - id: "picard_FastqToSam"
+    destination: "java_cluster"
+  - id: "picard_FilterSamReads"
+    destination: "java_cluster"
+  - id: "picard_FixMateInformation"
+    destination: "java_cluster"
+  - id: "picard_MarkDuplicates"
+    destination: "java_cluster"
+  - id: "picard_MarkDuplicatesWithMateCigar"
+    destination: "java_cluster"
+  - id: "picard_MeanQualityByCycle"
+    destination: "java_cluster"
+  - id: "picard_MergeBamAlignment"
+    destination: "java_cluster"
+  - id: "picard_MergeSamFiles"
+    destination: "java_cluster"
+  - id: "picard_NormalizeFasta"
+    destination: "java_cluster"
+  - id: "picard_QualityScoreDistribution"
+    destination: "java_cluster"
+  - id: "picard_ReorderSam"
+    destination: "java_cluster"
+  - id: "picard_ReplaceSamHeader"
+    destination: "java_cluster"
+  - id: "picard_RevertOriginalBaseQualitiesAndAddMateCigar"
+    destination: "java_cluster"
+  - id: "picard_RevertSam"
+    destination: "java_cluster"
+  - id: "picard_SamToFastq"
+    destination: "java_cluster"
+  - id: "picard_SortSam"
+    destination: "java_cluster"
+  - id: "picard_ValidateSamFile"
+    destination: "java_cluster"
 
   # --- NGS: QC and manipulation ---
   - id: "fastqc"
