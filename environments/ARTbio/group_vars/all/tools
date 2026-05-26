@@ -16,6 +16,8 @@ job_tool_routing:
     destination: "cluster_16"  # repo: sr_bowtie_dataset_annotation  src: existing
 
   # --- Metavisitor ---
+  - id: "kraken2"
+    destination: "cluster_16"  # repo: kraken2  src: tpv(16c)
   - id: "trinity"
     destination: "cluster_8"  # repo: trinity  src: tpv(12c)
 
@@ -258,6 +260,8 @@ job_tool_routing:
     destination: "cluster_8"  # repo: ont_fast5_api  src: tpv(8c)
 
   # --- Covid-19 ---
+  - id: "pangolin"
+    destination: "cluster_8"  # repo: pangolin  src: tpv(8c)
   - id: "qualimap_bamqc"
     destination: "cluster_4"  # repo: qualimap_bamqc  src: tpv(6c)
   - id: "ivar_trim"

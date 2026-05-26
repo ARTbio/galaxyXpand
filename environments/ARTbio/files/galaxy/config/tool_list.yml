@@ -38,16 +38,6 @@ tools:
     tool_panel_section_id: mississippi_tool_suite
     tool_panel_section_label: Mississippi Tool Suite
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: msp_sr_readmap_and_size_histograms
-    owner: drosofff
-    tool_panel_section_id: mississippi_tool_suite
-    tool_panel_section_label: Mississippi Tool Suite
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: msp_sr_size_histograms
-    owner: drosofff
-    tool_panel_section_id: mississippi_tool_suite
-    tool_panel_section_label: Mississippi Tool Suite
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: small_rna_clusters
     owner: artbio
     tool_panel_section_id: mississippi_tool_suite
@@ -55,6 +45,21 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: metavisitor
+  - name: kraken2
+    owner: iuc
+    tool_panel_section_id: metavisitor
+    tool_panel_section_label: Metavisitor
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: fetch_fasta_from_ncbi
+    owner: artbio
+    tool_panel_section_id: metavisitor
+    tool_panel_section_label: Metavisitor
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: blast_unmatched
+    owner: artbio
+    tool_panel_section_id: metavisitor
+    tool_panel_section_label: Metavisitor
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: oases
     owner: artbio
     tool_panel_section_id: metavisitor
@@ -95,11 +100,6 @@ tools:
     tool_panel_section_id: metavisitor
     tool_panel_section_label: Metavisitor
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: msp_blastparser_and_hits
-    owner: drosofff
-    tool_panel_section_id: metavisitor
-    tool_panel_section_label: Metavisitor
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: reverse_complement
     owner: xuebing
     tool_panel_section_id: metavisitor
@@ -107,21 +107,6 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
   - name: concatenate_multiple_datasets
     owner: mvdbeek
-    tool_panel_section_id: metavisitor
-    tool_panel_section_label: Metavisitor
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: sam_to_fastq
-    owner: drosofff
-    tool_panel_section_id: metavisitor
-    tool_panel_section_label: Metavisitor
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: msp_fasta_tabular_converter
-    owner: drosofff
-    tool_panel_section_id: metavisitor
-    tool_panel_section_label: Metavisitor
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: yac_clipper
-    owner: drosofff
     tool_panel_section_id: metavisitor
     tool_panel_section_label: Metavisitor
     tool_shed: toolshed.g2.bx.psu.edu
@@ -144,6 +129,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: genomic_variants
+  - name: gatk4
+    owner: artbio
+    tool_panel_section_id: genomic_variants
+    tool_panel_section_label: Genomic Variants
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: delly_cnv
     owner: iuc
     tool_panel_section_id: genomic_variants
@@ -625,6 +615,11 @@ tools:
     tool_panel_section_id: convert
     tool_panel_section_label: Convert Formats
     tool_shed: toolshed.g2.bx.psu.edu
+  - name: samtools_cram_to_bam
+    owner: iuc
+    tool_panel_section_id: convert
+    tool_panel_section_label: Convert Formats
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: dna_protein_transle
     owner: jasper
     tool_panel_section_id: convert
@@ -934,6 +929,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: ngs:_sam_tools
+  - name: samtools_bam_to_cram
+    owner: iuc
+    tool_panel_section_id: ngs:_sam_tools
+    tool_panel_section_label: NGS: SAM Tools
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: samtools_view
     owner: iuc
     tool_panel_section_id: ngs:_sam_tools
@@ -1059,11 +1059,6 @@ tools:
     tool_panel_section_id: ngs:_sam_tools
     tool_panel_section_label: NGS: SAM Tools
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: samtools_cram_to_bam
-    owner: iuc
-    tool_panel_section_id: ngs:_sam_tools
-    tool_panel_section_label: NGS: SAM Tools
-    tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: bxops
   - name: subtract
@@ -1127,6 +1122,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: differential_expression
+  - name: deseq2_normalization
+    owner: artbio
+    tool_panel_section_id: differential_expression
+    tool_panel_section_label: Differential Expression
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: sleuth
     owner: iuc
     tool_panel_section_id: differential_expression
@@ -1256,6 +1256,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: stats
+  - name: fishertest
+    owner: artbio
+    tool_panel_section_id: stats
+    tool_panel_section_label: Statistics
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: histogram
     owner: devteam
     tool_panel_section_id: stats
@@ -1330,6 +1335,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: deeptools
+  - name: deeptools_alignmentsieve
+    owner: bgruening
+    tool_panel_section_id: deeptools
+    tool_panel_section_label: DeepTools
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: deeptools_estimatereadfiltering
     owner: bgruening
     tool_panel_section_id: deeptools
@@ -1992,6 +2002,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: covid-19
+  - name: pangolin
+    owner: iuc
+    tool_panel_section_id: covid-19
+    tool_panel_section_label: Covid-19
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: qualimap_bamqc
     owner: iuc
     tool_panel_section_id: covid-19
