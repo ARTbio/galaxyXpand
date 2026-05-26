@@ -95,17 +95,17 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
 
   # panel section: aligners
+  - name: bwa_mem2
+    owner: iuc
+    tool_panel_section_id: aligners
+    tool_panel_section_label: Aligners
+    tool_shed: toolshed.g2.bx.psu.edu
   - name: rgrnastar
     owner: iuc
     tool_panel_section_id: aligners
     tool_panel_section_label: Aligners
     tool_shed: toolshed.g2.bx.psu.edu
   - name: hisat2
-    owner: iuc
-    tool_panel_section_id: aligners
-    tool_panel_section_label: Aligners
-    tool_shed: toolshed.g2.bx.psu.edu
-  - name: bwa_mem2
     owner: iuc
     tool_panel_section_id: aligners
     tool_panel_section_label: Aligners
