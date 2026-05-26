@@ -70,6 +70,8 @@ job_tool_routing:
     destination: "cluster_16"
   - id: "bwa_mem2"
     destination: "cluster_16"  # src: tpv(24c)
+  - id: "bwa_mem2_index_builder_data_manager"
+    destination: "cluster_16"
   - id: "bwa_mem_index_builder_data_manager"
     destination: "cluster_8"  # src: tpv(12c)
   - id: "canu"
