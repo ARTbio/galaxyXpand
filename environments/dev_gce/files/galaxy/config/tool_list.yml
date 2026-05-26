@@ -3,12 +3,12 @@
 tools:
 
   # panel section: artbio_tools
-  - name: fetch_fasta_from_ncbi
+  - name: sr_bowtie
     owner: artbio
     tool_panel_section_id: artbio_tools
     tool_panel_section_label: ARTbio tools
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: sr_bowtie
+  - name: fetch_fasta_from_ncbi
     owner: artbio
     tool_panel_section_id: artbio_tools
     tool_panel_section_label: ARTbio tools
