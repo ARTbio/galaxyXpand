@@ -625,11 +625,6 @@ tools:
     tool_panel_section_id: convert
     tool_panel_section_label: Convert Formats
     tool_shed: toolshed.g2.bx.psu.edu
-  - name: samtools_cram_to_bam
-    owner: iuc
-    tool_panel_section_id: convert
-    tool_panel_section_label: Convert Formats
-    tool_shed: toolshed.g2.bx.psu.edu
   - name: dna_protein_transle
     owner: jasper
     tool_panel_section_id: convert
@@ -1061,6 +1056,11 @@ tools:
     tool_shed: toolshed.g2.bx.psu.edu
   - name: coverage_stats
     owner: peterjc
+    tool_panel_section_id: ngs:_sam_tools
+    tool_panel_section_label: NGS: SAM Tools
+    tool_shed: toolshed.g2.bx.psu.edu
+  - name: samtools_cram_to_bam
+    owner: iuc
     tool_panel_section_id: ngs:_sam_tools
     tool_panel_section_label: NGS: SAM Tools
     tool_shed: toolshed.g2.bx.psu.edu
