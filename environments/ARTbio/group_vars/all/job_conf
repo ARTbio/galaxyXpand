@@ -42,108 +42,200 @@ job_limits_environment_total:
     value: 32
 
 job_tool_routing:
+  - id: "Group"
+    destination: "cluster_1"
+  - id: "alevin"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "anndata_export"
+    destination: "cluster_4"  # src: tpv(4c)
   - id: "artbio_bam_cleaning"
     destination: "cluster_8"
   - id: "bcftools_annotate"
     destination: "cluster_8"
   - id: "bcftools_mpileup"
     destination: "cluster_8"
-  - id: "bowtie_wrapper"
-    destination: "cluster_16"
+  - id: "bcftools_norm"
+    destination: "cluster_2"  # src: tpv(2c)
   - id: "bowtie2"
     destination: "cluster_16"
+  - id: "bowtie2_index_builder_data_manager"
+    destination: "cluster_16"  # src: tpv(16c)
   - id: "bowtieForSmallRNA"
     destination: "cluster_16"
-  - id: "bwa_mem"
+  - id: "bowtie_wrapper"
     destination: "cluster_16"
   - id: "bwa"
     destination: "cluster_16"
+  - id: "bwa_mem"
+    destination: "cluster_16"
+  - id: "bwa_mem2"
+    destination: "cluster_16"  # src: tpv(24c)
+  - id: "bwa_mem_index_builder_data_manager"
+    destination: "cluster_8"  # src: tpv(12c)
+  - id: "canu"
+    destination: "cluster_16"  # src: tpv(20c)
   - id: "cuffdiff"
     destination: "cluster_16"
+  - id: "cufflinks"
+    destination: "cluster_4"  # src: tpv(6c)
+  - id: "cuffnorm"
+    destination: "cluster_4"  # src: tpv(6c)
+  - id: "cuffquant"
+    destination: "cluster_4"  # src: tpv(6c)
   - id: "cutadapt"
     destination: "cluster_16"
   - id: "deeptools_bam_compare"
     destination: "cluster_16"
   - id: "deeptools_bam_coverage"
     destination: "cluster_16"
+  - id: "deeptools_bam_pe_fragmentsize"
+    destination: "cluster_8"  # src: tpv(10c)
+  - id: "deeptools_bigwig_compare"
+    destination: "cluster_8"  # src: tpv(10c)
+  - id: "deeptools_compute_gc_bias"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "deeptools_compute_matrix"
     destination: "cluster_16"
+  - id: "deeptools_correct_gc_bias"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "deeptools_multi_bam_summary"
     destination: "cluster_16"
+  - id: "deeptools_multi_bigwig_summary"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "deeptools_plot_correlation"
     destination: "cluster_16"
   - id: "deeptools_plot_coverage"
     destination: "cluster_8"
   - id: "deeptools_plot_fingerprint"
     destination: "cluster_16"
+  - id: "dexseq"
+    destination: "cluster_2"
   - id: "dexseq_count"
     destination: "cluster_2"
-  - id: "dexseq"
+  - id: "fastp"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "fastq_dump"
     destination: "cluster_2"
   - id: "fastqc"
     destination: "java_cluster"
-  - id: "fastq_dump"
-    destination: "cluster_2"
   - id: "featurecounts"
     destination: "cluster_4"
-  - id: "Group"
-    destination: "cluster_1"
+  - id: "freebayes"
+    destination: "cluster_8"  # src: tpv(10c)
+  - id: "gemini_load"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "guppy-basecaller"
     destination: "cluster_8"
-  - id: "hisat2_index_builder_data_manager"
-    destination: "cluster_4"
   - id: "hisat2"
     destination: "cluster_16"
+  - id: "hisat2_index_builder_data_manager"
+    destination: "cluster_4"
+  - id: "ivar_trim"
+    destination: "cluster_8"  # src: tpv(8c)
   - id: "justgzip"
     destination: "cluster_8"
+  - id: "kallisto_index_builder_data_manager"
+    destination: "cluster_8"  # src: tpv(12c)
   - id: "kallisto_quant"
     destination: "cluster_8"
+  - id: "kraken2"
+    destination: "cluster_16"  # src: tpv(16c)
+  - id: "lofreq_call"
+    destination: "cluster_2"  # src: tpv(2c)
   - id: "lumpy_smoove"
     destination: "cluster_8"
   - id: "macs2_callpeak"
     destination: "cluster_16"
   - id: "manta"
     destination: "cluster_8"
+  - id: "medaka_consensus"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "medaka_consensus_pipeline"
+    destination: "cluster_8"  # src: tpv(12c)
   - id: "minimap2"
     destination: "cluster_8"
   - id: "mircounts"
     destination: "cluster_8"
+  - id: "nanocompore_sampcomp"
+    destination: "cluster_8"  # src: tpv(9c)
   - id: "nanopolish_eventalign"
     destination: "cluster_16"
+  - id: "nanopolish_methylation"
+    destination: "cluster_4"  # src: tpv(5c)
   - id: "nanopolish_polya"
     destination: "cluster_16"
+  - id: "nanopolish_variants"
+    destination: "cluster_4"  # src: tpv(5c)
   - id: "ncbi_blastn_wrapper"
     destination: "cluster_16"
   - id: "ncbi_blastp_wrapper"
     destination: "cluster_16"
   - id: "ncbi_blastx_wrapper"
     destination: "cluster_16"
+  - id: "ncbi_segmasker_wrapper"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "ncbi_tblastn_wrapper"
+    destination: "cluster_8"  # src: tpv(10c)
+  - id: "ncbi_tblastx_wrapper"
+    destination: "cluster_16"  # src: tpv(16c)
+  - id: "ont_fast5_api_compress_fast5"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "pangolin"
+    destination: "cluster_8"  # src: tpv(8c)
   - id: "picard_FilterSamReads"
     destination: "java_cluster"
+  - id: "qualimap_bamqc"
+    destination: "cluster_4"  # src: tpv(6c)
+  - id: "quast"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "repenrich"
     destination: "cluster_16"
-  - id: "rna_star_index_builder_data_manager"
-    destination: "cluster_8"
   - id: "rna_star"
+    destination: "cluster_8"
+  - id: "rna_star_index_builder_data_manager"
     destination: "cluster_8"
   - id: "rna_starsolo"
     destination: "cluster_8"
+  - id: "rnaspades"
+    destination: "cluster_8"  # src: tpv(10c)
   - id: "rsembowtie"
     destination: "cluster_8"
   - id: "rsembowtie2"
     destination: "cluster_16"
+  - id: "rseqc_bam2wig"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "salmon"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "sam_dump"
+    destination: "cluster_4"  # src: tpv(4c)
   - id: "sambamba_sample_or_filter"
     destination: "cluster_8"
   - id: "samtool_filter2"
     destination: "cluster_4"
   - id: "samtools_cram_to_bam"
     destination: "cluster_8"
+  - id: "samtools_idxstats"
+    destination: "cluster_2"  # src: tpv(2c)
+  - id: "samtools_mpileup"
+    destination: "cluster_4"  # src: tpv(5c)
   - id: "samtools_rmdup"
     destination: "cluster_8"
   - id: "samtools_slice_bam"
     destination: "cluster_8"
+  - id: "samtools_stats"
+    destination: "cluster_2"  # src: tpv(2c)
   - id: "samtools_view"
     destination: "cluster_8"
+  - id: "scanpy_filter"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "scanpy_inspect"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "scanpy_normalize"
+    destination: "cluster_4"  # src: tpv(4c)
+  - id: "scanpy_remove_confounders"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "seqtk_seq"
+    destination: "cluster_4"  # src: tpv(4c)
   - id: "small_rna_maps"
     destination: "cluster_2"
   - id: "snpEff"
@@ -152,16 +244,34 @@ job_tool_routing:
     destination: "java_cluster"
   - id: "snpSift_filter"
     destination: "java_cluster"
+  - id: "spades"
+    destination: "cluster_16"  # src: tpv(20c)
   - id: "sr_bowtie_dataset_annotation"
     destination: "cluster_16"
+  - id: "strelka_germline"
+    destination: "cluster_8"  # src: tpv(8c)
   - id: "table_annovar"
     destination: "cluster_8"
   - id: "tarfast5"
     destination: "cluster_8"
-  - id: "tophat2"
-    destination: "cluster_16"
   - id: "tp_grep_tool"
     destination: "cluster_1"
+  - id: "trim_galore"
+    destination: "cluster_4"  # src: tpv(5c)
+  - id: "trimmomatic"
+    destination: "cluster_4"  # src: tpv(6c)
+  - id: "trinity"
+    destination: "cluster_8"  # src: tpv(12c)
+  - id: "trinity_align_and_estimate_abundance"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "twobit_builder_data_manager"
+    destination: "cluster_8"  # src: tpv(10c)
+  - id: "varscan_somatic"
+    destination: "cluster_8"  # src: tpv(8c)
+  - id: "vcf2maf"
+    destination: "cluster_4"  # src: tpv(6c)
+  - id: "vsearch_alignment"
+    destination: "cluster_16"  # src: tpv(16c)
   - id: "vsearch_clustering"
     destination: "cluster_64"
   - id: "xpore_dataprep"
