@@ -114,7 +114,7 @@ job_tool_routing:
   - id: "rna_star"
     destination: "cluster_8"  # repo: rgrnastar  src: existing
   - id: "hisat2"
-    destination: "cluster_8"  # repo: hisat2  src: existing
+    destination: "cluster_16"  # repo: hisat2  src: existing
   - id: "bwa_mem2"
     destination: "cluster_16"  # repo: bwa_mem2  src: tpv(24c)
   - id: "bwa_mem"
@@ -670,7 +670,7 @@ job_tool_routing:
   - id: "deeptools_bam_pe_fragmentsize"
     destination: "cluster_8"  # repo: deeptools_bam_pe_fragmentsize  src: tpv(10c)
   - id: "deeptools_bam_coverage"
-    destination: "cluster_4"  # repo: deeptools_bam_coverage  src: existing
+    destination: "cluster_8"  # repo: deeptools_bam_coverage  src: existing
   - id: "deeptools_bam_compare"
     destination: "cluster_8"  # repo: deeptools_bam_compare  src: tpv(10c)
 
@@ -905,10 +905,6 @@ job_tool_routing:
     destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
   - id: "ncbi_tblastx_wrapper"
     destination: "cluster_16"  # repo: ncbi_blast_plus  src: existing
-
-  # --- Mississippi Extra Tools ---
-  - id: "patser-v3e"
-    destination: "cluster_1"  # repo: patser
 
   # --- NGS: Assembly ---
   - id: "trinity"
