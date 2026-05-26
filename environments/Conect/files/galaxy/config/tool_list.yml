@@ -1200,13 +1200,6 @@ tools:
     tool_panel_section_label: ncbi_blast_plus
     tool_shed: toolshed.g2.bx.psu.edu
 
-  # panel section: mississippi_extra_tools
-  - name: patser
-    owner: mvdbeek
-    tool_panel_section_id: mississippi_extra_tools
-    tool_panel_section_label: Mississippi Extra Tools
-    tool_shed: testtoolshed.g2.bx.psu.edu
-
   # panel section: ngs:_assembly
   - name: trinity
     owner: iuc
