@@ -1,0 +1,31 @@
+---
+# Job configuration for dev_gce (2-CPU GCE VM)
+# Rendered by templates/job_conf.yml.j2
+
+job_default_destination: local_env
+
+job_destinations:
+  local_env:
+    runner: local_runner
+    tmp_dir: true
+  cluster:
+    runner: slurm
+    ntasks: 1
+
+job_limits_anonymous: 1
+job_limits_registered: 2
+# job_limits_environment_total: []  # no per-destination concurrency cap on this 2-CPU VM
+
+# Per-tool overrides — also managed by scripts/galaxy_tools_export.py (TPV enrichment).
+# Lines tagged "# src: tpv(Nc)" are auto-refreshed; untagged lines are human-authored
+# and never modified by the script.
+
+job_tool_routing:
+  - id: "bowtieForSmallRNA"
+    destination: "cluster"
+  - id: "bowtie_index_builder_data_manager"
+    destination: "local_env"
+  - id: "retrieve_fasta_from_NCBI"
+    destination: "cluster"
+  - id: "samtools_view"
+    destination: "cluster"

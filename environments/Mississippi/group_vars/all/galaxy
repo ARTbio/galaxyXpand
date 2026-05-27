@@ -44,8 +44,6 @@ Mississippi_info: "{{ _Mississippi_info | indent(width=12, first=True) }}"
 
 # deploy galaxy configuration files
 galaxy_config_files:
-  - src: "{{ inventory_dir }}/files/galaxy/config/job_conf.yml"
-    dest: "{{ galaxy_config_dir }}/job_conf.yml"
   - src: "{{ inventory_dir }}/files/galaxy/html/images/ARTbio_mississippi_screen.jpg"
     dest: "{{ galaxy_server_dir }}/static/images/ARTbio_mississippi_screen.jpg"
   - src: "{{ inventory_dir }}/files/galaxy/html/images/IBPS_logo.jpg"
@@ -56,3 +54,8 @@ galaxy_config_files:
 galaxy_config_templates:
   - src: "{{ inventory_dir }}/templates/html/welcome.html.j2"
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
+  - src: "{{ playbook_dir }}/templates/job_conf.yml.j2"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
+
+# role ansible-galaxy-tools
+galaxy_tools_tool_list_files: [ "{{ inventory_dir }}/files/galaxy/config/tool_list.yml" ]
