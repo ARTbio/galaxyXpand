@@ -36,20 +36,8 @@
         name:
           - bzip2
           - git
-          - make
-          - tar
           - python3-venv
-          - python3-lib2to3
-          - slurm-wlm
         state: present
-
-    - name: Ensure munge runtime dir exists
-      ansible.builtin.file:
-        path: /run/munge
-        owner: munge
-        group: munge
-        mode: "0755"
-        state: directory
 
     - name: Check if conda exists in conda prefix
       ansible.builtin.stat:
