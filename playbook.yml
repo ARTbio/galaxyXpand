@@ -37,6 +37,7 @@
           - bzip2
           - git
           - python3-venv
+          - make
         state: present
 
     - name: Check if conda exists in conda prefix
