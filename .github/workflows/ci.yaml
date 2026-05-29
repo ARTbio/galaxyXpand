@@ -64,9 +64,8 @@ jobs:
 
     - name: Run diagnostics before API wait
       run: |
-        galaxyctl restart
-        sleep 10
-        curl -v http://127.0.0.1/api/version
+        sudo galaxyctl status
+        sinfo
       continue-on-error: true
 
     - name: Wait for API
