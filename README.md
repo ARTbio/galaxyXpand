@@ -8,10 +8,12 @@
 
 | Target OS | Galaxy Version | Branch / Tag |
 |-----------|---------------|--------------|
-| **Ubuntu 24.04 LTS** | Latest (current) | `main` |
+| **Ubuntu 24.04 LTS** | `release_26.0` (current default) | `main` |
 | **Ubuntu 20.04 LTS** | ≤ 24.1 | `final/release_24.1_ubuntu20.04-final` |
 
 > For Ubuntu 20.04: `git checkout release_24.1_ubuntu20.04-final`
+
+The deployed Galaxy version is controlled by `galaxy_commit_id` (see *Key Variables*); you can pin an older release on `main` if needed.
 
 ---
 
@@ -23,13 +25,20 @@ On the **control node** (Ubuntu 24.04 recommended):
 sudo apt update && sudo apt install ansible -y
 ```
 
+Optional Python tooling (only for the admin scripts, e.g. tool-list generation):
+
+```bash
+pip install -r requirements.txt
+```
+
 ---
 
 ## Ansible Vault
 
-Les secrets (mots de passe, tokens) sont chiffrés avec ansible-vault. Le fichier `.vault_pass` est placé à la racine du dépôt et listé dans `.gitignore` — ne jamais le committer.
+Secrets (passwords, tokens) are encrypted with `ansible-vault`. The `.vault_pass`
+file lives at the repository root and is listed in `.gitignore` — never commit it.
 
-Avant toute commande `ansible-playbook` :
+Before any `ansible-playbook` command:
 
 ```bash
 export ANSIBLE_VAULT_PASSWORD_FILE=.vault_pass
@@ -62,7 +71,7 @@ ansible-playbook -i environments/dev_gce/hosts install_tools.yml
 |------|---------|
 | `playbook.yml` | Main deployment: PostgreSQL, Galaxy, Slurm, nginx |
 | `install_tools.yml` | Install Galaxy tools from a tool list YAML |
-| `reinitialize_slurm.yml` | Reset Slurm state (useful after node restart) |
+| `reinitialize_slurm.yml` | Reset Slurm state (useful after node restart / VM resume) |
 | `showvars.yml` | Dump all computed variables for an environment (debug) |
 
 ### Environments
@@ -76,10 +85,11 @@ environments/
     ├── hosts                   # Ansible inventory
     ├── group_vars/all/
     │   ├── 000_cross_env_vars  # Symlink → ../../000_cross_env_vars (REQUIRED)
-    │   ├── galaxy              # Galaxy-specific overrides
+    │   ├── galaxy              # Galaxy overrides + galaxy_config_templates wiring
+    │   ├── job_conf            # Job destinations, limits and per-tool routing
     │   └── nginx               # nginx overrides (if managed by galaxyXpand)
-    ├── files/                  # Static files (job_conf.yml, logos, tool lists)
-    └── templates/              # Jinja2 templates (welcome page, nginx vhost)
+    ├── files/                  # Static files served into Galaxy (logos, tool lists)
+    └── templates/              # Per-env Jinja2 templates (welcome page, nginx vhost)
 ```
 
 > **Critical:** The symlink `environments/<env>/group_vars/all/000_cross_env_vars → ../../000_cross_env_vars`
@@ -103,7 +113,7 @@ per-environment in `group_vars/all/galaxy`.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `galaxy_commit_id` | `release_25.1` | Galaxy Git branch or tag to deploy |
+| `galaxy_commit_id` | `release_26.0` | Galaxy Git branch or tag to deploy |
 | `install_slurm` | `true` | Install and configure Slurm |
 | `install_uptime` | `false` | Install Uptime monitoring |
 | `galaxyxpand_manage_nginx` | `true` | Set to `false` to disable nginx management (external proxy) |
@@ -117,6 +127,7 @@ per-environment in `group_vars/all/galaxy`.
 | `miniconda_version` | `latest` | Post-install conda/mamba update target |
 | `miniconda_base_env_packages` | `[]` | Packages injected into the base env — keep empty to protect the base Python |
 | `miniconda_prefix` | `{{ galaxy_tool_dependency_dir }}/_conda` | Conda installation path |
+| `miniconda_channels` | `[conda-forge, bioconda, default]` | Channel priority for tool dependency resolution |
 
 > `miniconda_installer_version` and `miniconda_version` serve different purposes:
 the former controls which installer `.sh` is downloaded; the latter controls
@@ -154,9 +165,6 @@ slurm_partitions:
     DefMemPerCPU: "{{ ((ansible_memtotal_mb|int)*0.9 / (ansible_processor_vcpus|int)) | round(0,'floor') | int }}"
 ```
 
-> Partition names in `slurm_partitions` must exactly match destination IDs in your
-`files/job_conf.yml`. A mismatch causes immediate job failure.
-
 ### Slurm-DRMAA
 
 The playbook installs `slurm-drmaa1` from the [natefoo PPA](https://launchpad.net/~natefoo/+archive/ubuntu/slurm-drmaa),
@@ -182,12 +190,116 @@ post-task.
 
 ---
 
+## Job Configuration
+
+Galaxy's `job_conf.yml` is **not** a static file. It is rendered from the shared
+template `templates/job_conf.yml.j2`, driven by variables you define per
+environment in `group_vars/all/job_conf`. The template is wired into Galaxy
+through `galaxy_config_templates` in each environment's `group_vars/all/galaxy`:
+
+```yaml
+galaxy_config_templates:
+  - src: "{{ playbook_dir }}/templates/job_conf.yml.j2"
+    dest: "{{ galaxy_config_dir }}/job_conf.yml"
+```
+
+You therefore describe *what you want* (destinations, limits, tool routing) as
+data, and let the template produce a valid `job_conf.yml`.
+
+### Variables (`group_vars/all/job_conf`)
+
+| Variable | Description |
+|----------|-------------|
+| `job_default_destination` | Destination used by tools without an explicit route |
+| `job_destinations` | Map of named destinations (see below) |
+| `job_limits_anonymous` | Concurrent jobs allowed for anonymous users |
+| `job_limits_registered` | Concurrent jobs allowed for registered users |
+| `job_limits_environment_total` | *(optional)* Per-destination total concurrency caps |
+| `job_limits_environment_user` | *(optional)* Per-destination per-user concurrency caps |
+| `job_tool_routing` | Per-tool (or per-tool-class) destination overrides |
+
+Each entry in `job_destinations` accepts:
+
+- `runner`: `slurm` (default) or `local_runner`.
+- For Slurm destinations: `ntasks` (CPU cores; default `1`), optional `mem` (MB),
+  and an optional `env` list of `{name, value}` pairs (e.g. `_JAVA_OPTIONS`).
+- For `local_runner` destinations: optional `tmp_dir: true`.
+
+All Slurm destinations submit to the `debug` partition; they differ only by their
+resource request (`--ntasks`, `--mem`). Consequently, the single requirement is
+that a `debug` partition exists in `slurm_partitions` — which is the default
+(see *Slurm* above). Job-handler assignment is fixed to `db-skip-locked` by the
+template, so renaming handler pools never breaks job pickup.
+
+### Example (`group_vars/all/job_conf`)
+
+```yaml
+job_default_destination: cluster_1
+
+job_destinations:
+  cluster_1:
+    ntasks: 1
+  cluster_8:
+    ntasks: 8
+  java_cluster:
+    ntasks: 1
+    mem: 40960
+    env:
+      - name: '_JAVA_OPTIONS'
+        value: '-Xmx32g -Xms1g -Djava.io.tmpdir=/tmp'
+  local_env:
+    runner: local_runner
+    tmp_dir: true
+
+job_limits_anonymous: 1
+job_limits_registered: 64
+
+job_tool_routing:
+  - id: "bowtie2"
+    destination: "cluster_8"
+  - id: "fastqc"
+    destination: "java_cluster"
+```
+
+---
+
+## Admin Tooling
+
+### `scripts/galaxy_tools_export.py`
+
+An **admin tool** (not a deployment dependency, pure Python 3 standard library)
+that does two things against a running Galaxy:
+
+1. Generates an Ephemeris-format `tool_list.yml` from the tools installed and
+   exposed in the Galaxy panel.
+2. Enriches the environment's `job_conf` routing with destinations derived from
+   the shared [TPV database](https://github.com/galaxyproject/tpv-shared-database).
+
+It rewrites **only** the `job_tool_routing:` block. Human-authored entries
+(untagged) are preserved as-is; entries it manages are tagged `# src: tpv(Nc)`
+and refreshed on each run. Everything else in `job_conf` (destinations, limits,
+comments, blank lines) is left verbatim. It also audits orphan overrides,
+invalid destinations, and "ghost" repositories (installed but not exposed).
+
+```bash
+python3 scripts/galaxy_tools_export.py <galaxy_url> --env <name> [options]
+
+# Example
+python3 scripts/galaxy_tools_export.py https://usegalaxy.example.org \
+    --env Conect --admin-key MY_KEY --no-revisions --skip-builtins
+```
+
+Useful options: `--dry-run` (audit, write nothing), `--no-tpv` (skip TPV fetch),
+`--job-conf <path>` / `--tool-list <path>` (override the paths auto-derived from
+`--env`), `--dest <name>` (force the effective default destination).
+
+---
+
 ## Available Environments
 
 | Environment | Target | Notes |
 |-------------|--------|-------|
 | `dev_gce` | GCE VM (CI/CD) | Reference environment, tested on every push |
-| `artbio-gce-test` | GCE VM | ARTbio integration test (15 representative tools) |
 | `ARTbio` | Bare-metal | Production server (artbio.snv.jussieu.fr), external nginx |
 | `Conect` | Bare-metal | Production server (usegalaxy.sorbonne-universite.fr) |
 | `Mississippi` | Bare-metal | Public Mississippi Galaxy server (mississippi.sorbonne-universite.fr) |
@@ -213,8 +325,9 @@ ansible-playbook -i environments/<env>/hosts playbook.yml --tags slurm
 
 ## Known Gotchas
 
-1. **Symlink `000_cross_env_vars`** is mandatory in every environment's `group_vars/all/` — see Architecture section.
-2. **Job handler naming:** if you rename handler pools in `galaxy_config`, ensure `job_conf.yml` uses `assign: db-skip-locked` so any available handler picks up jobs regardless of process name.
+1. **Symlink `000_cross_env_vars`** is mandatory in every environment's `group_vars/all/` — see *Architecture*.
+2. **Galaxy `release_26.0+` and Gravity:** on 26.0 and later, a `graceful` restart crashes Gravity. `galaxy_gravity_restart_action` is set to `restart` automatically for `release_26.0+` (and omitted otherwise). Keep this in mind if you pin a custom `galaxy_commit_id`.
 3. **`slurm-drmaa1` version mismatch** after OS upgrade: reinstall manually from the PPA to get the Ubuntu-release-appropriate build.
 4. **Miniforge migration from legacy Miniconda:** if `conda` is present but `mamba` is absent in `miniconda_prefix`, the playbook automatically runs the Miniforge installer in upgrade mode (`-u -b`) before the `galaxyproject.miniconda` role executes.
 5. **`galaxy_tool_dependency_dir`** must be defined explicitly in each environment's `group_vars` — do not rely on role defaults, as this variable must be available during pre-tasks.
+6. **Job destinations vs partitions:** destination names in `job_destinations` (e.g. `cluster_8`) are Galaxy-side labels, not Slurm partitions. The template submits every Slurm destination to the `debug` partition, so that partition must exist in `slurm_partitions` (it does by default).
