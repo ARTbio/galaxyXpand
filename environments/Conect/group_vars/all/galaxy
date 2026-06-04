@@ -35,6 +35,8 @@ galaxy_config:
     # default len_file_path: shared/ucsc/chrom
     len_file_path: /home/galaxy/galaxy/config/len
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
+    # local nasvar conda package
+    conda_use_local: true
 
 
 # Welcome html page variables
