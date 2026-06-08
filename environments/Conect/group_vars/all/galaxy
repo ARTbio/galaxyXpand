@@ -35,6 +35,10 @@ galaxy_config:
     # default len_file_path: shared/ucsc/chrom
     len_file_path: /home/galaxy/galaxy/config/len
     tool_data_table_config_path: /home/galaxy/galaxy/config/tool_data_table_conf.xml
+    # nasvar tool def is in the {{ galaxy_mutable_config_dir }}/tool_conf.xml, manually created on the server
+    tool_config_file: "{{ galaxy_mutable_config_dir }}/tool_conf.xml,{{ galaxy_mutable_config_dir }}/tool_conf.xml"
+    # local nasvar conda package
+    conda_use_local: true
 
 
 # Welcome html page variables
