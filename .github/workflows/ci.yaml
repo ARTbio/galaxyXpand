@@ -28,7 +28,7 @@ jobs:
       - name: Set up Python and install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install ansible==9.4.0 ansible-lint==6.22.2
+          pip install 'ansible==10.7.0' 'ansible-lint==26.4.0'
       - name: Run ansible-lint
         run: ansible-lint playbook.yml install_tools.yml
 
@@ -47,8 +47,10 @@ jobs:
 
     - name: Install Ansible
       run: |
-        sudo apt-get update -y
-        sudo apt-get install -y ansible
+        python3 -m venv ~/ansible-venv
+        ~/ansible-venv/bin/pip install --upgrade pip
+        ~/ansible-venv/bin/pip install 'ansible==10.7.0'   # core 2.17 : sous 2.19, compatible galaxyproject.galaxy 0.12.8
+        echo "$HOME/ansible-venv/bin" >> "$GITHUB_PATH"
         ansible --version
 
     - name: Install Ansible roles
