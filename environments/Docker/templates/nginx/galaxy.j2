@@ -52,6 +52,9 @@ server {
     }
     # Support click-to-run in the GTN-in-Galaxy Webhook
     location /training-material/ {
-        proxy_pass https://training.galaxyproject.org/training-material/;
+        resolver 127.0.0.53 valid=30s;          # stub systemd-resolved (Ubuntu 24.04)
+        set $gtn_training "training.galaxyproject.org";
+        proxy_pass https://$gtn_training$request_uri;
+        proxy_ssl_server_name on;               # SNI vers l'hote externe (CDN)
     }
 }
