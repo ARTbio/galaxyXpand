@@ -86,7 +86,8 @@ galaxy_gravity_restart_action: "{{ 'restart' if galaxy_commit_id | regex_replace
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
-galaxy_additional_venv_packages: drmaa
+galaxy_additional_venv_packages:
+  - drmaa
 galaxy_create_user: true
 galaxy_separate_privileges: true
 galaxy_privsep_user: "{{ galaxy_user }}"
