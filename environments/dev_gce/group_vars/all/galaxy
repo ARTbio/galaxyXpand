@@ -1,4 +1,6 @@
 ---
+galaxy_commit_id: release_26.1
+
 # optimize 2 cpu VM GCE
 
 galaxy_config:
