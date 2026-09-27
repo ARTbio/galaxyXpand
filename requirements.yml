@@ -12,3 +12,4 @@
   version: 1.0.5
 - src: https://github.com/ARTbio/ansible-galaxy-tools.git
   name: install.galaxy-tools
+  version: dc13178   # 2025-10-28, "change bedtools to fetch_fasta_from_ncbi"
