@@ -39,7 +39,9 @@ galaxy_config:
     # nasvar tool def is in the {{ galaxy_mutable_config_dir }}/tool_conf.xml, manually created on the server
     tool_config_file: "{{ galaxy_mutable_config_dir }}/tool_conf.xml,{{ galaxy_mutable_config_dir }}/tool_conf.xml"
     # local nasvar conda package
+    conda_auto_install: true
     conda_use_local: true
+
 
 
 # Welcome html page variables
