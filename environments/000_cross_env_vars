@@ -79,14 +79,21 @@ galaxyxpand_manage_nginx: true
 # nginx.conf File
 nginx_conf_user: "www-data galaxy"
 
-# Galaxy common to all hosts
-galaxy_commit_id: release_26.0
+## Galaxy common to all hosts
+galaxy_commit_id: release_26.1
+
+# Galaxy python dependencies installed via uv (role galaxyproject.galaxy >= 0.12.10)
+# NB : with uv, galaxy_additional_venv_packages MUST be a list
+galaxy_install_uv: true
+galaxy_fetch_dependencies_with_uv: true
+
 # required with release_26.0+ to avoid gravity crash with "graceful"
 galaxy_gravity_restart_action: "{{ 'restart' if galaxy_commit_id | regex_replace('^release_', '') is version('26.0', '>=') else omit }}"
 galaxy_user_name: galaxy
 galaxy_db_name: galaxy
 galaxy_config_perms: 0664
-galaxy_additional_venv_packages: drmaa
+galaxy_additional_venv_packages:
+  - drmaa
 galaxy_create_user: true
 galaxy_separate_privileges: true
 galaxy_privsep_user: "{{ galaxy_user }}"

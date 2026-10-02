@@ -1,5 +1,5 @@
 - src: galaxyproject.galaxy
-  version: 0.12.8
+  version: 0.12.13
 - src: galaxyproject.nginx
   version: 1.0.0
 - src: galaxyproject.postgresql
@@ -12,3 +12,4 @@
   version: 1.0.5
 - src: https://github.com/ARTbio/ansible-galaxy-tools.git
   name: install.galaxy-tools
+  version: dc13178   # 2025-10-28, "change bedtools to fetch_fasta_from_ncbi"
