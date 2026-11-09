@@ -4,6 +4,8 @@ nginx_server_src_dir: "{{ inventory_dir }}/templates/nginx/"
 nginx_selinux_allow_local_connections: true
 nginx_ssl_servers:
   - galaxy
+nginx_servers:
+  - redirect-ssl
 nginx_enable_default_server: false
 nginx_conf_http:
   client_max_body_size: 1g
@@ -30,7 +32,5 @@ nginx_conf_http:
       image/svg+xml
       image/x-icon
 
-nginx_ssl: true
-nginx_ssl_remote_src: true
-nginx_ssl_certificate: /etc/nginx/ssl/mississippi_sorbonne-universite_fr_bundle.crt
-nginx_ssl_certificate_key: /etc/nginx/ssl/mississippi_sorbonne-universite_fr.key
+nginx_conf_ssl_certificate: /etc/nginx/ssl/mississippi_sorbonne-universite_fr_bundle.crt
+nginx_conf_ssl_certificate_key: /etc/nginx/ssl/mississippi_sorbonne-universite_fr.key
