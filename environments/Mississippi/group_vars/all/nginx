@@ -30,7 +30,5 @@ nginx_conf_http:
       image/svg+xml
       image/x-icon
 
-nginx_ssl: true
-nginx_ssl_remote_src: true
-nginx_ssl_certificate: /etc/nginx/ssl/mississippi_sorbonne-universite_fr_bundle.crt
-nginx_ssl_certificate_key: /etc/nginx/ssl/mississippi_sorbonne-universite_fr.key
+nginx_conf_ssl_certificate: /etc/nginx/ssl/mississippi_sorbonne-universite_fr_bundle.crt
+nginx_conf_ssl_certificate_key: /etc/nginx/ssl/mississippi_sorbonne-universite_fr.key
