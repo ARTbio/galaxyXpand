@@ -88,6 +88,7 @@
         ansible_become_user: galaxy
       tags: [miniconda]
     - role: galaxyproject.nginx
+      tags: [nginx]
       when: galaxyxpand_manage_nginx
     - role: galaxyproject.slurm
       become: true
@@ -105,6 +106,7 @@
         group: root
         mode: "0644"
       notify: Restart nginx
+      tags: [nginx]
       when:
         - galaxyxpand_manage_nginx
         - (inventory_dir + '/templates/nginx/nginx.conf.j2') is file
