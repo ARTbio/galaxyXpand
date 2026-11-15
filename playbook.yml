@@ -16,11 +16,40 @@
   become: true
   become_user: root
   pre_tasks:
-    - name: Add official Slurm-DRMAA PPA (Natefoo)
-      ansible.builtin.apt_repository:
-        repo: ppa:natefoo/slurm-drmaa
-        state: present
-        update_cache: true
+    # Migration: drop legacy apt_repository/apt-key setup (key in trusted.gpg)
+    - name: Find legacy Natefoo PPA source files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: "*natefoo*slurm*drmaa*.list"
+      register: natefoo_legacy_lists
+      when: install_slurm
+
+    - name: Remove legacy Natefoo PPA source files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ natefoo_legacy_lists.files | default([]) }}"
+      when: install_slurm
+
+    - name: Remove Natefoo PPA key from legacy trusted.gpg
+      ansible.builtin.command:
+        cmd: >-
+          gpg --no-default-keyring --keyring /etc/apt/trusted.gpg
+          --batch --yes --delete-keys 8DE68488997C5C6BA19021136F2CC56412788738
+        removes: /etc/apt/trusted.gpg
+      register: natefoo_key_del
+      changed_when: natefoo_key_del.rc == 0
+      failed_when: natefoo_key_del.rc not in [0, 2]
+      when: install_slurm
+    # TRANSITION: remove once ARTbio, Conect, ag2025, dev_gce hosts are migrated
+    - name: Add Slurm-DRMAA PPA (Natefoo) with signed-by key
+      ansible.builtin.deb822_repository:
+        name: natefoo-slurm-drmaa
+        types: deb
+        uris: https://ppa.launchpadcontent.net/natefoo/slurm-drmaa/ubuntu
+        suites: "{{ ansible_distribution_release }}"
+        components: main
+        signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x8DE68488997C5C6BA19021136F2CC56412788738"
       when: install_slurm
 
     - name: Install Slurm-DRMAA from the correct PPA release
