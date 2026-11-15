@@ -41,7 +41,7 @@
       changed_when: natefoo_key_del.rc == 0
       failed_when: natefoo_key_del.rc not in [0, 2]
       when: install_slurm
-
+    # TRANSITION: remove once ARTbio, Conect, ag2025, dev_gce hosts are migrated
     - name: Add Slurm-DRMAA PPA (Natefoo) with signed-by key
       ansible.builtin.deb822_repository:
         name: natefoo-slurm-drmaa
